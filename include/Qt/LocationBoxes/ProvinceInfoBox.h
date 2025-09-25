@@ -1,0 +1,22 @@
+#pragma once
+#ifndef PROVINCE_INFO_BOX_H
+#define PROVINCE_INFO_BOX_H
+#include <QtWidgets/qtabwidget.h>
+#include "GeoPolContainers.h"
+#include <QtWidgets\qboxlayout.h>
+#include <QtWidgets\qgroupbox.h>
+#include <QtWidgets\qpushbutton.h>
+#include <QtWidgets\qlabel.h>
+
+
+
+class ProvinceInfoBox : public QWidget {
+public:
+	ProvinceInfoBox(QWidget* parent = nullptr);
+	void loadWidgets();
+protected:
+private:
+};
+
+
+#endif // !PROVINCE_INFO_BOX_H

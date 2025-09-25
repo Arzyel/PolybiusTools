@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Qt">
+      <UniqueIdentifier>{1f67161d-e173-4336-948a-0b5394e6f4d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Qt">
+      <UniqueIdentifier>{77c031b0-1073-4a3f-b5e8-6ec90b199a9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\CONSTANTS">
+      <UniqueIdentifier>{98b3a561-e58c-4b77-a7fe-db40f50d61af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Model">
+      <UniqueIdentifier>{a1a6f07a-2ab2-487a-aa07-c8419ac9b090}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Model">
+      <UniqueIdentifier>{ae22e28b-42fb-4a88-9b3c-08486f9a07ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Utils">
+      <UniqueIdentifier>{82ff9398-dc0f-466b-8ef7-c6853a91ba7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Qt\LocationBoxes">
+      <UniqueIdentifier>{ab316a86-3ce0-4666-acb6-7086fdc801e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Qt\LocationBoxes">
+      <UniqueIdentifier>{7632a280-6cde-4454-b2cf-f8dcd770c0d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Qt\Utils">
+      <UniqueIdentifier>{ef92a2f2-d2d0-4569-9629-36349d2eb150}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\ImageViewa.cpp">
+      <Filter>Fichiers sources\Qt</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\TopMenuBar.cpp">
+      <Filter>Fichiers sources\Qt</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model\GeoPolContainers.cpp">
+      <Filter>Fichiers sources\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model\Location.cpp">
+      <Filter>Fichiers sources\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\InformationGUI.cpp">
+      <Filter>Fichiers sources\Qt</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\LocationBoxes\BuildingsBox.cpp">
+      <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\LocationBoxes\CoresBox.cpp">
+      <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\LocationBoxes\CultRelBox.cpp">
+      <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\LocationBoxes\DevBox.cpp">
+      <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\LocationBoxes\OwnershipBox.cpp">
+      <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\LocationBoxes\ProvinceInfoBox.cpp">
+      <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\LocationBoxes\ProvOthersBox.cpp">
+      <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\LocationBoxes\TechInfoBox.cpp">
+      <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\LocationBoxes\TradeBox.cpp">
+      <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Qt\ImageViewa.h">
+      <Filter>Fichiers d%27en-tête\Qt</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\InstantMenuStyle.h">
+      <Filter>Fichiers d%27en-tête\Qt</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\TopMenuBar.h">
+      <Filter>Fichiers d%27en-tête\Qt</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CONSTANTS\filenfolder_CONST.h">
+      <Filter>Fichiers d%27en-tête\CONSTANTS</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\Location.h">
+      <Filter>Fichiers d%27en-tête\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\GeoPolContainers.h">
+      <Filter>Fichiers d%27en-tête\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utils\SimpleParser.h">
+      <Filter>Fichiers d%27en-tête\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\InformationGUI.h">
+      <Filter>Fichiers d%27en-tête\Qt</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\LocationBoxes\BuildingsBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\LocationBoxes\CoresBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\LocationBoxes\CultRelBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\LocationBoxes\DevBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\LocationBoxes\OwnershipBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\LocationBoxes\ProvinceInfoBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\LocationBoxes\ProvOthersBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\LocationBoxes\TechInfoBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\LocationBoxes\TradeBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\Util\QtUtils.h">
+      <Filter>Fichiers d%27en-tête\Qt\Utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
