@@ -144,4 +144,7 @@
       <Filter>Fichiers d%27en-tête\Qt\Utils</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
 </Project>

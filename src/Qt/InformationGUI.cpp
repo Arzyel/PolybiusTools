@@ -15,6 +15,9 @@ void InformationGUI::loadWidgets()
 	ProvinceInfoBox* provinceTab = new ProvinceInfoBox();
 	this->addTab(provinceTab, "Province");
 
+	QObject::connect(this, &InformationGUI::signalLoadInfo,
+		provinceTab, &ProvinceInfoBox::loadProvInfo);
+
 	// Geography Tab
 	QWidget* geoTab = new QWidget;
 	QVBoxLayout* geoLayout = new QVBoxLayout(geoTab);
@@ -51,10 +54,5 @@ void InformationGUI::loadWidgets()
 
 void InformationGUI::loadProvInfo(const Location& location) const
 {
-	this->findChild<QLabel*>("ID")->setText(("ID : " + location.mEu4UID).c_str());
-	auto rgb = location.depackRGB(location.RGBValue);
-	this->findChild<QLabel*>("R")->setText(("R : " + std::to_string(rgb.at(0))).c_str());
-	this->findChild<QLabel*>("G")->setText(("G : " + std::to_string(rgb.at(1))).c_str());
-	this->findChild<QLabel*>("B")->setText(("B : " + std::to_string(rgb.at(2))).c_str());
-
+	signalLoadInfo(location);
 }

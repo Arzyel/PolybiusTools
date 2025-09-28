@@ -1,4 +1,4 @@
-# ModTool
+# PolybiusTools
 
 An open-source modding tool for Paradox games mainly eu4, written in C++ using Qt.
 
@@ -6,7 +6,7 @@ An open-source modding tool for Paradox games mainly eu4, written in C++ using Q
 
 ## Requirements
 
-- Qt 5.15.2 (MSVC 2019 64-bit)
+- Qt 6.9.2
 - Visual Studio 2022 (C++20)
 - CMake 3.25+ or Qt Creator 5.x
 
