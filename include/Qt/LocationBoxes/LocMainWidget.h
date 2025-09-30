@@ -2,17 +2,18 @@
 #ifndef PROVINCE_INFO_BOX_H
 #define PROVINCE_INFO_BOX_H
 #include <QtWidgets/qtabwidget.h>
-#include "GeoPolContainers.h"
 #include <QtWidgets\qboxlayout.h>
 #include <QtWidgets\qgroupbox.h>
 #include <QtWidgets\qpushbutton.h>
 #include <QtWidgets\qlabel.h>
+#include "GeoPolContainers.h"
 #include "Location.h"
+#include "LocInfoBoxes.h"
 
-class ProvinceInfoBox : public QWidget {
+class LocMainWidget : public QWidget {
 	Q_OBJECT
 public:
-	ProvinceInfoBox(QWidget* parent = nullptr);
+	LocMainWidget(QWidget* parent = nullptr);
 	void loadWidgets();
 
 public slots:

@@ -8,7 +8,7 @@
 #include <QtWidgets\qlabel.h>
 #include <QtCore\qobject.h>
 #include <QtCore\qdebug.h>
-#include "ProvinceInfoBox.h"
+#include "LocMainWidget.h"
 #include "GeoPolContainers.h"
 #include "QtUtils.h"
 

@@ -6,11 +6,19 @@ void Location::initFromFile(const std::string& eu4UID, const uint32_t& rgbValue,
 	mEu4UID = eu4UID;
 	RGBValue = rgbValue;
 	mCapital = SimpleParser::getValueOrDefault(data, "capital");
+	if (mCapital == "") {
+		return;
+	}
 	//eu4CoresID.push_back(SimpleParser::getValueOrDefault(data, "add_core"));
 	eu4OwnerID = SimpleParser::getValueOrDefault(data, "owner");
 	eu4ControllerID = SimpleParser::getValueOrDefault(data, "controller");
 	eu4CultureID = SimpleParser::getValueOrDefault(data, "culture");
 	eu4ReligionID = SimpleParser::getValueOrDefault(data, "religion");
+	
+	mDevelopment.base_tax = std::stoi(SimpleParser::getValueOrDefault(data, "base_tax"));
+	mDevelopment.base_prod = std::stoi(SimpleParser::getValueOrDefault(data, "base_production"));
+	mDevelopment.base_manpower = std::stoi(SimpleParser::getValueOrDefault(data, "base_manpower"));
+	
 
 
 }

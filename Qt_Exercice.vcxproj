@@ -163,6 +163,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FlowLayout.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Model\GeoPolContainers.cpp" />
     <ClCompile Include="src\Model\Location.cpp" />
@@ -172,14 +173,16 @@
     <ClCompile Include="src\Qt\LocationBoxes\CoresBox.cpp" />
     <ClCompile Include="src\Qt\LocationBoxes\CultRelBox.cpp" />
     <ClCompile Include="src\Qt\LocationBoxes\DevBox.cpp" />
+    <ClCompile Include="src\Qt\LocationBoxes\LocInfoBoxes.cpp" />
     <ClCompile Include="src\Qt\LocationBoxes\OwnershipBox.cpp" />
-    <ClCompile Include="src\Qt\LocationBoxes\ProvinceInfoBox.cpp" />
+    <ClCompile Include="src\Qt\LocationBoxes\LocMainWidget.cpp" />
     <ClCompile Include="src\Qt\LocationBoxes\ProvOthersBox.cpp" />
     <ClCompile Include="src\Qt\LocationBoxes\TechInfoBox.cpp" />
     <ClCompile Include="src\Qt\LocationBoxes\TradeBox.cpp" />
     <ClCompile Include="src\Qt\TopMenuBar.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FlowLayout.h" />
     <ClInclude Include="include\CONSTANTS\filenfolder_CONST.h" />
     <ClInclude Include="include\Model\GeoPolContainers.h" />
     <ClInclude Include="include\Model\Location.h" />
@@ -189,9 +192,10 @@
     <ClInclude Include="include\Qt\LocationBoxes\BuildingsBox.h" />
     <ClInclude Include="include\Qt\LocationBoxes\CoresBox.h" />
     <ClInclude Include="include\Qt\LocationBoxes\CultRelBox.h" />
-    <ClInclude Include="include\Qt\LocationBoxes\DevBox.h" />
+    <QtMoc Include="include\Qt\LocationBoxes\DevBox.h" />
+    <QtMoc Include="include\Qt\LocationBoxes\LocInfoBoxes.h" />
     <ClInclude Include="include\Qt\LocationBoxes\OwnershipBox.h" />
-    <QtMoc Include="include\Qt\LocationBoxes\ProvinceInfoBox.h" />
+    <QtMoc Include="include\Qt\LocationBoxes\LocMainWidget.h" />
     <ClInclude Include="include\Qt\LocationBoxes\ProvOthersBox.h" />
     <ClInclude Include="include\Qt\LocationBoxes\TechInfoBox.h" />
     <ClInclude Include="include\Qt\LocationBoxes\TradeBox.h" />

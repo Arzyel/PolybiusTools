@@ -12,11 +12,14 @@ InformationGUI::InformationGUI(const GeoPolContainers& refGeoPolCont, QWidget* p
 void InformationGUI::loadWidgets()
 {
 	// Province tab with layout and optional group box
-	ProvinceInfoBox* provinceTab = new ProvinceInfoBox();
+	LocMainWidget* provinceTab = new LocMainWidget();
 	this->addTab(provinceTab, "Province");
 
 	QObject::connect(this, &InformationGUI::signalLoadInfo,
-		provinceTab, &ProvinceInfoBox::loadProvInfo);
+		provinceTab, &LocMainWidget::loadProvInfo);
+
+	QObject::connect(this, &InformationGUI::signalLoadInfo,
+		provinceTab->findChild<DevBox*>(), &DevBox::loadDevInfo);
 
 	// Geography Tab
 	QWidget* geoTab = new QWidget;

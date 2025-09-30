@@ -75,9 +75,6 @@
     <ClCompile Include="src\Qt\LocationBoxes\OwnershipBox.cpp">
       <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
     </ClCompile>
-    <ClCompile Include="src\Qt\LocationBoxes\ProvinceInfoBox.cpp">
-      <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
-    </ClCompile>
     <ClCompile Include="src\Qt\LocationBoxes\ProvOthersBox.cpp">
       <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
     </ClCompile>
@@ -86,6 +83,15 @@
     </ClCompile>
     <ClCompile Include="src\Qt\LocationBoxes\TradeBox.cpp">
       <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\LocationBoxes\LocMainWidget.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\LocationBoxes\LocInfoBoxes.cpp">
+      <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowLayout.cpp">
+      <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,9 +116,6 @@
     <ClInclude Include="include\Utils\SimpleParser.h">
       <Filter>Fichiers d%27en-tête\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="include\Qt\InformationGUI.h">
-      <Filter>Fichiers d%27en-tête\Qt</Filter>
-    </ClInclude>
     <ClInclude Include="include\Qt\LocationBoxes\BuildingsBox.h">
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </ClInclude>
@@ -122,13 +125,7 @@
     <ClInclude Include="include\Qt\LocationBoxes\CultRelBox.h">
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </ClInclude>
-    <ClInclude Include="include\Qt\LocationBoxes\DevBox.h">
-      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
-    </ClInclude>
     <ClInclude Include="include\Qt\LocationBoxes\OwnershipBox.h">
-      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Qt\LocationBoxes\ProvinceInfoBox.h">
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </ClInclude>
     <ClInclude Include="include\Qt\LocationBoxes\ProvOthersBox.h">
@@ -143,8 +140,25 @@
     <ClInclude Include="include\Qt\Util\QtUtils.h">
       <Filter>Fichiers d%27en-tête\Qt\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="FlowLayout.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="include\Qt\LocationBoxes\LocMainWidget.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\LocationBoxes\LocInfoBoxes.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\InformationGUI.h">
+      <Filter>Fichiers d%27en-tête\Qt</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\LocationBoxes\DevBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

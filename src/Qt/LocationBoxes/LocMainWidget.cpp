@@ -1,12 +1,12 @@
-#include "ProvinceInfoBox.h"
+#include "LocMainWidget.h"
 
-ProvinceInfoBox::ProvinceInfoBox(QWidget* parent)
+LocMainWidget::LocMainWidget(QWidget* parent)
 	:QWidget(parent)
 {
 	loadWidgets();
 }
 
-void ProvinceInfoBox::loadWidgets()
+void LocMainWidget::loadWidgets()
 {
 	QVBoxLayout* provinceLayout = new QVBoxLayout(this);
 	QGroupBox* provinceBox = new QGroupBox("Technical Info");
@@ -37,14 +37,15 @@ void ProvinceInfoBox::loadWidgets()
 		return l;
 		}());
 
-	QGroupBox* provinceInfoBox = new QGroupBox("Pro");
+	QGroupBox* provinceInfoBox = new LocInfoBoxes("Province Information");
+
 
 
 	provinceLayout->addWidget(provinceBox, 1);
 	provinceLayout->addWidget(provinceInfoBox, 9);
 }
 
-void ProvinceInfoBox::loadProvInfo(const Location& location)
+void LocMainWidget::loadProvInfo(const Location& location)
 {
 	this->findChild<QLabel*>("ID")->setText(("ID : " + location.mEu4UID).c_str());
 	auto rgb = location.depackRGB(location.RGBValue);

@@ -38,6 +38,9 @@ public:
 	std::string eu4ControllerID;
 	std::string eu4CultureID;
 	std::string eu4ReligionID;
+	std::string eu4devTax;
+	std::string eu4devProd;
+	std::string eu4devMan;
 
 
 	bool mIsHRE;

@@ -1,12 +1,13 @@
 ﻿#pragma once
 #ifndef CULT_REL_BOX_H
 #define CULT_REL_BOX_H
+#include <QtWidgets\qgroupbox.h>
 
-class CultRelBox {
+class CultRelBox : public QGroupBox{
 public:
-    CultRelBox() = default;
+    CultRelBox() = delete;
     ~CultRelBox() = default;
-
+    CultRelBox(const QString& title, QWidget* parent = nullptr);
 protected:
 
 private:
