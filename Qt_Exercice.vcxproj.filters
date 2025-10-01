@@ -40,6 +40,18 @@
     <Filter Include="Fichiers d%27en-tête\Qt\Utils">
       <UniqueIdentifier>{ef92a2f2-d2d0-4569-9629-36349d2eb150}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\FileParsers">
+      <UniqueIdentifier>{b06c0444-d103-465f-be06-0782ed610430}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\FileParsers">
+      <UniqueIdentifier>{05939a55-d5d4-4fcb-9251-78a21987e496}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\FileParsers\Eu4">
+      <UniqueIdentifier>{6911e6a6-e803-441c-b2cb-91563f49ab2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\FileParsers\Eu4">
+      <UniqueIdentifier>{c5a8bb19-24a9-422d-8fc0-91efb5423691}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -99,6 +111,18 @@
     <ClCompile Include="CultureParser.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="src\FileParsers\FileParser.cpp">
+      <Filter>Fichiers sources\FileParsers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileParsers\Eu4\Eu4CultureParser.cpp">
+      <Filter>Fichiers sources\FileParsers\Eu4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileParsers\Eu4\Eu4MainParser.cpp">
+      <Filter>Fichiers sources\FileParsers\Eu4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileParsers\Eu4\Eu4ReligionParser.cpp">
+      <Filter>Fichiers sources\FileParsers\Eu4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Qt\ImageViewa.h">
@@ -154,6 +178,18 @@
     </ClInclude>
     <ClInclude Include="CultureParser.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FileParsers\FileParser.h">
+      <Filter>Fichiers d%27en-tête\FileParsers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FileParsers\Eu4\Eu4CultureParser.h">
+      <Filter>Fichiers d%27en-tête\FileParsers\Eu4</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FileParsers\Eu4\Eu4MainParser.h">
+      <Filter>Fichiers d%27en-tête\FileParsers\Eu4</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FileParsers\Eu4\Eu4ReligionParser.h">
+      <Filter>Fichiers d%27en-tête\FileParsers\Eu4</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

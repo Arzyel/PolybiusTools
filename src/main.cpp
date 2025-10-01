@@ -26,8 +26,9 @@
 #include "filenfolder_CONST.h"
 #include "GeoPolContainers.h"
 #include "InformationGUI.h"
-#include "CultRelContainer.h"
-#include "CultureParser.h"
+//#include "CultRelContainer.h"
+//#include "CultureParser.h"
+#include "FileParser.h"
 
 
 #define _CRTDBG_MAP_ALLOC
@@ -36,7 +37,7 @@
 int main(int argc, char* argv[]) {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-    CultureParser parser;
+    FileParser parser;
     parser.parseFile(R"(E:\Workstation\Personal_Projects\Exercices\PolybiusTools\tests\test2.txt)");
     //parser.parseFile(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\cultures\00_cultures.txt)");
 
