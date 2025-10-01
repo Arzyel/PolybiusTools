@@ -20,7 +20,6 @@ LocInfoBoxes::LocInfoBoxes(const QString& title, QWidget* parent)
 	CultRelBox* cultRelBox = new CultRelBox("Culture and Religion");
 	cultRelBox->setMinimumWidth(minBoxWidth);
 	cultRelBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	cultRelBox->setFixedHeight(100);
 
 
 
@@ -31,12 +30,12 @@ LocInfoBoxes::LocInfoBoxes(const QString& title, QWidget* parent)
 
 void LocInfoBoxes::loadWidgets()
 {
-	QHBoxLayout* locInfoBoxLayout = new QHBoxLayout(this);
-	
-	DevBox* devBox = new DevBox("Developpment");
-	CultRelBox* cultRelBox = new CultRelBox("Culture and Religion");
-	locInfoBoxLayout->addWidget(devBox);
-	locInfoBoxLayout->addWidget(cultRelBox);
+	//QHBoxLayout* locInfoBoxLayout = new QHBoxLayout(this);
+	//
+	//DevBox* devBox = new DevBox("Developpment");
+	//CultRelBox* cultRelBox = new CultRelBox("Culture and Religion");
+	//locInfoBoxLayout->addWidget(devBox);
+	//locInfoBoxLayout->addWidget(cultRelBox);
 
 	
 }
