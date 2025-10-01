@@ -1,1 +1,0 @@
-﻿#include "SoACulture.h"
