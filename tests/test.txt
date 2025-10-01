@@ -1,0 +1,3 @@
+ german = f
+french = a
+test = 1

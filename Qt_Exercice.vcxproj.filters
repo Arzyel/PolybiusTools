@@ -93,6 +93,12 @@
     <ClCompile Include="FlowLayout.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="src\Model\CultRelContainer.cpp">
+      <Filter>Fichiers sources\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="CultureParser.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Qt\ImageViewa.h">
@@ -141,6 +147,12 @@
       <Filter>Fichiers d%27en-tête\Qt\Utils</Filter>
     </ClInclude>
     <ClInclude Include="FlowLayout.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\CultRelContainer.h">
+      <Filter>Fichiers d%27en-tête\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="CultureParser.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

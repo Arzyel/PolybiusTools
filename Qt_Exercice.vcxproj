@@ -163,8 +163,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CultureParser.cpp" />
     <ClCompile Include="FlowLayout.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Model\CultRelContainer.cpp" />
     <ClCompile Include="src\Model\GeoPolContainers.cpp" />
     <ClCompile Include="src\Model\Location.cpp" />
     <ClCompile Include="src\Qt\ImageViewa.cpp" />
@@ -182,8 +184,10 @@
     <ClCompile Include="src\Qt\TopMenuBar.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CultureParser.h" />
     <ClInclude Include="FlowLayout.h" />
     <ClInclude Include="include\CONSTANTS\filenfolder_CONST.h" />
+    <ClInclude Include="include\Model\CultRelContainer.h" />
     <ClInclude Include="include\Model\GeoPolContainers.h" />
     <ClInclude Include="include\Model\Location.h" />
     <ClInclude Include="include\Qt\ImageViewa.h" />

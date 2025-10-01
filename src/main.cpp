@@ -26,6 +26,9 @@
 #include "filenfolder_CONST.h"
 #include "GeoPolContainers.h"
 #include "InformationGUI.h"
+#include "CultRelContainer.h"
+#include "CultureParser.h"
+
 
 #define _CRTDBG_MAP_ALLOC
 #include <cstdlib>
@@ -33,9 +36,14 @@
 int main(int argc, char* argv[]) {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
+    CultureParser parser;
+    parser.parseFile(R"(E:\Workstation\Personal_Projects\Exercices\PolybiusTools\tests\test2.txt)");
+    //parser.parseFile(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\cultures\00_cultures.txt)");
+
     GeoPolContainers geoPolContainers;
     geoPolContainers.fillColorToID();
     geoPolContainers.initLocationData();
+
 
     QApplication app(argc, argv);
     app.setStyle(new InstantMenuStyle(QStyleFactory::create("")));
