@@ -1,0 +1,1 @@
+﻿#include "SoAReligionGroup.h"

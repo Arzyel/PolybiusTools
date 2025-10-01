@@ -54,7 +54,17 @@ private:
 #endif // $IncludeGuard
 "@
 
+
 # Write to file
 $Content | Set-Content $Destination -Encoding UTF8
 
 Write-Host "Created header: $Destination with guard $IncludeGuard"
+
+$Contentcpp = @"
+#include "$ClassName.h"
+"@
+
+
+$Destinationcpp = Join-Path (Get-Location) "$ClassName.cpp"  # same folder as script
+
+$Contentcpp | Set-Content $Destinationcpp -Encoding UTF8
