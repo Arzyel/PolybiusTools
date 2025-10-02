@@ -60,8 +60,9 @@ int main(int argc, char* argv[]) {
     //QWidget* tab1 = new QWidget;
     //QHBoxLayout* tab1Box = new QHBoxLayout(tab1);
     //rightMainArea->addTab(tab1, "Tab 1");
-    InformationGUI* rightMainArea = new InformationGUI(geoPolContainers);
+    InformationGUI* rightMainArea = new InformationGUI(geoPolContainers, cultRelContainer);
     rightMainArea->loadWidgets();
+    //rightMainArea->sendCultRelInfo(cultRelContainer.mCultures, cultRelContainer.mReligions);
 
     // Main layout
     QWidget* centralWidget = new QWidget;

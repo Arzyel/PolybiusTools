@@ -11,18 +11,23 @@
 #include "LocMainWidget.h"
 #include "GeoPolContainers.h"
 #include "QtUtils.h"
+#include "CultRelContainer.h"
+
 
 class InformationGUI : public QTabWidget {
 	Q_OBJECT
 public:
-	InformationGUI(const GeoPolContainers& refGeoPolCont, QWidget* parent = nullptr);
+	InformationGUI(const GeoPolContainers& refGeoPolCont, const CultRelContainer& refCultRel,QWidget* parent = nullptr);
 	void loadWidgets();
 	void loadProvInfo (const Location& location) const;
 signals:
 	void signalLoadInfo(const Location& location) const;
+	//void sendCultRelInfo(const std::unordered_map<std::string, sCulture>& cultureData,
+	//	const std::unordered_map<std::string, sReligion>& religionData);
 protected:
 private:
 	const GeoPolContainers& mRefGeoPolCont;
+	const CultRelContainer& mRefCultRelCont;
 };
 
 

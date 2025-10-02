@@ -3,8 +3,8 @@
 
 
 
-InformationGUI::InformationGUI(const GeoPolContainers& refGeoPolCont, QWidget* parent)
-	:QTabWidget(parent), mRefGeoPolCont(refGeoPolCont)
+InformationGUI::InformationGUI(const GeoPolContainers& refGeoPolCont, const CultRelContainer&  refCultRel, QWidget* parent)
+	:QTabWidget(parent), mRefGeoPolCont(refGeoPolCont), mRefCultRelCont(refCultRel)
 {
 
 }
@@ -20,6 +20,9 @@ void InformationGUI::loadWidgets()
 
 	QObject::connect(this, &InformationGUI::signalLoadInfo,
 		provinceTab->findChild<DevBox*>(), &DevBox::loadDevInfo);
+	
+	//QObject::connect(this, &InformationGUI::sendCultRelInfo,
+	//	provinceTab->findChild<CultRelBox*>(), &CultRelBox::initializeData);
 
 	// Geography Tab
 	QWidget* geoTab = new QWidget;
@@ -59,3 +62,7 @@ void InformationGUI::loadProvInfo(const Location& location) const
 {
 	signalLoadInfo(location);
 }
+
+//void InformationGUI::sendCultRelInfo(const std::unordered_map<std::string, sCulture>& cultureData, const std::unordered_map<std::string, sReligion>& religionData)
+//{
+//}
