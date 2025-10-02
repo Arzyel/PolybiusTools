@@ -1,7 +1,7 @@
 ﻿#pragma once
 #ifndef EU4_CULTURE_PARSER_H
 #define EU4_CULTURE_PARSER_H
-
+#include "Eu4MainParser.h"
 
 
 class Eu4CultureParser {

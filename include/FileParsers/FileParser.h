@@ -18,8 +18,8 @@ struct Node {
 class FileParser {
 public:
     FileParser();
-    ~FileParser() = default;
-    void parseFile(const std::string& filePath);
+    virtual ~FileParser() = default;
+    virtual void parseFile(const std::string& filePath);
 
     std::unordered_map<std::string, uint16_t> stringToIntID;
     std::vector<std::string> intToStringID;
@@ -30,27 +30,37 @@ protected:
 
     // PEGTL
     // Rules
+
     struct identifier : pegtl::plus<pegtl::sor<pegtl::alnum,pegtl::one<'_'>>> {};
     struct eq : pegtl::one<'='> {};
-    //struct ws : pegtl::star<pegtl::blank> {};
-    //struct endl : pegtl::seq<ws, pegtl::one<'\n'>> {};
-    /*struct mendl : pegtl::star<endl> {};*/
-    struct ws : pegtl::star<pegtl::space> {};
+    struct wsold : pegtl::star<pegtl::space> {};
     struct lbrace : pegtl::one<'{'> {};
     struct rbrace : pegtl::one<'}'> {};
 
     struct comment : pegtl::seq < pegtl::one<'#'>, pegtl::until<pegtl::eolf> > {};
+    struct ws_single : pegtl::sor<pegtl::space, comment> {};
+    struct ws : pegtl::star<ws_single> {};
+    struct skip : pegtl::star<pegtl::sor<pegtl::space, comment>> {};
 
 
-    struct key : pegtl::seq<ws, identifier, ws, eq, ws> {};
-    struct key_lbrace : pegtl::seq<ws, key, lbrace> {};
-    struct key_value : pegtl::seq<ws, key, identifier, ws> {};
+    struct key : pegtl::seq<wsold, identifier, wsold, eq, wsold> {};
+    struct key_lbrace : pegtl::seq<key, lbrace> {};
+    struct key_value : pegtl::seq<key, identifier> {};
+
+    struct com_key_lbrace_com : pegtl::seq<ws, key_lbrace, ws> {};
+    struct com_key_value_com : pegtl::seq<ws, key_value, ws> {};
 
     struct block;
-    struct block_body : pegtl::star<pegtl::sor<key_value, block>> {};
-    struct block : pegtl::seq<key_lbrace, block_body, rbrace> {};
+    struct block_body : pegtl::star<pegtl::sor<com_key_value_com, block>> {};
+    struct block : pegtl::seq<com_key_lbrace_com, block_body, ws, rbrace, ws> {};
+
 
     struct grammar : pegtl::must<pegtl::star<pegtl::seq<ws, block>>> {};
+
+
+
+
+
 
 
     //Actions
@@ -62,12 +72,10 @@ protected:
         static void apply(const Input& in, FileParser& parser) {
             std::string text = in.string();
 
-            // Find '='
             auto pos = text.find('=');
             if (pos != std::string::npos) {
                 std::string key = text.substr(0, pos);
 
-                // Trim spaces
                 key.erase(0, key.find_first_not_of(" \t\n\r"));
                 key.erase(key.find_last_not_of(" \t\n\r") + 1);
 
@@ -86,13 +94,11 @@ protected:
         static void apply(const Input& in, FileParser& parser) {
             std::string text = in.string();
 
-            // Find '='
             auto pos = text.find('=');
             if (pos != std::string::npos) {
                 std::string key = text.substr(0, pos);
                 std::string val = text.substr(pos + 1);
 
-                // Trim spaces
                 key.erase(0, key.find_first_not_of(" \t\n\r"));
                 key.erase(key.find_last_not_of(" \t\n\r") + 1);
 
@@ -104,7 +110,6 @@ protected:
                 int intID = ++parser.counterID;
                 parser.stringToIntID[key] = intID;
                 Node& child = parser.nodeStack.back()->children[intID];
-                // add the value
                 parser.nodeStack.back()->children[intID].value = val;
 
 
