@@ -195,6 +195,7 @@
     <ClInclude Include="include\CONSTANTS\KEYS.h" />
     <ClInclude Include="include\FileParsers\Eu4\Eu4CultureParser.h" />
     <ClInclude Include="include\FileParsers\Eu4\Eu4MainParser.h" />
+    <ClInclude Include="include\FileParsers\Eu4\Eu4Parser.h" />
     <ClInclude Include="include\FileParsers\Eu4\Eu4ReligionParser.h" />
     <ClInclude Include="include\FileParsers\FileParser.h" />
     <ClInclude Include="include\Model\CountryContainer.h" />

@@ -194,6 +194,9 @@
     <ClInclude Include="include\CONSTANTS\KEYS.h">
       <Filter>Fichiers d%27en-tête\CONSTANTS</Filter>
     </ClInclude>
+    <ClInclude Include="include\FileParsers\Eu4\Eu4Parser.h">
+      <Filter>Fichiers d%27en-tête\FileParsers\Eu4</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

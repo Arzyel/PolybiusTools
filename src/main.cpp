@@ -18,6 +18,8 @@
 #include <QtWidgets\qgraphicswidget.h>
 #include <QtWidgets\qstylefactory.h>
 
+#include <chrono>
+
 #include <iostream>
 #include <string>
 #include <InstantMenuStyle.h>
@@ -31,12 +33,42 @@
 #include "Eu4MainParser.h"
 #include "CountryContainer.h"
 #include "KEYS.h"
+#include "Eu4Parser.h"
 
 #define _CRTDBG_MAP_ALLOC
 #include <cstdlib>
 #include <crtdbg.h>
 int main(int argc, char* argv[]) {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+
+    for (int i = 0; i < 10; ++i) {
+        auto start = std::chrono::high_resolution_clock::now();
+        //parse(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\history\provinces\118 - Roma.txt)");
+        auto end = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+        //std::cout << "Time original parse : " << elapsed << " micro-seconds\n";
+
+        /*start = std::chrono::high_resolution_clock::now();
+        parseWithView(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\history\provinces\118 - Roma.txt)");
+        end = std::chrono::high_resolution_clock::now();
+        elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+        std::cout << "Time original parse with view : " << elapsed << " micro-seconds\n";
+    
+        start = std::chrono::high_resolution_clock::now();
+        parseWithView2(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\history\provinces\118 - Roma.txt)");
+        end = std::chrono::high_resolution_clock::now();
+        elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+        std::cout << "Time original parse with view2 : " << elapsed << " micro-seconds\n";*/
+
+        start = std::chrono::high_resolution_clock::now();
+        parseWithView3(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\history\provinces\118 - Roma.txt)");
+        end = std::chrono::high_resolution_clock::now();
+        elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+        std::cout << "Time original parse with view3 : " << elapsed << " micro-seconds\n" << std::endl;
+
+
+    }
 
     CultRelContainer cultRelContainer;
     cultRelContainer.loadCultureData(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\cultures\00_cultures.txt)");
