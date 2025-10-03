@@ -37,12 +37,22 @@ struct sCultureGroup {
 };
 
 struct sReligion {
-    uint32_t packedRGB;
     std::string religionGroupID;
+    uint32_t packedRGB;
+    uint8_t icon;
 };
 
 struct sReligionGroup {
     uint32_t packedRGB;
+    std::string defender_of_faith;
+    std::string can_form_personal_unions;
+    std::string ai_will_propagate_through_trade;
+    uint16_t center_of_religion;
+    uint8_t flags_with_emblem_percentage;
+    std::vector<uint8_t> flag_emblem_index_range;
+    std::string harmonized_modifier;
+    std::string crusade_name;
+
 };
 
 class CultRelContainer {
@@ -59,6 +69,7 @@ public:
     std::unordered_map<std::string, sReligion> mReligions;
     std::unordered_map<std::string, sReligionGroup> mReligionGroups;
 private:
+    void loadReligionDataHelper(const std::string& religionName, const Node& node, const Eu4MainParser& parser);
     
     // Helper functions
     static uint32_t parseRGBToPacked(const std::string& rgbStr);

@@ -38,14 +38,17 @@ protected:
     struct identifier : pegtl::plus<pegtl::sor<
         pegtl::alnum,
         pegtl::one<'_'>,
+        pegtl::one<'-'>,
+        pegtl::one<'.'>,
         pegtl::range<0x80, 0xFF>  // Accept ANSI extended characters
         >> {};
     struct comment : pegtl::seq<pegtl::one<'#'>, pegtl::until<pegtl::eolf>> {};
     struct ws : pegtl::star<pegtl::sor<pegtl::space, comment>> {};
 
+    struct maybe_present : pegtl::opt<pegtl::one<'"'>> {};
     struct key : pegtl::seq<ws, identifier, ws, eq, ws> {};
     struct key_lbrace : pegtl::seq<key, lbrace> {};
-    struct key_value : pegtl::seq<key, identifier> {};
+    struct key_value : pegtl::seq<key, maybe_present,identifier, maybe_present> {};
 
     struct com_key_lbrace_com : pegtl::seq<ws, key_lbrace, ws> {};
     struct com_key_value_com : pegtl::seq<ws, key_value, ws> {};

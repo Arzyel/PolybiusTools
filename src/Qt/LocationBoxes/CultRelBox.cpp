@@ -48,8 +48,12 @@ void CultRelBox::loadWidget() {
 void CultRelBox::initializeData(const std::unordered_map<std::string, sCulture>& cultureData, const std::unordered_map<std::string, sReligion>& religionData)
 {
 	cultCBox->clear();
+	relCBox->clear();
 	for (const auto& [key, data] : cultureData) {
 		cultCBox->addItem(QString::fromStdString(key));
+	}
+	for (const auto& [key, data] : religionData) {
+		relCBox->addItem(QString::fromStdString(key));
 	}
 }
 
@@ -57,5 +61,10 @@ void CultRelBox::loadProvInfo(const Location& location) {
 	int index = cultCBox->findText(location.eu4CultureID.c_str());
 	if (index != 1) {
 		cultCBox->setCurrentIndex(index);
+	}
+
+	int indexRel = relCBox->findText(location.eu4ReligionID.c_str());
+	if (indexRel != 1) {
+		relCBox->setCurrentIndex(indexRel);
 	}
 }
