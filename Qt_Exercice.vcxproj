@@ -170,6 +170,7 @@
     <ClCompile Include="src\FileParsers\Eu4\Eu4ReligionParser.cpp" />
     <ClCompile Include="src\FileParsers\FileParser.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Model\CountryContainer.cpp" />
     <ClCompile Include="src\Model\CultRelContainer.cpp" />
     <ClCompile Include="src\Model\GeoPolContainers.cpp" />
     <ClCompile Include="src\Model\Location.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="include\FileParsers\Eu4\Eu4MainParser.h" />
     <ClInclude Include="include\FileParsers\Eu4\Eu4ReligionParser.h" />
     <ClInclude Include="include\FileParsers\FileParser.h" />
+    <ClInclude Include="include\Model\CountryContainer.h" />
     <ClInclude Include="include\Model\CultRelContainer.h" />
     <ClInclude Include="include\Model\GeoPolContainers.h" />
     <ClInclude Include="include\Model\Location.h" />
@@ -206,7 +208,7 @@
     <QtMoc Include="include\Qt\LocationBoxes\CultRelBox.h" />
     <QtMoc Include="include\Qt\LocationBoxes\DevBox.h" />
     <QtMoc Include="include\Qt\LocationBoxes\LocInfoBoxes.h" />
-    <ClInclude Include="include\Qt\LocationBoxes\OwnershipBox.h" />
+    <QtMoc Include="include\Qt\LocationBoxes\OwnershipBox.h" />
     <QtMoc Include="include\Qt\LocationBoxes\LocMainWidget.h" />
     <ClInclude Include="include\Qt\LocationBoxes\ProvOthersBox.h" />
     <ClInclude Include="include\Qt\LocationBoxes\TechInfoBox.h" />

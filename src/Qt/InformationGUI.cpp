@@ -3,8 +3,8 @@
 
 
 
-InformationGUI::InformationGUI(const GeoPolContainers& refGeoPolCont, const CultRelContainer&  refCultRel, QWidget* parent)
-	:QTabWidget(parent), mRefGeoPolCont(refGeoPolCont), mRefCultRelCont(refCultRel)
+InformationGUI::InformationGUI(const GeoPolContainers& refGeoPolCont, const CultRelContainer&  refCultRel, const CountryContainer& countryContainer, QWidget* parent)
+	:QTabWidget(parent), mRefGeoPolCont(refGeoPolCont), mRefCultRelCont(refCultRel), mRefCountryContainer(countryContainer)
 {
 
 }
@@ -26,6 +26,11 @@ void InformationGUI::loadWidgets()
 	
 	QObject::connect(this, &InformationGUI::signalLoadInfo,
 		provinceTab->findChild<CultRelBox*>(), &CultRelBox::loadProvInfo);
+
+	QObject::connect(this, &InformationGUI::signalInitOwnership,
+		provinceTab->findChild<OwnershipBox*>(), &OwnershipBox::initializeData);
+
+
 
 	// Geography Tab
 	QWidget* geoTab = new QWidget;
@@ -69,6 +74,7 @@ void InformationGUI::loadProvInfo(const Location& location) const
 void InformationGUI::initialiseWidgetsInfo()
 {
 	signalInitCultRelInfo(mRefCultRelCont.mCultures,mRefCultRelCont.mReligions);
+	signalInitOwnership(mRefCountryContainer.tagToName);
 }
 
 

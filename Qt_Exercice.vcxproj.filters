@@ -123,6 +123,9 @@
     <ClCompile Include="src\Qt\LocationBoxes\LocMainWidget.cpp">
       <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
     </ClCompile>
+    <ClCompile Include="src\Model\CountryContainer.cpp">
+      <Filter>Fichiers sources\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Qt\ImageViewa.h">
@@ -150,9 +153,6 @@
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </ClInclude>
     <ClInclude Include="include\Qt\LocationBoxes\CoresBox.h">
-      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Qt\LocationBoxes\OwnershipBox.h">
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </ClInclude>
     <ClInclude Include="include\Qt\LocationBoxes\ProvOthersBox.h">
@@ -188,6 +188,9 @@
     <ClInclude Include="include\FileParsers\Eu4\Eu4ReligionParser.h">
       <Filter>Fichiers d%27en-tête\FileParsers\Eu4</Filter>
     </ClInclude>
+    <ClInclude Include="include\Model\CountryContainer.h">
+      <Filter>Fichiers d%27en-tête\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -206,6 +209,9 @@
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </QtMoc>
     <QtMoc Include="include\Qt\LocationBoxes\LocMainWidget.h">
+      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\LocationBoxes\OwnershipBox.h">
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </QtMoc>
   </ItemGroup>

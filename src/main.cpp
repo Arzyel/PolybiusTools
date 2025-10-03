@@ -29,7 +29,7 @@
 #include "CultRelContainer.h"
 //#include "CultureParser.h"
 #include "Eu4MainParser.h"
-
+#include "CountryContainer.h"
 
 #define _CRTDBG_MAP_ALLOC
 #include <cstdlib>
@@ -41,6 +41,9 @@ int main(int argc, char* argv[]) {
     CultRelContainer cultRelContainer;
     cultRelContainer.loadCultureData(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\cultures\00_cultures.txt)");
     cultRelContainer.loadReligionData(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\religions\00_religion.txt)");
+
+    CountryContainer countryContainer;
+    countryContainer.initializeData();
 
     GeoPolContainers geoPolContainers;
     geoPolContainers.fillColorToID();
@@ -57,7 +60,7 @@ int main(int argc, char* argv[]) {
 
     
 
-    InformationGUI* rightMainArea = new InformationGUI(geoPolContainers, cultRelContainer);
+    InformationGUI* rightMainArea = new InformationGUI(geoPolContainers, cultRelContainer, countryContainer);
     rightMainArea->loadWidgets();
     rightMainArea->initialiseWidgetsInfo();
 

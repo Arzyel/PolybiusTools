@@ -44,3 +44,15 @@ void OwnershipBox::loadWidget() {
 	mainLayout->addWidget(leftPart, 19);
 	mainLayout->addWidget(rightPart, 1);
 }
+
+void OwnershipBox::initializeData(const std::unordered_map<std::string, std::string>& data) {
+	ownerBox->clear();
+	controllerBox->clear();
+	for (const auto& [key, data] : data) {
+
+		std::string tag_name = key + " ; " + data;
+		ownerBox->addItem(QString::fromStdString(tag_name));
+		controllerBox->addItem(QString::fromStdString(tag_name));
+	}
+
+}
