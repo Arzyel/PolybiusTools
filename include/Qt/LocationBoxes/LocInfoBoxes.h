@@ -5,7 +5,7 @@
 #include <QtCore\qstring.h>
 #include <QtWidgets\qboxlayout.h>
 #include <QtGui\qevent.h>
-#
+
 
 #include "BuildingsBox.h"
 #include "CoresBox.h"
@@ -14,6 +14,7 @@
 #include "OwnershipBox.h"
 #include "TradeBox.h"
 #include "FlowLayout.h"
+#include "OwnershipBox.h"
 
 class LocInfoBoxes : public QGroupBox {
     Q_OBJECT

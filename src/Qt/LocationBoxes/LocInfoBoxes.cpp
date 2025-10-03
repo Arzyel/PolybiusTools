@@ -21,10 +21,14 @@ LocInfoBoxes::LocInfoBoxes(const QString& title, QWidget* parent)
 	cultRelBox->setMinimumWidth(minBoxWidth);
 	cultRelBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
+	OwnershipBox* ownershipBox = new OwnershipBox("OwnerShip");
+	ownershipBox->setMinimumWidth(minBoxWidth);
+	ownershipBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 
 	flowLayout->addWidget(devBox);
 	flowLayout->addWidget(cultRelBox);
+	flowLayout->addWidget(ownershipBox);
 
 }
 
