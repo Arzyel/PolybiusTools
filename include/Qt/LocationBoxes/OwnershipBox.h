@@ -19,6 +19,7 @@ public:
     void loadWidget();
 public slots:
     void initializeData(const std::unordered_map<std::string, std::string>& data);
+    void loadProvInfo(const Location& location);
 protected:
 
 private:

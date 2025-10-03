@@ -29,6 +29,8 @@ void InformationGUI::loadWidgets()
 
 	QObject::connect(this, &InformationGUI::signalInitOwnership,
 		provinceTab->findChild<OwnershipBox*>(), &OwnershipBox::initializeData);
+	QObject::connect(this, &InformationGUI::signalLoadInfo,
+		provinceTab->findChild<OwnershipBox*>(), &OwnershipBox::loadProvInfo);
 
 
 
