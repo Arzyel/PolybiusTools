@@ -21,8 +21,11 @@ void InformationGUI::loadWidgets()
 	QObject::connect(this, &InformationGUI::signalLoadInfo,
 		provinceTab->findChild<DevBox*>(), &DevBox::loadDevInfo);
 	
-	//QObject::connect(this, &InformationGUI::sendCultRelInfo,
-	//	provinceTab->findChild<CultRelBox*>(), &CultRelBox::initializeData);
+	QObject::connect(this, &InformationGUI::signalInitCultRelInfo,
+		provinceTab->findChild<CultRelBox*>(), &CultRelBox::initializeData);
+	
+	QObject::connect(this, &InformationGUI::signalLoadInfo,
+		provinceTab->findChild<CultRelBox*>(), &CultRelBox::loadProvInfo);
 
 	// Geography Tab
 	QWidget* geoTab = new QWidget;
@@ -63,6 +66,9 @@ void InformationGUI::loadProvInfo(const Location& location) const
 	signalLoadInfo(location);
 }
 
-//void InformationGUI::sendCultRelInfo(const std::unordered_map<std::string, sCulture>& cultureData, const std::unordered_map<std::string, sReligion>& religionData)
-//{
-//}
+void InformationGUI::initialiseWidgetsInfo()
+{
+	signalInitCultRelInfo(mRefCultRelCont.mCultures,mRefCultRelCont.mReligions);
+}
+
+

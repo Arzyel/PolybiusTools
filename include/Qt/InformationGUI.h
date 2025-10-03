@@ -20,10 +20,11 @@ public:
 	InformationGUI(const GeoPolContainers& refGeoPolCont, const CultRelContainer& refCultRel,QWidget* parent = nullptr);
 	void loadWidgets();
 	void loadProvInfo (const Location& location) const;
+	void initialiseWidgetsInfo();
 signals:
 	void signalLoadInfo(const Location& location) const;
-	//void sendCultRelInfo(const std::unordered_map<std::string, sCulture>& cultureData,
-	//	const std::unordered_map<std::string, sReligion>& religionData);
+	void signalInitCultRelInfo(const std::unordered_map<std::string, sCulture>& cultureData,
+		const std::unordered_map<std::string, sReligion>& religionData) const;
 protected:
 private:
 	const GeoPolContainers& mRefGeoPolCont;

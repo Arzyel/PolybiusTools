@@ -5,7 +5,9 @@
 #include <QtWidgets\qboxlayout.h>
 #include <QtWidgets\qcombobox.h>
 #include <QtWidgets\qlabel.h>
-//#include "CultRelContainer.h"
+#include "CultRelContainer.h"
+#include "Location.h"
+
 
 class CultRelBox : public QGroupBox{
     Q_OBJECT
@@ -14,9 +16,10 @@ public:
     ~CultRelBox() = default;
     CultRelBox(const QString& title, QWidget* parent = nullptr);
     void loadWidget();
-//public slots:
-//    void initializeData(const std::unordered_map<std::string, sCulture>& cultureData,
-//        const std::unordered_map<std::string, sReligion>& religionData);
+public slots:
+    void initializeData(const std::unordered_map<std::string, sCulture>& cultureData,
+        const std::unordered_map<std::string, sReligion>& religionData);
+    void loadProvInfo(const Location& location);
 protected:
 
 private:

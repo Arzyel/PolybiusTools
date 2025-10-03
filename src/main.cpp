@@ -40,6 +40,7 @@ int main(int argc, char* argv[]) {
 
     CultRelContainer cultRelContainer;
     cultRelContainer.loadCultureData(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\cultures\00_cultures.txt)");
+    cultRelContainer.loadReligionData(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\religions\00_religion.txt)");
 
     GeoPolContainers geoPolContainers;
     geoPolContainers.fillColorToID();
@@ -56,13 +57,9 @@ int main(int argc, char* argv[]) {
 
     
 
-    //QTabWidget* rightMainArea = new QTabWidget;
-    //QWidget* tab1 = new QWidget;
-    //QHBoxLayout* tab1Box = new QHBoxLayout(tab1);
-    //rightMainArea->addTab(tab1, "Tab 1");
     InformationGUI* rightMainArea = new InformationGUI(geoPolContainers, cultRelContainer);
     rightMainArea->loadWidgets();
-    //rightMainArea->sendCultRelInfo(cultRelContainer.mCultures, cultRelContainer.mReligions);
+    rightMainArea->initialiseWidgetsInfo();
 
     // Main layout
     QWidget* centralWidget = new QWidget;
