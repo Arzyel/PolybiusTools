@@ -192,6 +192,7 @@
     <ClInclude Include="CultureParser.h" />
     <ClInclude Include="FlowLayout.h" />
     <ClInclude Include="include\CONSTANTS\filenfolder_CONST.h" />
+    <ClInclude Include="include\CONSTANTS\KEYS.h" />
     <ClInclude Include="include\FileParsers\Eu4\Eu4CultureParser.h" />
     <ClInclude Include="include\FileParsers\Eu4\Eu4MainParser.h" />
     <ClInclude Include="include\FileParsers\Eu4\Eu4ReligionParser.h" />
