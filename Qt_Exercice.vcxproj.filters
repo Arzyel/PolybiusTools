@@ -105,9 +105,6 @@
     <ClCompile Include="src\Model\CultRelContainer.cpp">
       <Filter>Fichiers sources\Model</Filter>
     </ClCompile>
-    <ClCompile Include="CultureParser.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="src\FileParsers\FileParser.cpp">
       <Filter>Fichiers sources\FileParsers</Filter>
     </ClCompile>
@@ -173,9 +170,6 @@
     <ClInclude Include="include\Model\CultRelContainer.h">
       <Filter>Fichiers d%27en-tête\Model</Filter>
     </ClInclude>
-    <ClInclude Include="CultureParser.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="include\FileParsers\FileParser.h">
       <Filter>Fichiers d%27en-tête\FileParsers</Filter>
     </ClInclude>
@@ -196,6 +190,12 @@
     </ClInclude>
     <ClInclude Include="include\FileParsers\Eu4\Eu4Parser.h">
       <Filter>Fichiers d%27en-tête\FileParsers\Eu4</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utils\MemoryMappingFile.h">
+      <Filter>Fichiers d%27en-tête\Qt\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utils\FileOpener.h">
+      <Filter>Fichiers d%27en-tête\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

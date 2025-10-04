@@ -34,12 +34,22 @@
 #include "CountryContainer.h"
 #include "KEYS.h"
 #include "Eu4Parser.h"
+#include "FileOpener.h"
 
 #define _CRTDBG_MAP_ALLOC
 #include <cstdlib>
 #include <crtdbg.h>
 int main(int argc, char* argv[]) {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    std::string culture = R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\cultures\00_cultures.txt)";
+    std::string religion = R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\religions\00_religion.txt)";
+
+    FileOpener::openTextFile(culture);
+    FileOpener::openTextFile(religion);
+
+
+
+
 
     CultRelContainer cultRelContainer;
     cultRelContainer.loadCultureData(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\cultures\00_cultures.txt)");

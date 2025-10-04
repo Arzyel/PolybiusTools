@@ -51,29 +51,73 @@ public:
         return data;
     }
 
-    static std::unordered_map<uint16_t, std::filesystem::path> getNumberedTxtFiles(const std::string& directory = ".") {
-        std::unordered_map<uint16_t, std::filesystem::path> filesMap;
+    static void getNumberedTxtFiles(std::vector<std::tuple<uint16_t, std::string, std::filesystem::path>>& files,
+        const std::string& directory = ".")
+    {
+        files.clear();
+        files.reserve(60000);
+
+        char temp_buf[256];
 
         for (const auto& entry : std::filesystem::directory_iterator(directory)) {
             if (!entry.is_regular_file()) continue;
 
-            const auto filename = entry.path().filename().string();
+            std::string filename_str = entry.path().filename().string();
+            const char* filename = filename_str.c_str();
+            size_t len = filename_str.size();
 
-            // Fast parse: read leading digits
-            size_t i = 0;
-            while (i < filename.size() && std::isdigit(static_cast<unsigned char>(filename[i]))) {
-                ++i;
+            if (len < 4 || memcmp(filename + len - 4, ".txt", 4) != 0) {
+                continue;
             }
-            if (i == 0) continue; // no leading number
 
-            uint16_t number = static_cast<uint16_t>(std::stoi(filename.substr(0, i)));
-            if (filename.ends_with(".txt")) {
-                filesMap[number] = entry.path();
+            // Parse digits
+            const char* p = filename;
+            const char* name_end = filename + len - 4;
+            while (p < name_end && *p >= '0' && *p <= '9') p++;
+
+            if (p == filename) continue;
+
+            // Manual number conversion
+            uint16_t number = 0;
+            for (const char* d = filename; d < p; d++) {
+                number = number * 10 + (*d - '0');
             }
+
+            // Filter name
+            char* dest = temp_buf;
+            for (const char* src = p; src < name_end; ++src) {
+                if (*src != '-' && *src != ' ') {
+                    *dest++ = *src;
+                }
+            }
+            *dest = '\0';
+
+            files.emplace_back(number, std::string(temp_buf, dest - temp_buf), entry.path());
         }
-
-        return filesMap;
     }
+    //static std::unordered_map<uint16_t, std::filesystem::path> getNumberedTxtFiles(const std::string& directory = ".") {
+    //    std::unordered_map<uint16_t, std::filesystem::path> filesMap;
+
+    //    for (const auto& entry : std::filesystem::directory_iterator(directory)) {
+    //        if (!entry.is_regular_file()) continue;
+
+    //        const auto filename = entry.path().filename().string();
+
+    //        // Fast parse: read leading digits
+    //        size_t i = 0;
+    //        while (i < filename.size() && std::isdigit(static_cast<unsigned char>(filename[i]))) {
+    //            ++i;
+    //        }
+    //        if (i == 0) continue; // no leading number
+
+    //        uint16_t number = static_cast<uint16_t>(std::stoi(filename.substr(0, i)));
+    //        if (filename.ends_with(".txt")) {
+    //            filesMap[number] = entry.path();
+    //        }
+    //    }
+
+    //    return filesMap;
+    //}
 
 
     static std::string getValueOrDefault(

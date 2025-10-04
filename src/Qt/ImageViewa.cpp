@@ -196,7 +196,7 @@ void ImageView::mousePressEvent(QMouseEvent* event) {
         auto& loc = mRefGeoPolCont.getLocationData(UID);
         qDebug() << "Clicked at pixel:" << x << y << "RGB:" << p[0] << p[1] << p[2] 
             << "\nProvince ID : " << UID
-            <<"Province Culture : " << loc.eu4CultureID;
+            <<"Province Name : " << loc.eu4ProvinceName;
 
         mRefInfoGUI.loadProvInfo(loc);
 
@@ -212,6 +212,26 @@ void ImageView::mousePressEvent(QMouseEvent* event) {
     }
 
     QGraphicsView::mousePressEvent(event);
+}
+
+void ImageView::mouseDoubleClickEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
+        QPointF scenePos = mapToScene(event->pos());
+        QPointF pixmapPos = pixmapItem->mapFromScene(scenePos);
+
+        int x = qBound(0, int(std::floor(pixmapPos.x())), pixmapItem->pixmap().width() - 1);
+        int y = qBound(0, int(std::floor(pixmapPos.y())), pixmapItem->pixmap().height() - 1);
+
+        QImage img = pixmapItem->pixmap().toImage().convertToFormat(QImage::Format_RGB888);
+        const uchar* p = img.constBits() + y * img.bytesPerLine() + x * 3;
+        QRgb clickedRgb = qRgb(p[0], p[1], p[2]);
+
+        auto UID = mRefGeoPolCont.getIDFromColor((p[0] << 16) | (p[1] << 8) | p[2]);
+        auto& loc = mRefGeoPolCont.getLocationData(UID);
+        FileOpener::openTextFile(loc.filePath);
+    }
+
+    QGraphicsView::mouseDoubleClickEvent(event);
 }
 
 void ImageView::mouseReleaseEvent(QMouseEvent* event) {

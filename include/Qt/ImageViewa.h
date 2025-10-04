@@ -15,6 +15,7 @@
 #include <omp.h>
 #include "GeoPolContainers.h"
 #include "InformationGUI.h"
+#include "FileOpener.h"
 
 struct PixelPos { uint16_t x, y; };
 
@@ -30,6 +31,7 @@ protected:
     void wheelEvent(QWheelEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     void drawForeground(QPainter* painter, const QRectF& rect) override;
     void precomputeOverlays(const QVector<QRgb>& ruleRGBs, const QColor& overlayColor);

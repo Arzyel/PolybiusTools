@@ -48,30 +48,29 @@ void GeoPolContainers::initLocationData()
 	auto start = std::chrono::high_resolution_clock::now();
 	std::cout << "Initiate Location Data from file\t----\t";
 	mLocations.clear();
-	mLocations.resize(locColorToID.size() + 500); // need to check the files since they arent synced to the number of color and consecutive number uid
-	std::unordered_map<uint16_t, std::filesystem::path> allFilePath = SimpleParser::getNumberedTxtFiles(PROV_HISTORY_FOLDER);
+	mLocations.resize(locColorToID.size() + 500);
 
-// Convert unordered_map to vector for parallel iteration
-std::vector<std::pair<uint16_t, std::filesystem::path>> fileVector;
-fileVector.reserve(allFilePath.size());
-for (const auto& kv : allFilePath)
-    fileVector.push_back(kv);
+	// No copy - reuse vector
+	std::vector<std::tuple<uint16_t, std::string, std::filesystem::path>> fileData;
+	SimpleParser::getNumberedTxtFiles(fileData, PROV_HISTORY_FOLDER);
 
-std::for_each(std::execution::par, fileVector.begin(), fileVector.end(),
-    [&](const auto& pair) {
-        const auto& provUID = pair.first;
-        const auto& filePath = pair.second;
-        mLocations.at(provUID).initFromFile(
-            std::to_string(provUID),
-            locIDToColor.at(provUID),
-            filePath.string()
-        );
-    }
-);
+	std::for_each(std::execution::par, fileData.begin(), fileData.end(),
+		[&](const auto& tuple) {
+			const auto& [provUID, name, path] = tuple;
+			mLocations.at(provUID).initFromFile(
+				std::to_string(provUID),
+				locIDToColor.at(provUID),
+				path.string(),
+				name
+			);
+		}
+	);
+
 	auto end = std::chrono::high_resolution_clock::now();
 	auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 	std::cout << "Elapsed Time : " << elapsed.count() << " ms" << std::endl;
 }
+
 
 
 

@@ -12,6 +12,7 @@
 #include "Location.h"
 #include "filenfolder_CONST.h"
 
+
 class GeoLocation {};
 class Province {};//: public GeoLocation;
 class Area {};

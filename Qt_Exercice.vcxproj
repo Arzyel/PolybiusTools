@@ -163,7 +163,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CultureParser.cpp" />
     <ClCompile Include="FlowLayout.cpp" />
     <ClCompile Include="src\FileParsers\Eu4\Eu4CultureParser.cpp" />
     <ClCompile Include="src\FileParsers\Eu4\Eu4MainParser.cpp" />
@@ -189,7 +188,6 @@
     <ClCompile Include="src\Qt\TopMenuBar.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CultureParser.h" />
     <ClInclude Include="FlowLayout.h" />
     <ClInclude Include="include\CONSTANTS\filenfolder_CONST.h" />
     <ClInclude Include="include\CONSTANTS\KEYS.h" />
@@ -217,6 +215,8 @@
     <ClInclude Include="include\Qt\LocationBoxes\TradeBox.h" />
     <ClInclude Include="include\Qt\TopMenuBar.h" />
     <ClInclude Include="include\Qt\Util\QtUtils.h" />
+    <ClInclude Include="include\Utils\FileOpener.h" />
+    <ClInclude Include="include\Utils\MemoryMappingFile.h" />
     <ClInclude Include="include\Utils\SimpleParser.h" />
   </ItemGroup>
   <ItemGroup>

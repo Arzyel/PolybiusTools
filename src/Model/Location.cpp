@@ -1,6 +1,7 @@
 #include "Location.h"
 
-void Location::initFromFile(const std::string& eu4UID, const uint32_t& rgbValue, const std::string& filePath)
+void Location::initFromFile(const std::string& eu4UID, const uint32_t& rgbValue,
+    const std::string& filePath, const std::string& name)
 {
 	//std::unordered_map<std::string, std::string> data = SimpleParser::parseKeyValueFile(filePath);
 	//mCapital = SimpleParser::getValueOrDefault(data, "capital");
@@ -20,6 +21,8 @@ void Location::initFromFile(const std::string& eu4UID, const uint32_t& rgbValue,
     auto test = std::stoi(eu4UID);
 	mEu4UID = eu4UID;
 	RGBValue = rgbValue;
+    eu4ProvinceName = name;
+    this->filePath = filePath;
     parseEu4File(filePath,
         [this](const std::vector<std::string>& keyStack, const std::string& value) {
             handleKeyData(keyStack, value);

@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 #include <string_view>
-
+#include "MemoryMappingFile.h"
 
 inline static const char* handleBracketLists(const char* ptr,const char* end,
 	std::string& valueBuffer, std::vector<std::string>& keyStack) {
@@ -53,24 +53,15 @@ inline static const char* handleBracketLists(const char* ptr,const char* end,
 
 template<typename Callable>
 static int parseEu4File(const std::string& filePath, Callable callable) {
-	std::ifstream file(filePath, std::ios::binary | std::ios::ate);
-	if (!file.is_open()) {
+	mmap::Handle handle;
+	if (!mmap::open(filePath, handle)) {
 		std::cerr << "Could not open file at : " << filePath << "\n";
 		return 1;
 	}
 
-	std::streamsize size = file.tellg();
-	file.seekg(0, std::ios::beg);
-	std::vector<char> buffer(size);
-	if (!file.read(buffer.data(), size)) {
-		std::cerr << "Failed to read file\n";
-		return 1;
-	}
+	const char* ptr = handle.data;
+	const char* end = ptr + handle.size;
 
-	const char* ptr = buffer.data();
-	const char* end = ptr + buffer.size();
-
-	uint8_t depth = 0;
 	std::vector<std::string> keyStack;
 	std::string keyBuffer;
 	std::string valueBuffer;
@@ -82,10 +73,7 @@ static int parseEu4File(const std::string& filePath, Callable callable) {
 		char c = *ptr;
 		switch (c) {
 		case '#': {
-			while (ptr < end) {
-				if (*ptr == '\n') {
-					break;
-				}
+			while (ptr < end && *ptr != '\n') {
 				++ptr;
 			}
 			break;
@@ -144,7 +132,8 @@ static int parseEu4File(const std::string& filePath, Callable callable) {
 	}
 
 
-	file.close();
+	//file.close();
+	mmap::close(handle);
 
 	return 0;
 }

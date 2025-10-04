@@ -20,7 +20,8 @@ struct Development {
 
 class Location {
 public:
-	void initFromFile(const std::string& eu4UID, const uint32_t& rgbValue,const std::string& filePath);
+	void initFromFile(const std::string& eu4UID, const uint32_t& rgbValue,
+		const std::string& filePath, const std::string& name);
 	uint32_t packRGB(const std::array<uint8_t, 3>& rgbs);
 	void handleKeyData(const std::vector<std::string>& keyStack, const std::string& value);
 	std::array<uint8_t, 3> depackRGB(uint32_t prgb) const;
@@ -35,6 +36,8 @@ public:
 
 
 	//TODO REFACTOR to seperate string values from internal nb based values
+	std::string filePath;
+	std::string eu4ProvinceName;
 	std::string mEu4UID = "";
 	std::string eu4OwnerID= "";
 	std::vector<std::string> eu4CoresID;
