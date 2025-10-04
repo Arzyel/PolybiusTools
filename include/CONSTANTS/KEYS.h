@@ -37,9 +37,12 @@ constexpr const char* BASE_MANPOWER_CHAR = "base_manpower";
 constexpr const char* TRADE_GOODS_CHAR = "trade_goods";
 constexpr const char* DISCOVERED_BY_CHAR = "discovered_by";
 constexpr const char* CENTER_OF_TRADE_CHAR = "center_of_trade";
+constexpr const char* FORT_15TH_CHAR = "forth_15th";
 constexpr const char* ADD_PERMANENT_PROVINCE_MODIFIER_CHAR = "add_permanent_province_modifier";
 constexpr const char* NAME_CHAR = "name";
-constexpr const char* DURATION_CHAR= "duration";
+constexpr const char* DURATION_CHAR = "duration";
+constexpr const char* ADD_PROVINCE_TRIGGERED_MODIFIER_CHAR = "add_province_triggered_modifier";
+constexpr const char* EXTRA_COST_CHAR = "extra_cost";
 
 //inside chat there is a convo with effects mapped to the nation effects , stopped at province effect in the modpage
 constexpr uint32_t OWNER_HASH = hash_const(OWNER_CHAR);
@@ -59,6 +62,9 @@ constexpr uint32_t CENTER_OF_TRADE_HASH = hash_const(CENTER_OF_TRADE_CHAR);
 constexpr uint32_t ADD_PERMANENT_PROVINCE_MODIFIER_HASH = hash_const(ADD_PERMANENT_PROVINCE_MODIFIER_CHAR);
 constexpr uint32_t NAME_HASH = hash_const(NAME_CHAR);
 constexpr uint32_t DURATION_HASH = hash_const(DURATION_CHAR);
+constexpr uint32_t FORT_15TH_HASH = hash_const(FORT_15TH_CHAR);
+constexpr uint32_t ADD_PROVINCE_TRIGGERED_MODIFIER_HASH = hash_const(ADD_PROVINCE_TRIGGERED_MODIFIER_CHAR);
+constexpr uint32_t EXTRA_COST_HASH = hash_const(EXTRA_COST_CHAR);
 
 
 std::unordered_map<uint32_t, const char*> locationKeys = {
