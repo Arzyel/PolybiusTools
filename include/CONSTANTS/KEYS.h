@@ -31,7 +31,7 @@ constexpr const char* IS_CITY_CHAR = "is_city";
 constexpr const char* CULTURE_CHAR = "culture";
 constexpr const char* RELIGION_CHAR = "religion";
 constexpr const char* HRE_CHAR = "hre";
-constexpr const char* BASE_TAX_CHAR = "base_taxe";
+constexpr const char* BASE_TAX_CHAR = "base_tax";
 constexpr const char* BASE_PRODUCTION_CHAR = "base_production";
 constexpr const char* BASE_MANPOWER_CHAR = "base_manpower";
 constexpr const char* TRADE_GOODS_CHAR = "trade_goods";
@@ -66,11 +66,11 @@ constexpr uint32_t FORT_15TH_HASH = hash_const(FORT_15TH_CHAR);
 constexpr uint32_t ADD_PROVINCE_TRIGGERED_MODIFIER_HASH = hash_const(ADD_PROVINCE_TRIGGERED_MODIFIER_CHAR);
 constexpr uint32_t EXTRA_COST_HASH = hash_const(EXTRA_COST_CHAR);
 
-
-std::unordered_map<uint32_t, const char*> locationKeys = {
-	{OWNER_HASH,OWNER_CHAR},
-	{CONTROLLER_HASH,CONTROLLER_CHAR}
-};
+// makes compilation crash
+//std::unordered_map<uint32_t, const char*> locationKeys = {
+//	{OWNER_HASH,OWNER_CHAR},
+//	{CONTROLLER_HASH,CONTROLLER_CHAR}
+//};
 
 
 

@@ -42,18 +42,14 @@ int main(int argc, char* argv[]) {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 
-    for (int i = 0; i < 10; ++i) {
-
 
         auto start = std::chrono::high_resolution_clock::now();
-        parseEu4File(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\religions\00_religion.txt)");
-        //parseWithView4(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\history\provinces\118 - Roma.txt)");
+        //parseEu4File(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\religions\00_religion.txt)");
+        //parseEu4File(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\history\provinces\118 - Roma.txt)");
         auto end = std::chrono::high_resolution_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
         std::cout << "Time original parse with view3 : " << elapsed << std::endl;
 
-
-    }
 
     CultRelContainer cultRelContainer;
     cultRelContainer.loadCultureData(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\cultures\00_cultures.txt)");

@@ -7,7 +7,8 @@
 #include <string_view>
 
 
-inline static const char* handleBracketLists(const char* ptr,const char* end, std::string& valueBuffer) {
+inline static const char* handleBracketLists(const char* ptr,const char* end,
+	std::string& valueBuffer, std::vector<std::string>& keyStack) {
 	const char* tempPtr = ptr;
 	bool endLoop = false;
 	++tempPtr;
@@ -21,9 +22,12 @@ inline static const char* handleBracketLists(const char* ptr,const char* end, st
 		}
 
 		case '}': {
-			std::cout << valueBuffer << "\n";
+			//std::cout << valueBuffer << "\n";
 			valueBuffer.clear();
 			endLoop = true;
+			if (!keyStack.empty()) {
+				keyStack.pop_back();
+			}
 			return tempPtr;
 			break;
 		}
@@ -47,8 +51,8 @@ inline static const char* handleBracketLists(const char* ptr,const char* end, st
 }
 
 
-
-static int parseEu4File(const std::string& filePath) {
+template<typename Callable>
+static int parseEu4File(const std::string& filePath, Callable callable) {
 	std::ifstream file(filePath, std::ios::binary | std::ios::ate);
 	if (!file.is_open()) {
 		std::cerr << "Could not open file at : " << filePath << "\n";
@@ -89,16 +93,21 @@ static int parseEu4File(const std::string& filePath) {
 		case '{': {
 			captureKey = true;
 			valueBuffer.clear();
-			ptr = handleBracketLists(ptr, end, valueBuffer);
+			ptr = handleBracketLists(ptr, end, valueBuffer, keyStack);
 			break;
 		}
 		case '=': {
-			std::cout << "key : " << keyBuffer << "\n";
+			//std::cout << "key : " << keyBuffer << "\n";
+			keyStack.push_back(keyBuffer);
 			keyBuffer.clear();
 			captureKey = false;
 			break;
 		}
 		case '}':
+			if (!keyStack.empty()) {
+				keyStack.pop_back();
+			}
+			break;
 		case ' ':
 		case '\n':
 		case '\t': {
@@ -112,17 +121,22 @@ static int parseEu4File(const std::string& filePath) {
 			else {
 				while (ptr < end) {
 					char c = *ptr;
-					if (c == '\n' || c == '\t' || c == '#' || c == '}') {
+					if (c == '\n' || c == '\t' || c == '#' || c == '}' || c == ' ') {
 						--ptr;
 						break;
 					}
-					if (c != ' ' && c != '\"') {
+					if ( c != '\"') {
 						valueBuffer.push_back(c);
 					}
 					++ptr;
 				}
 				captureKey = true;
-				std::cout << "Value : " << valueBuffer << "\n";
+				//std::cout << "Value : " << valueBuffer << "\n";
+				// push the value and the stack
+				callable(keyStack, valueBuffer);
+				if (!keyStack.empty()) {
+					keyStack.pop_back();
+				}
 				valueBuffer.clear();
 			}
 		}
