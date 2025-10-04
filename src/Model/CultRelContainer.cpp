@@ -105,19 +105,20 @@ void CultRelContainer::loadCultureData(const Node& rootNode, const Eu4MainParser
 }
 
 void CultRelContainer::loadCultureData(const std::string& filePath) {
-    Eu4MainParser parser;
     auto start = std::chrono::high_resolution_clock::now();
+    Eu4MainParser parser;
     parser.parseFile(filePath);
-    auto end = std::chrono::high_resolution_clock::now();
-    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    std::cout << "parsing with pegtl in the old parser : " << elapsed << " mss\n" << std::endl;
     
     loadCultureData(parser.rootNode, parser);
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "pegtl culture parsing and data init : " << elapsed << std::endl;
 }
 
 
 // all those ifs are the problem with loading with unknown values and juggling between numerical and string keys
 void CultRelContainer::loadReligionData(const std::string& religionFilePath) {
+    auto start = std::chrono::high_resolution_clock::now();
     Eu4MainParser parser;
     parser.parseFile(religionFilePath);
 
@@ -163,7 +164,6 @@ void CultRelContainer::loadReligionData(const std::string& religionFilePath) {
 
 
 
-
         // REVISE ONE DAY
        /* processGroupRecursive<sReligionGroup, sReligion>(
             groupName, groupNode, parser,
@@ -172,6 +172,9 @@ void CultRelContainer::loadReligionData(const std::string& religionFilePath) {
             [](sReligion& r, const std::string& gid) { r.religionGroupID = gid; }
         );*/
     }
+        auto end = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        std::cout << "pegtl religion parsing and data init : " << elapsed << std::endl;
 }
 
 void CultRelContainer::loadReligionDataHelper(const std::string& religionName, const Node& node, const Eu4MainParser& parser)

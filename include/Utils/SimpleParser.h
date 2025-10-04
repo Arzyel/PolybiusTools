@@ -53,23 +53,28 @@ public:
 
     static std::unordered_map<uint16_t, std::filesystem::path> getNumberedTxtFiles(const std::string& directory = ".") {
         std::unordered_map<uint16_t, std::filesystem::path> filesMap;
-        static std::regex re(R"(^(\d+).+\.txt$)"); // capture leading number
 
         for (const auto& entry : std::filesystem::directory_iterator(directory)) {
             if (!entry.is_regular_file()) continue;
 
-            const std::string filename = entry.path().filename().string();
-            static std::smatch match;
-            if (std::regex_match(filename, match, re)) {
-                if (match.size() > 1) { // first capture group is the number
-                    uint16_t number = std::stoi(match[1].str());
-                    filesMap[number] = entry.path();
-                }
+            const auto filename = entry.path().filename().string();
+
+            // Fast parse: read leading digits
+            size_t i = 0;
+            while (i < filename.size() && std::isdigit(static_cast<unsigned char>(filename[i]))) {
+                ++i;
+            }
+            if (i == 0) continue; // no leading number
+
+            uint16_t number = static_cast<uint16_t>(std::stoi(filename.substr(0, i)));
+            if (filename.ends_with(".txt")) {
+                filesMap[number] = entry.path();
             }
         }
 
         return filesMap;
     }
+
 
     static std::string getValueOrDefault(
         const std::unordered_map<std::string, std::string>& map,

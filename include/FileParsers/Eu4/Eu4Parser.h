@@ -132,7 +132,6 @@ static int parseEu4File(const std::string& filePath, Callable callable) {
 				}
 				captureKey = true;
 				//std::cout << "Value : " << valueBuffer << "\n";
-				// push the value and the stack
 				callable(keyStack, valueBuffer);
 				if (!keyStack.empty()) {
 					keyStack.pop_back();

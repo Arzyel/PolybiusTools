@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include <execution>
+#include <vector>
 #include "Location.h"
 #include "filenfolder_CONST.h"
 
