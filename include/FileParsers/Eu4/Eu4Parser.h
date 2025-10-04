@@ -166,6 +166,7 @@ static int parseWithView3(const std::string& filePath) {
 	std::string keyBuffer;
 	std::string valueBuffer;
 	bool captureKeyorValue = true;
+	bool isList = false;
 
 
 	while (ptr < end) {
@@ -181,9 +182,15 @@ static int parseWithView3(const std::string& filePath) {
 		std::string_view line(ptr, line_length);
 
 
-		for (char c : line) {
+		for (auto it = line.begin(); it != line.end(); ++it) {
+			char c = *it;
 			switch (c) {
 			case '\t':
+				if (!valueBuffer.empty()) {
+					std::cout << "Value : " << valueBuffer << '\n';
+					valueBuffer.clear();
+					captureKeyorValue = true;
+				}
 				break;
 			case '\n':
 				if (!valueBuffer.empty()) {
@@ -199,7 +206,7 @@ static int parseWithView3(const std::string& filePath) {
 					captureKeyorValue = true;
 				}
 				break;
-			case '{':
+			case '{': {
 				// finish key or value
 				if (!keyBuffer.empty()) keyStack.push_back(keyBuffer);
 				keyBuffer.clear();
@@ -209,7 +216,25 @@ static int parseWithView3(const std::string& filePath) {
 				}
 				++depth;
 				captureKeyorValue = true; // reset for next key
+
+				// ✅ Calculate actual position in buffer
+				const char* currentPosInBuffer = line.data() + std::distance(line.begin(), it);
+
+				const char* tempPtr = currentPosInBuffer;
+				while (tempPtr < end) {
+					if (*tempPtr == '=') {
+						isList = false;
+						break;
+					}
+					else if (*tempPtr == '}') {
+						isList = true;
+						break;
+					}
+
+					++tempPtr;
+				}
 				break;
+			}
 
 			case '}':
 				if (!keyBuffer.empty()) keyStack.push_back(keyBuffer);
@@ -243,6 +268,87 @@ static int parseWithView3(const std::string& filePath) {
 
 	skip_rest_of_line:
 		ptr = (line_end < end) ? line_end + 1 : line_end;
+	}
+
+
+	file.close();
+
+	return 0;
+}
+static int parseWithView4(const std::string& filePath) {
+	std::ifstream file(filePath, std::ios::binary | std::ios::ate);
+	if (!file.is_open()) {
+		std::cerr << "Could not open file at : " << filePath << "\n";
+		return 1;
+	}
+
+	std::streamsize size = file.tellg();
+	file.seekg(0, std::ios::beg);
+	std::vector<char> buffer(size);
+	if (!file.read(buffer.data(), size)) {
+		std::cerr << "Failed to read file\n";
+		return 1;
+	}
+
+	const char* ptr = buffer.data();
+	const char* end = ptr + buffer.size();
+
+	uint8_t depth = 0;
+	std::vector<std::string> keyStack;
+	std::string keyBuffer;
+	std::string valueBuffer;
+	bool captureKeyorValue = true;
+	bool isList = false;
+
+
+	while (ptr < end) {
+		char c = *ptr;
+		switch (c) {
+		case '#': {
+			while (*ptr != '\n')
+				++ptr;
+			break;
+		}
+		case '{': {
+			const char* tempPtr = ptr;
+			bool endLoop = false;
+			++tempPtr;
+			while (tempPtr < end && !endLoop) {
+				switch (*tempPtr) {
+					case '=': {
+						valueBuffer.clear();
+						endLoop = true;
+						break;
+					}
+
+					case '}': {
+						std::cout << valueBuffer << '\n';
+						valueBuffer.clear();
+						ptr = tempPtr;
+						endLoop = true;
+						break;
+					}
+
+					case '\n':
+					case '\t': {
+						// Only add space if buffer is not empty AND last char isn't already a space
+						if (!valueBuffer.empty() && valueBuffer.back() != ' ') {
+							valueBuffer.push_back(' ');
+						}
+						break;
+					}
+
+					default: {
+						valueBuffer.push_back(*tempPtr);
+						break;
+					}
+				}
+				++tempPtr;
+			}
+			break;
+		}
+		}
+		++ptr;
 	}
 
 

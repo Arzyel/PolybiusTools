@@ -42,30 +42,15 @@ int main(int argc, char* argv[]) {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 1; ++i) {
+
+
         auto start = std::chrono::high_resolution_clock::now();
-        //parse(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\history\provinces\118 - Roma.txt)");
+        parseWithView4(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\religions\00_religion.txt)");
+        //parseWithView3(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\history\provinces\118 - Roma.txt)");
         auto end = std::chrono::high_resolution_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-        //std::cout << "Time original parse : " << elapsed << " micro-seconds\n";
-
-        /*start = std::chrono::high_resolution_clock::now();
-        parseWithView(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\history\provinces\118 - Roma.txt)");
-        end = std::chrono::high_resolution_clock::now();
-        elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-        std::cout << "Time original parse with view : " << elapsed << " micro-seconds\n";
-    
-        start = std::chrono::high_resolution_clock::now();
-        parseWithView2(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\history\provinces\118 - Roma.txt)");
-        end = std::chrono::high_resolution_clock::now();
-        elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-        std::cout << "Time original parse with view2 : " << elapsed << " micro-seconds\n";*/
-
-        start = std::chrono::high_resolution_clock::now();
-        parseWithView3(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\history\provinces\118 - Roma.txt)");
-        end = std::chrono::high_resolution_clock::now();
-        elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-        std::cout << "Time original parse with view3 : " << elapsed << " micro-seconds\n" << std::endl;
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        std::cout << "Time original parse with view3 : " << elapsed << " ms\n" << std::endl;
 
 
     }
