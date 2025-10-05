@@ -119,12 +119,6 @@ class FilePathHandler {
 public:
     ~FilePathHandler() = default;
 
-    bool check(const char* relative) const;
-    bool check(size_t index) const;
-    bool checkAll() const;
-    void addFilesFromFolder(const fs::path& folderPath);
-    void addPath(const fs::path& path);
-    void removePath(const fs::path& path);
 
 
 
@@ -136,9 +130,10 @@ private:
     FilePathHandler& operator=(FilePathHandler&&) = default;
     
     template<typename DirectoryValidator, typename FileValidator>
-    FilePathHandler(const std::string& root, std::vector<const char*> mRelativePaths,
+    FilePathHandler(const std::string& root, const std::string& rootExport,
+        std::vector<const char*> mRelativePaths,
         DirectoryValidator directoryValidator, FileValidator fileValidator)
-        :mRoot(root), mDirectoryValidator(directoryValidator), mFileValidator(fileValidator)
+        :mRoot(root), mRootExport(rootExport), mDirectoryValidator(directoryValidator), mFileValidator(fileValidator)
     {
         mAbsolutePaths.reserve(NB_FILES);
 
@@ -146,11 +141,17 @@ private:
 
 
     fs::path mRoot;
+    fs::path mRootExport;
+
     std::vector<fs::path> mAbsolutePaths;
+    std::vector<fs::path> mAbsoluteExportPaths;
     std::unordered_map<fs::path, uint32_t> mPathToIndex;
     std::function<bool(const fs::path&)> mDirectoryValidator;
     std::function<bool(const fs::path&)> mFileValidator;
 
+    void addFilesFromFolder(const fs::path& folderPath);
+    void addPath(const fs::path& path);
+    void removePath(const fs::path& path);
     
 
     friend class FilePathHandlerFactory;
@@ -160,11 +161,11 @@ private:
 
 class FilePathHandlerFactory {
 public:
-    static FilePathHandler createFPH(const std::string& game, const std::string& root);
+    static FilePathHandler createFPH(const std::string& game, const std::string& root, const std::string& rootExport);
 private:
-    static FilePathHandler create_eu4(const std::string& root);
-    static FilePathHandler create_hoi4(const std::string& root);
-    static FilePathHandler create_ck3(const std::string& root);
+    static FilePathHandler create_eu4(const std::string& root, const std::string& rootExport);
+    static FilePathHandler create_hoi4(const std::string& root, const std::string& rootExport);
+    static FilePathHandler create_ck3(const std::string& root, const std::string& rootExport);
 
 };
 
