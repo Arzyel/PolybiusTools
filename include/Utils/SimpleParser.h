@@ -95,30 +95,6 @@ public:
             files.emplace_back(number, std::string(temp_buf, dest - temp_buf), entry.path());
         }
     }
-    //static std::unordered_map<uint16_t, std::filesystem::path> getNumberedTxtFiles(const std::string& directory = ".") {
-    //    std::unordered_map<uint16_t, std::filesystem::path> filesMap;
-
-    //    for (const auto& entry : std::filesystem::directory_iterator(directory)) {
-    //        if (!entry.is_regular_file()) continue;
-
-    //        const auto filename = entry.path().filename().string();
-
-    //        // Fast parse: read leading digits
-    //        size_t i = 0;
-    //        while (i < filename.size() && std::isdigit(static_cast<unsigned char>(filename[i]))) {
-    //            ++i;
-    //        }
-    //        if (i == 0) continue; // no leading number
-
-    //        uint16_t number = static_cast<uint16_t>(std::stoi(filename.substr(0, i)));
-    //        if (filename.ends_with(".txt")) {
-    //            filesMap[number] = entry.path();
-    //        }
-    //    }
-
-    //    return filesMap;
-    //}
-
 
     static std::string getValueOrDefault(
         const std::unordered_map<std::string, std::string>& map,

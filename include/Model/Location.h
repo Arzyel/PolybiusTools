@@ -36,8 +36,8 @@ public:
 
 
 	//TODO REFACTOR to seperate string values from internal nb based values
-	std::string filePath;
-	std::string eu4ProvinceName;
+	std::string filePath = "";
+	std::string eu4ProvinceName = "";
 	std::string mEu4UID = "";
 	std::string eu4OwnerID= "";
 	std::vector<std::string> eu4CoresID;

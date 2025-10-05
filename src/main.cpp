@@ -29,25 +29,50 @@
 #include "GeoPolContainers.h"
 #include "InformationGUI.h"
 #include "CultRelContainer.h"
-//#include "CultureParser.h"
 #include "Eu4MainParser.h"
 #include "CountryContainer.h"
 #include "KEYS.h"
 #include "Eu4Parser.h"
-#include "FileOpener.h"
+#include "StartupDialog.h"
 
 #define _CRTDBG_MAP_ALLOC
 #include <cstdlib>
 #include <crtdbg.h>
 int main(int argc, char* argv[]) {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+
+    QApplication app(argc, argv);
+    app.setStyle(new InstantMenuStyle(QStyleFactory::create("")));
+
+    StartupDialog startupBox = StartupDialog(nullptr);
+
+
+    if (startupBox.exec() != QDialog::Accepted) {
+        return 0;
+    }
+
+
+
+    //// Create and show modal dialog
+    //QMessageBox dialog;
+    //dialog.setWindowTitle("Confirmation");
+    //dialog.setText("Do you want to continue?");
+    //dialog.setIcon(QMessageBox::Question);
+
+    //QPushButton* continueButton = dialog.addButton("Continue", QMessageBox::AcceptRole);
+    //QPushButton* cancelButton = dialog.addButton("Cancel", QMessageBox::RejectRole);
+
+    //dialog.setModal(true); // Make it modal
+    //dialog.exec(); // Block until user responds
+
+    // Check which button was clicked
+    //if (dialog.clickedButton() == cancelButton) {
+    //    return 0; // Exit application
+    //}
+
     std::string culture = R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\cultures\00_cultures.txt)";
     std::string religion = R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\religions\00_religion.txt)";
-
-    FileOpener::openTextFile(culture);
-    FileOpener::openTextFile(religion);
-
-
 
 
 
@@ -63,8 +88,6 @@ int main(int argc, char* argv[]) {
     geoPolContainers.initLocationData();
 
 
-    QApplication app(argc, argv);
-    app.setStyle(new InstantMenuStyle(QStyleFactory::create("")));
     QMainWindow window;
     
     TopMenuBar* menuBar = new TopMenuBar(app, &window);

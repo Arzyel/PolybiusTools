@@ -52,6 +52,12 @@
     <Filter Include="Fichiers sources\FileParsers\Eu4">
       <UniqueIdentifier>{c5a8bb19-24a9-422d-8fc0-91efb5423691}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Qt\Startup">
+      <UniqueIdentifier>{ce4aae6c-b75d-408a-9a00-807f9e5b83ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Qt\Startup">
+      <UniqueIdentifier>{e8175af8-a7ca-495d-8596-7ae1e4126dbf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -122,6 +128,21 @@
     </ClCompile>
     <ClCompile Include="src\Model\CountryContainer.cpp">
       <Filter>Fichiers sources\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\Startup\StartupDialog.cpp">
+      <Filter>Fichiers sources\Qt\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\Startup\StartupGameBox.cpp">
+      <Filter>Fichiers sources\Qt\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\Startup\StartupLoadBox.cpp">
+      <Filter>Fichiers sources\Qt\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\Startup\StartupModBox.cpp">
+      <Filter>Fichiers sources\Qt\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\Startup\StartupOptionBox.cpp">
+      <Filter>Fichiers sources\Qt\Startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +218,18 @@
     <ClInclude Include="include\Utils\FileOpener.h">
       <Filter>Fichiers d%27en-tête\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="include\Qt\Startup\StartupGameBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\Startup</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\Startup\StartupLoadBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\Startup</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\Startup\StartupModBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\Startup</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\Startup\StartupOptionBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\Startup</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -219,6 +252,9 @@
     </QtMoc>
     <QtMoc Include="include\Qt\LocationBoxes\OwnershipBox.h">
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\Startup\StartupDialog.h">
+      <Filter>Fichiers d%27en-tête\Qt\Startup</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
