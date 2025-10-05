@@ -22,7 +22,6 @@ inline static const char* handleBracketLists(const char* ptr,const char* end,
 		}
 
 		case '}': {
-			//std::cout << valueBuffer << "\n";
 			valueBuffer.clear();
 			endLoop = true;
 			if (!keyStack.empty()) {
@@ -85,7 +84,6 @@ static int parseEu4File(const std::string& filePath, Callable callable) {
 			break;
 		}
 		case '=': {
-			//std::cout << "key : " << keyBuffer << "\n";
 			keyStack.push_back(keyBuffer);
 			keyBuffer.clear();
 			captureKey = false;
@@ -130,9 +128,6 @@ static int parseEu4File(const std::string& filePath, Callable callable) {
 		}
 		++ptr;
 	}
-
-
-	//file.close();
 	mmap::close(handle);
 
 	return 0;

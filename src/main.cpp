@@ -41,6 +41,10 @@
 #include <crtdbg.h>
 int main(int argc, char* argv[]) {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    FilePathHandler eu4FileHandler = FilePathHandlerFactory::createFPH("eu4", R"(E:\Games\Steam\steamapps\common\Europa Universalis IV)");
+    eu4FileHandler.addFilesFromFolder(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\cultures)");
+    eu4FileHandler.addFilesFromFolder(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\religions)");
+    eu4FileHandler.addFilesFromFolder(R"(E:\Games\Steam\steamapps\workshop\content\236850\1385440355\common\religions)");
 
 
     QApplication app(argc, argv);

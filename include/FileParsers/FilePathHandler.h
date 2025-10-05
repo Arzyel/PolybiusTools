@@ -5,13 +5,15 @@
 #include <functional>
 #include <vector>
 #include <string>
-#include <expected>
 #include <unordered_map>
-
+#include <iostream>
+#include <ranges>
 
 // TEMP KEYS
 
 // Constants ending with "_" are folders paths otherwise they are files.
+
+constexpr const uint32_t NB_FILES = 65000;
 
 namespace games_names {
     constexpr const char* EU5 = R"(Europa Universalis V)";
@@ -110,24 +112,19 @@ namespace relative_path {
 
 namespace fs = std::filesystem;
 
-struct FileReadError {
-    enum Code {InvalidRoot, MissingFiles, PermissionDenied} code;
-    std::string message;
-    std::vector<std::string> missingFiles;
-};
-
 
 class FilePathHandlerFactory;
 
 class FilePathHandler {
 public:
     ~FilePathHandler() = default;
-    std::string getFullPath(const char* relative) const;
-    std::string getFullPath(size_t index) const;
+
     bool check(const char* relative) const;
     bool check(size_t index) const;
     bool checkAll() const;
-
+    void addFilesFromFolder(const fs::path& folderPath);
+    void addPath(const fs::path& path);
+    void removePath(const fs::path& path);
 
 
 
@@ -138,19 +135,21 @@ private:
     FilePathHandler(FilePathHandler&&) = default;
     FilePathHandler& operator=(FilePathHandler&&) = default;
     
-    template<typename Callable>
+    template<typename DirectoryValidator, typename FileValidator>
     FilePathHandler(const std::string& root, std::vector<const char*> mRelativePaths,
-        Callable validator)
-        :mRoot(root), mValidator(validator)
+        DirectoryValidator directoryValidator, FileValidator fileValidator)
+        :mRoot(root), mDirectoryValidator(directoryValidator), mFileValidator(fileValidator)
     {
+        mAbsolutePaths.reserve(NB_FILES);
 
     };
 
 
-
-    std::string mRoot;
-    std::vector<const char*> mRelativePaths;
-    std::function<bool(const fs::path&)> mValidator;
+    fs::path mRoot;
+    std::vector<fs::path> mAbsolutePaths;
+    std::unordered_map<fs::path, uint32_t> mPathToIndex;
+    std::function<bool(const fs::path&)> mDirectoryValidator;
+    std::function<bool(const fs::path&)> mFileValidator;
 
     
 

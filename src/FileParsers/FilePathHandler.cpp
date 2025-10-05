@@ -1,14 +1,5 @@
 ﻿#include "FilePathHandler.h"
 
-std::string FilePathHandler::getFullPath(const char* relative) const
-{
-    return mRoot + relative;
-}
-
-std::string FilePathHandler::getFullPath(size_t index) const
-{
-    return std::string();
-}
 
 bool FilePathHandler::check(const char* relative) const
 {
@@ -25,17 +16,49 @@ bool FilePathHandler::checkAll() const
     return false;
 }
 
+void FilePathHandler::addFilesFromFolder(const fs::path& folderPath)
+{
+    std::vector<fs::path> items;
+    for (const auto& entry : fs::directory_iterator(folderPath)) {
+        if (entry.is_regular_file()) {
+            items.emplace_back(entry.path());
+        }
+   }
+
+    std::ranges::sort(items);
+
+    for (const auto& filePath : items) {
+        addPath(filePath);
+    }
+}
+
+void FilePathHandler::addPath(const fs::path& path)
+{
+
+    if (!mPathToIndex.empty() && mPathToIndex.contains(path.filename())) {
+        mAbsolutePaths.at(mPathToIndex.at(path.filename())) = path;
+    }
+    else {
+        mAbsolutePaths.emplace_back(path);
+        mPathToIndex[path.filename()] = mAbsolutePaths.size() - 1;
+    }
+}
+
+void FilePathHandler::removePath(const fs::path& path)
+{
+}
+
 FilePathHandler FilePathHandlerFactory::createFPH(const std::string& game, const std::string& root)
 {
     try {
         if (game == "eu4") return create_eu4(root);
         if (game == "hoi4") return create_hoi4(root);
         if (game == "ck3") return create_ck3(root);
+        throw std::runtime_error(std::string("Invalid game choice : " + game));
     }
     catch(const std::exception& e){
-
+        std::cout << e.what();
     }
-    throw std::runtime_error(std::string("Invalid game choice : " + game));
 
 }
 
@@ -47,24 +70,23 @@ FilePathHandler FilePathHandlerFactory::create_eu4(const std::string& root)
         }
 
         FilePathHandler handler1(root,
-            { 
+            {
             relative_path::eu4::common::BUILDINGS_,
             relative_path::eu4::common::CULTURES_,
             relative_path::eu4::common::RELIGIONS_,
             relative_path::eu4::common::TRADE_GOODS_,
             relative_path::eu4::common::TRADE_NODES_,
             },
-            [](const std::string& path) {
-
-                if (!fs::exists(path)) {
-                    throw std::runtime_error("Root directory does not exist: " + path);
-                }
-
-
-
+            [](const std::filesystem::path& path) -> bool {
+                std::string pathStr = path.string();
+                return true;
+            },
+            [](const std::filesystem::path& path) -> bool {
+                std::string pathStr = path.string();
+                return true; 
             });
 
-        
+        return handler1;
     }
     catch (const std::exception& e) {
         throw std::runtime_error(std::string("Failed to create Eu4 handler : ") + e.what());
