@@ -168,6 +168,7 @@
     <ClCompile Include="src\FileParsers\Eu4\Eu4MainParser.cpp" />
     <ClCompile Include="src\FileParsers\Eu4\Eu4ReligionParser.cpp" />
     <ClCompile Include="src\FileParsers\FileParser.cpp" />
+    <ClCompile Include="src\FileParsers\FilePathHandler.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Model\CountryContainer.cpp" />
     <ClCompile Include="src\Model\CultRelContainer.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="include\FileParsers\Eu4\Eu4Parser.h" />
     <ClInclude Include="include\FileParsers\Eu4\Eu4ReligionParser.h" />
     <ClInclude Include="include\FileParsers\FileParser.h" />
+    <ClInclude Include="include\FileParsers\FilePathHandler.h" />
     <ClInclude Include="include\Model\CountryContainer.h" />
     <ClInclude Include="include\Model\CultRelContainer.h" />
     <ClInclude Include="include\Model\GeoPolContainers.h" />

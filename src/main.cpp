@@ -34,6 +34,7 @@
 #include "KEYS.h"
 #include "Eu4Parser.h"
 #include "StartupDialog.h"
+#include "FilePathHandler.h"
 
 #define _CRTDBG_MAP_ALLOC
 #include <cstdlib>
@@ -52,24 +53,6 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-
-
-    //// Create and show modal dialog
-    //QMessageBox dialog;
-    //dialog.setWindowTitle("Confirmation");
-    //dialog.setText("Do you want to continue?");
-    //dialog.setIcon(QMessageBox::Question);
-
-    //QPushButton* continueButton = dialog.addButton("Continue", QMessageBox::AcceptRole);
-    //QPushButton* cancelButton = dialog.addButton("Cancel", QMessageBox::RejectRole);
-
-    //dialog.setModal(true); // Make it modal
-    //dialog.exec(); // Block until user responds
-
-    // Check which button was clicked
-    //if (dialog.clickedButton() == cancelButton) {
-    //    return 0; // Exit application
-    //}
 
     std::string culture = R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\cultures\00_cultures.txt)";
     std::string religion = R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\religions\00_religion.txt)";

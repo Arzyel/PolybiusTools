@@ -144,6 +144,9 @@
     <ClCompile Include="src\Qt\Startup\StartupOptionBox.cpp">
       <Filter>Fichiers sources\Qt\Startup</Filter>
     </ClCompile>
+    <ClCompile Include="src\FileParsers\FilePathHandler.cpp">
+      <Filter>Fichiers sources\FileParsers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Qt\ImageViewa.h">
@@ -229,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="include\Qt\Startup\StartupOptionBox.h">
       <Filter>Fichiers d%27en-tête\Qt\Startup</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FileParsers\FilePathHandler.h">
+      <Filter>Fichiers d%27en-tête\FileParsers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
