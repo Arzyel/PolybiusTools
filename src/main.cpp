@@ -46,18 +46,22 @@ int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
     app.setStyle(new InstantMenuStyle(QStyleFactory::create("")));
     
+    std::string culture = R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\cultures)";
+    std::string religion = R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\religions)";
+    std::string religionANB = R"(E:\Games\Steam\steamapps\workshop\content\236850\1385440355\common\religions)";
+
     FilePathHandler eu4FileHandler = FilePathHandlerFactory::createFPH("eu4", R"(E:\Games\Steam\steamapps\common\Europa Universalis IV)", R"(E:\Games)");
+    eu4FileHandler.addFilesFromFolder(culture);
+    eu4FileHandler.addFilesFromFolder(religion);
+    eu4FileHandler.addFilesFromFolder(religionANB);
+
+    auto test = eu4FileHandler.getExportPath("00_religion.txt");
+
 
     StartupDialog startupBox = StartupDialog(nullptr);
-
-
     if (startupBox.exec() != QDialog::Accepted) {
         return 0;
     }
-
-
-    std::string culture = R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\cultures\00_cultures.txt)";
-    std::string religion = R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\religions\00_religion.txt)";
 
 
 

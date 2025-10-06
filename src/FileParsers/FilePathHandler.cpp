@@ -2,6 +2,35 @@
 
 
 
+fs::path FilePathHandler::getExportPath(const fs::path& filePath)
+{
+    static const auto separator = fs::path::preferred_separator;
+    const auto& native_str = mAbsolutePaths.at(mPathToIndex.at(filePath)).native();
+    const auto* start = native_str.c_str();
+    auto size = native_str.size();
+    const auto* end = start + size;
+    const auto* ptr = end - 1;
+    const auto* validatedRelative = end;
+
+    while (*ptr != separator) {
+        --ptr;
+    }
+
+    //check optimisation in notes. basically create a bitmask to do bit operator & once 
+    while (!(*ptr >= 'A' && *ptr <= 'Z') &&
+        !(*ptr >= '0' && *ptr <= '9')) {
+
+        if (*ptr == separator) {
+            validatedRelative = ptr;
+        }
+
+        --ptr;
+    }
+
+    return fs::path(validatedRelative);
+
+}
+
 void FilePathHandler::addFilesFromFolder(const fs::path& folderPath)
 {
     std::vector<fs::path> items;

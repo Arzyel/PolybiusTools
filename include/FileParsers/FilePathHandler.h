@@ -119,9 +119,12 @@ class FilePathHandler {
 public:
     ~FilePathHandler() = default;
 
+    fs::path getExportPath(const fs::path& filePath);
 
-
-
+//change it back to private when testing done
+    void addFilesFromFolder(const fs::path& folderPath);
+    void addPath(const fs::path& path);
+    void removePath(const fs::path& path);
 private:
     FilePathHandler() = delete;
     FilePathHandler(const FilePathHandler&) = delete;
@@ -142,16 +145,11 @@ private:
 
     fs::path mRoot;
     fs::path mRootExport;
-
     std::vector<fs::path> mAbsolutePaths;
-    std::vector<fs::path> mAbsoluteExportPaths;
     std::unordered_map<fs::path, uint32_t> mPathToIndex;
     std::function<bool(const fs::path&)> mDirectoryValidator;
     std::function<bool(const fs::path&)> mFileValidator;
 
-    void addFilesFromFolder(const fs::path& folderPath);
-    void addPath(const fs::path& path);
-    void removePath(const fs::path& path);
     
 
     friend class FilePathHandlerFactory;
