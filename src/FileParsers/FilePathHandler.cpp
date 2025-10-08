@@ -16,9 +16,8 @@ fs::path FilePathHandler::getExportPath(const fs::path& filePath)
         --ptr;
     }
 
-    //check optimisation in notes. basically create a bitmask to do bit operator & once 
-    while (!(*ptr >= 'A' && *ptr <= 'Z') &&
-        !(*ptr >= '0' && *ptr <= '9')) {
+    //check optimisation in notes. basically create a bitmask to do bit operator && once 
+    while (!exportRule[*ptr]) {
 
         if (*ptr == separator) {
             validatedRelative = ptr;
@@ -27,6 +26,8 @@ fs::path FilePathHandler::getExportPath(const fs::path& filePath)
         --ptr;
     }
 
+    
+    
     return fs::path(validatedRelative);
 
 }

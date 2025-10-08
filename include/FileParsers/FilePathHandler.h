@@ -8,12 +8,31 @@
 #include <unordered_map>
 #include <iostream>
 #include <ranges>
+#include <array>
 
 // TEMP KEYS
 
 // Constants ending with "_" are folders paths otherwise they are files.
 
 constexpr const uint32_t NB_FILES = 65000;
+
+consteval std::array<bool, 256> setupRule() {
+    std::array<bool, 256> rule{};
+    rule['A'] = true;
+
+    for (size_t i = 0; i < 256; i++)
+    {
+        if ((i >= 'A' && i <= 'Z') ||
+            (i >= '0' && i <= '9')) {
+            rule[i] = true;
+        }
+    }
+
+    return rule;
+}
+
+constexpr std::array<bool, 256> exportRule = setupRule();
+
 
 namespace games_names {
     constexpr const char* EU5 = R"(Europa Universalis V)";
