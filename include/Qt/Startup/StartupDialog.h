@@ -8,17 +8,24 @@
 #include <QtWidgets\qtabwidget.h>
 
 
+#include "FilePathHandler.h"
+#include "StartupGameBox.h"
+#include "StartupLoadBox.h"
+#include "StartupModBox.h"
+#include "StartupOptionBox.h"
+
+
 class StartupDialog : public QDialog{
     Q_OBJECT
 public:
     StartupDialog() = delete;
     ~StartupDialog() = default;
-    StartupDialog(QWidget* parent = nullptr);
+    StartupDialog(FilePathHandler*& filePathHandler, QWidget* parent = nullptr);
 
 protected:
 
 private:
-    void setupUI();
+    void setupUI(FilePathHandler*& filePathHandler);
     void setupConnections();
     QPushButton* mContinueButton;
     QPushButton* mCancelButton;

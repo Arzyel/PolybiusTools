@@ -221,7 +221,7 @@
     <ClInclude Include="include\Qt\LocationBoxes\TechInfoBox.h" />
     <ClInclude Include="include\Qt\LocationBoxes\TradeBox.h" />
     <QtMoc Include="include\Qt\Startup\StartupDialog.h" />
-    <ClInclude Include="include\Qt\Startup\StartupGameBox.h" />
+    <QtMoc Include="include\Qt\Startup\StartupGameBox.h" />
     <ClInclude Include="include\Qt\Startup\StartupLoadBox.h" />
     <ClInclude Include="include\Qt\Startup\StartupModBox.h" />
     <ClInclude Include="include\Qt\Startup\StartupOptionBox.h" />

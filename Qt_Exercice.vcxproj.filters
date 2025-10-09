@@ -221,9 +221,6 @@
     <ClInclude Include="include\Utils\FileOpener.h">
       <Filter>Fichiers d%27en-tête\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="include\Qt\Startup\StartupGameBox.h">
-      <Filter>Fichiers d%27en-tête\Qt\Startup</Filter>
-    </ClInclude>
     <ClInclude Include="include\Qt\Startup\StartupLoadBox.h">
       <Filter>Fichiers d%27en-tête\Qt\Startup</Filter>
     </ClInclude>
@@ -260,6 +257,9 @@
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </QtMoc>
     <QtMoc Include="include\Qt\Startup\StartupDialog.h">
+      <Filter>Fichiers d%27en-tête\Qt\Startup</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\Startup\StartupGameBox.h">
       <Filter>Fichiers d%27en-tête\Qt\Startup</Filter>
     </QtMoc>
   </ItemGroup>

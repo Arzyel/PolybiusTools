@@ -50,16 +50,17 @@ int main(int argc, char* argv[]) {
     std::string religion = R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\religions)";
     std::string religionANB = R"(E:\Games\Steam\steamapps\workshop\content\236850\1385440355\common\religions)";
 
-    FilePathHandler eu4FileHandler = FilePathHandlerFactory::createFPH("eu4", R"(E:\Games\Steam\steamapps\common\Europa Universalis IV)", R"(E:\Games)");
-    eu4FileHandler.addFilesFromFolder(culture);
-    eu4FileHandler.addFilesFromFolder(religion);
-    eu4FileHandler.addFilesFromFolder(religionANB);
+    //FilePathHandler eu4FileHandler = FilePathHandlerFactory::createFPH("eu4", R"(E:\Games\Steam\steamapps\common\Europa Universalis IV)", R"(E:\Games)");
+    //eu4FileHandler.addFilesFromFolder(culture);
+    //eu4FileHandler.addFilesFromFolder(religion);
+    //eu4FileHandler.addFilesFromFolder(religionANB);
 
-    auto test = eu4FileHandler.getExportPath("00_religion.txt");
+    //auto test = eu4FileHandler.getExportPath("00_religion.txt");
 
-
-    StartupDialog startupBox = StartupDialog(nullptr);
+    FilePathHandler* test = nullptr;
+    StartupDialog startupBox = StartupDialog(test);
     if (startupBox.exec() != QDialog::Accepted) {
+        delete test;
         return 0;
     }
 

@@ -1,20 +1,21 @@
 ﻿#include "StartupDialog.h"
 
-StartupDialog::StartupDialog(QWidget* parent)
+StartupDialog::StartupDialog(FilePathHandler*& filePathHandler, QWidget* parent)
 	:QDialog(parent)
 {
-	setupUI();
+	setupUI(filePathHandler);
 	setupConnections();
 }
 
-void StartupDialog::setupUI() {
+void StartupDialog::setupUI(FilePathHandler*& filePathHandler) {
 	setWindowTitle("Polybius Launcher");
 	setModal(true);
 	setFixedSize(854, 480);
 
 	QVBoxLayout* mainLayout = new QVBoxLayout(this);
 	QTabWidget* tabWidget = new QTabWidget(this);
-	QWidget* GameTab = new QWidget();
+	StartupGameBox* GameTab = new StartupGameBox(filePathHandler, nullptr);
+
 	QWidget* ModTab = new QWidget();
 	QWidget* LoadTab = new QWidget();
 	QWidget* OptionsTab = new QWidget();

@@ -10,6 +10,7 @@
 #include <ranges>
 #include <array>
 
+#include "KEYS.h"
 // TEMP KEYS
 
 // Constants ending with "_" are folders paths otherwise they are files.
@@ -178,11 +179,11 @@ private:
 
 class FilePathHandlerFactory {
 public:
-    static FilePathHandler createFPH(const std::string& game, const std::string& root, const std::string& rootExport);
+    static FilePathHandler* createFPH(const std::string& game, const std::string& root, const std::string& rootExport);
 private:
-    static FilePathHandler create_eu4(const std::string& root, const std::string& rootExport);
-    static FilePathHandler create_hoi4(const std::string& root, const std::string& rootExport);
-    static FilePathHandler create_ck3(const std::string& root, const std::string& rootExport);
+    static FilePathHandler* create_eu4(const std::string& root, const std::string& rootExport);
+    static FilePathHandler* create_hoi4(const std::string& root, const std::string& rootExport);
+    static FilePathHandler* create_ck3(const std::string& root, const std::string& rootExport);
 
 };
 

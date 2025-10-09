@@ -28,7 +28,7 @@ fs::path FilePathHandler::getExportPath(const fs::path& filePath)
 
     
     
-    return fs::path(validatedRelative);
+    return fs::path(mRootExport) += fs::path(validatedRelative);
 
 }
 
@@ -64,33 +64,33 @@ void FilePathHandler::removePath(const fs::path& path)
 {
 }
 
-FilePathHandler FilePathHandlerFactory::createFPH(const std::string& game, const std::string& root, const std::string& rootExport)
+FilePathHandler* FilePathHandlerFactory::createFPH(const std::string& game, const std::string& root, const std::string& rootExport)
 {
-    try {
-        if (game == "eu4") return create_eu4(root, rootExport);
-        if (game == "hoi4") return create_hoi4(root, rootExport);
-        if (game == "ck3") return create_ck3(root, rootExport);
+    //try {
+        if (game == GAMES[0]) return create_eu4(root, rootExport);
+        if (game == GAMES[2]) return create_hoi4(root, rootExport);
+        if (game == GAMES[3]) return create_ck3(root, rootExport);
         throw std::runtime_error(std::string("Invalid game choice : " + game));
-    }
-    catch(const std::exception& e){
-        std::cerr << "FilePathHandlerFactory CRITICAL: " << e.what() << std::endl;
-        std::abort();
-    }
-    catch(...) {
-        std::cerr << "FilePathHandlerFactory CRITICAL: Unknown exception" << std::endl;
-        std::abort();
-    }
+    //}
+    //catch(const std::exception& e){
+    //    std::cerr << "FilePathHandlerFactory CRITICAL: " << e.what() << std::endl;
+    //    std::abort();
+    //}
+    //catch(...) {
+    //    std::cerr << "FilePathHandlerFactory CRITICAL: Unknown exception" << std::endl;
+    //    std::abort();
+    //}
 
 }
 
-FilePathHandler FilePathHandlerFactory::create_eu4(const std::string& root, const std::string& rootExport)
+FilePathHandler* FilePathHandlerFactory::create_eu4(const std::string& root, const std::string& rootExport)
 {
     try {
         if (!fs::exists(root)) {
             throw std::runtime_error("Root directory does not exist: " + root);
         }
 
-        FilePathHandler handler1(root, rootExport,
+        FilePathHandler* handler1 = new FilePathHandler(root, rootExport,
             {
             relative_path::eu4::common::BUILDINGS_,
             relative_path::eu4::common::CULTURES_,
@@ -116,7 +116,7 @@ FilePathHandler FilePathHandlerFactory::create_eu4(const std::string& root, cons
     }
 }
 
-FilePathHandler FilePathHandlerFactory::create_hoi4(const std::string& root, const std::string& rootExport)
+FilePathHandler* FilePathHandlerFactory::create_hoi4(const std::string& root, const std::string& rootExport)
 {
     throw std::runtime_error("Hoi4 is not implemented");
     try {
@@ -126,7 +126,7 @@ FilePathHandler FilePathHandlerFactory::create_hoi4(const std::string& root, con
     }
 }
 
-FilePathHandler FilePathHandlerFactory::create_ck3(const std::string& root, const std::string& rootExport)
+FilePathHandler* FilePathHandlerFactory::create_ck3(const std::string& root, const std::string& rootExport)
 {
     try {
         throw std::runtime_error("Ck3 is not implemented");

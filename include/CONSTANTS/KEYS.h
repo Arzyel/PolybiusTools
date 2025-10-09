@@ -3,6 +3,7 @@
 #define KEYS
 #include <cstdint>
 #include <string>
+#include <array>
 
 consteval uint32_t hash_const(const char* str) {
 	uint32_t hash = 2166136261u;
@@ -71,6 +72,16 @@ constexpr uint32_t EXTRA_COST_HASH = hash_const(EXTRA_COST_CHAR);
 //	{OWNER_HASH,OWNER_CHAR},
 //	{CONTROLLER_HASH,CONTROLLER_CHAR}
 //};
+
+
+
+
+constexpr std::array<const char*, 4> GAMES = {
+	"Europa Univeralis IV",
+	"Europa Universalis V",
+	"Hearts of Iron IV",
+	"Crusader Kings III"
+};
 
 
 
