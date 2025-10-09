@@ -46,27 +46,27 @@ namespace games_names {
 namespace relative_path {
     namespace eu4 {
         namespace common {
-            constexpr const char* BUILDINGS_ = R"(\common\countries)";
-            constexpr const char* COLONIAL_REGION_ = R"(\common\countries)";
+            constexpr const char* BUILDINGS_ = R"(\common\buildings)";
+            constexpr const char* COLONIAL_REGION_ = R"(\common\colonial_region)";
             constexpr const char* COUNTRIES_ = R"(\common\countries)";
-            constexpr const char* COUNTRY_TAGS_ = R"(\common\countries)";
-            constexpr const char* CULTURES_ = R"(\common\countries)";
-            constexpr const char* DISASTERS_ = R"(\common\countries)";
-            constexpr const char* EVENT_MODIFIERS_ = R"(\common\countries)";
-            constexpr const char* GOVERNMENT_MECHANICS_ = R"(\common\countries)";
-            constexpr const char* GOVERNMENT_REFORMS_ = R"(\common\countries)";
-            constexpr const char* GOVERNMENTS_ = R"(\common\countries)";
-            constexpr const char* GREAT_PROJECTS_ = R"(\common\countries)";
-            constexpr const char* IDEAS_ = R"(\common\countries)";
-            constexpr const char* OPINION_MODIFIERS_ = R"(\common\countries)";
-            constexpr const char* PROVINCE_TRIGGERED_MODIFIER_ = R"(\common\countries)";
-            constexpr const char* RELIGIONS_ = R"(\common\countries)";
-            constexpr const char* SUBJECT_TYPES_ = R"(\common\countries)";
-            constexpr const char* TECHNOLOGIES_ = R"(\common\countries)";
-            constexpr const char* TIMED_MODIFIERS_ = R"(\common\countries)";
-            constexpr const char* TRADE_GOODS_ = R"(\common\countries)";
-            constexpr const char* TRADE_NODES_ = R"(\common\countries)";
-            constexpr const char* TRIGGERED_MODIFIERS_ = R"(\common\countries)";
+            constexpr const char* COUNTRY_TAGS_ = R"(\common\country_tags)";
+            constexpr const char* CULTURES_ = R"(\common\cultures)";
+            constexpr const char* DISASTERS_ = R"(\common\disasters)";
+            constexpr const char* EVENT_MODIFIERS_ = R"(\common\event_modifiers)";
+            constexpr const char* GOVERNMENT_MECHANICS_ = R"(\common\government_mechanics)";
+            constexpr const char* GOVERNMENT_REFORMS_ = R"(\common\government_reforms)";
+            constexpr const char* GOVERNMENTS_ = R"(\common\governments)";
+            constexpr const char* GREAT_PROJECTS_ = R"(\common\great_projects)";
+            constexpr const char* IDEAS_ = R"(\common\ideas)";
+            constexpr const char* OPINION_MODIFIERS_ = R"(\common\opinion_modifiers)";
+            constexpr const char* PROVINCE_TRIGGERED_MODIFIERS_ = R"(\common\province_triggered_modifiers)";
+            constexpr const char* RELIGIONS_ = R"(\common\religions)";
+            constexpr const char* SUBJECT_TYPES_ = R"(\common\subject_types)";
+            constexpr const char* TECHNOLOGIES_ = R"(\common\technologies)";
+            constexpr const char* TIMED_MODIFIERS_ = R"(\common\timed_modifiers)";
+            constexpr const char* TRADE_GOODS_ = R"(\common\tradegoods)";
+            constexpr const char* TRADE_NODES_ = R"(\common\tradenodes)";
+            constexpr const char* TRIGGERED_MODIFIERS_ = R"(\common\triggered_modifiers)";
         }
 
         namespace decisions {
@@ -138,12 +138,22 @@ class FilePathHandlerFactory;
 class FilePathHandler {
 public:
     ~FilePathHandler() = default;
-
+    void initAllPaths();
+    std::function<void()> mDirectoryValidator;
     fs::path getExportPath(const fs::path& filePath);
+    const std::vector<fs::path> getPathsFromFolderKey(const char* key) {
+        std::vector<fs::path> paths;
+                
+        for (auto& index : mOrderedByFolder.at(key)) {
+            paths.emplace_back(mAbsolutePaths.at(index));
+        }
+        
+        return paths;
+    };
 
 //change it back to private when testing done
-    void addFilesFromFolder(const fs::path& folderPath);
-    void addPath(const fs::path& path);
+    void addFilesFromFolder(const fs::path& folderPath, const char* folderKey);
+    void addPath(const fs::path& path, const char* folderKey);
     void removePath(const fs::path& path);
 private:
     FilePathHandler() = delete;
@@ -152,22 +162,20 @@ private:
     FilePathHandler(FilePathHandler&&) = default;
     FilePathHandler& operator=(FilePathHandler&&) = default;
     
-    template<typename DirectoryValidator, typename FileValidator>
     FilePathHandler(const std::string& root, const std::string& rootExport,
-        std::vector<const char*> mRelativePaths,
-        DirectoryValidator directoryValidator, FileValidator fileValidator)
-        :mRoot(root), mRootExport(rootExport), mDirectoryValidator(directoryValidator), mFileValidator(fileValidator)
+        std::vector<const char*> relativePaths)
+        :mRoot(root), mRootExport(rootExport), mRelativePaths(relativePaths.begin(), relativePaths.end())
     {
         mAbsolutePaths.reserve(NB_FILES);
-
     };
 
 
     fs::path mRoot;
     fs::path mRootExport;
     std::vector<fs::path> mAbsolutePaths;
+    std::vector<const char*> mRelativePaths;
     std::unordered_map<fs::path, uint32_t> mPathToIndex;
-    std::function<bool(const fs::path&)> mDirectoryValidator;
+    std::unordered_map<const char*, std::vector<uint32_t>> mOrderedByFolder;
     std::function<bool(const fs::path&)> mFileValidator;
 
     

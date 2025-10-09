@@ -104,12 +104,16 @@ void CultRelContainer::loadCultureData(const Node& rootNode, const Eu4MainParser
     }
 }
 
-void CultRelContainer::loadCultureData(const std::string& filePath) {
+void CultRelContainer::loadCultureData(const std::vector<fs::path>& filePaths) {
+
     auto start = std::chrono::high_resolution_clock::now();
-    Eu4MainParser parser;
-    parser.parseFile(filePath);
+    for (auto& filePath : filePaths) {
+        Eu4MainParser parser;
+        parser.parseFile(filePath.string());
     
-    loadCultureData(parser.rootNode, parser);
+        loadCultureData(parser.rootNode, parser);
+
+    }
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     std::cout << "pegtl culture parsing and data init : " << elapsed << std::endl;

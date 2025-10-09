@@ -46,9 +46,6 @@ int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
     app.setStyle(new InstantMenuStyle(QStyleFactory::create("")));
     
-    std::string culture = R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\cultures)";
-    std::string religion = R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\religions)";
-    std::string religionANB = R"(E:\Games\Steam\steamapps\workshop\content\236850\1385440355\common\religions)";
 
     //FilePathHandler eu4FileHandler = FilePathHandlerFactory::createFPH("eu4", R"(E:\Games\Steam\steamapps\common\Europa Universalis IV)", R"(E:\Games)");
     //eu4FileHandler.addFilesFromFolder(culture);
@@ -57,17 +54,20 @@ int main(int argc, char* argv[]) {
 
     //auto test = eu4FileHandler.getExportPath("00_religion.txt");
 
-    FilePathHandler* test = nullptr;
-    StartupDialog startupBox = StartupDialog(test);
+    FilePathHandler* filePathHandler = nullptr;
+    StartupDialog startupBox = StartupDialog(filePathHandler);
     if (startupBox.exec() != QDialog::Accepted) {
-        delete test;
+        delete filePathHandler;
         return 0;
     }
 
 
 
     CultRelContainer cultRelContainer;
-    cultRelContainer.loadCultureData(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\cultures\00_cultures.txt)");
+
+
+    std::vector<fs::path> ket1 = filePathHandler->getPathsFromFolderKey(relative_path::eu4::common::CULTURES_);
+    cultRelContainer.loadCultureData(ket1);
     cultRelContainer.loadReligionData(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\religions\00_religion.txt)");
 
     CountryContainer countryContainer;
@@ -100,9 +100,11 @@ int main(int argc, char* argv[]) {
     window.setCentralWidget(centralWidget);
     window.setWindowTitle("Polybius ModTools");
     window.setMinimumSize(600, 400);
-    window.resize(1200, 800); // wider for large image
+    window.resize(1200, 800);
     window.show();
 
+
+    delete filePathHandler;
     return app.exec();
 
    

@@ -26,7 +26,7 @@ class StartupGameBox : public QWidget{
 public:
     StartupGameBox() = delete;
     ~StartupGameBox() = default;
-    StartupGameBox(FilePathHandler*& filePathHandler, QWidget* parent = nullptr);
+    StartupGameBox(FilePathHandler*& filePathHandler, QPushButton*& continueBtn, QWidget* parent = nullptr);
     
     
 public slots:
@@ -40,6 +40,7 @@ private:
     QLineEdit* mExportFolderEdit;
     QLabel* mStatusIndicator;
     QLabel* mStatusErrors;
+    QPushButton*& refContinueBtn;
 
     void loadWidgets(FilePathHandler*& filePathHandler);
 };

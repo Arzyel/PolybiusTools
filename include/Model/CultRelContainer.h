@@ -10,7 +10,11 @@
 #include <string>
 #include <cstdint>
 #include <functional>
+#include <filesystem>
 #include "Eu4MainParser.h"
+
+
+namespace fs = std::filesystem;
 
 struct sCulture {
     uint32_t packedRGB;
@@ -61,7 +65,7 @@ public:
     ~CultRelContainer() = default;
     
     void loadCultureData(const Node& node, const Eu4MainParser& parser);
-    void loadCultureData(const std::string& filePath);
+    void loadCultureData(const std::vector<fs::path>& filePaths);
     void loadReligionData(const std::string& religionFilePath);
 
     std::unordered_map<std::string, sCulture> mCultures;

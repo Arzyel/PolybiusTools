@@ -1,7 +1,7 @@
 ﻿#include "StartupGameBox.h"
 
-StartupGameBox::StartupGameBox(FilePathHandler*& filePathHandler, QWidget* parent)
-	:QWidget(parent)
+StartupGameBox::StartupGameBox(FilePathHandler*& filePathHandler, QPushButton*& continueBtn, QWidget* parent)
+	:QWidget(parent), refContinueBtn(continueBtn)
 {
     loadWidgets(filePathHandler);
 }
@@ -65,7 +65,6 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
     testLayout->addWidget(mStatusErrors);
     testLayout->setAlignment(Qt::AlignLeft);
 
-    // Add to your main layout
     mainLayout->addLayout(gameTypeLayout);
     mainLayout->addLayout(browseLayout);
     mainLayout->addLayout(expBrowseLayout);
@@ -73,7 +72,6 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
 
 
 
-    // Connect the button
     connect(browseBtn, &QPushButton::clicked, this, [this]() {
         QString folder = QFileDialog::getExistingDirectory(this, "Select Folder");
         if (!folder.isEmpty()) {
@@ -95,18 +93,20 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
         gameFolders.gameFolder = mGameFolderEdit->text().toStdString();
         gameFolders.exportFolder = mExportFolderEdit->text().toStdString();
 
-        //TODO add logic to check with the rules of the FileHandler
         try {
             mStatusErrors->setText("");
             filePathHandler = FilePathHandlerFactory::createFPH(GAMES[gameFolders.nameIndex], gameFolders.gameFolder,
                 gameFolders.exportFolder);
+            filePathHandler->initAllPaths();
             mStatusIndicator->setText("✓");
             mStatusIndicator->setStyleSheet("color: green; font-size: 30px;");
             mStatusErrors->setText("All folders and minimum file requirement met. Click Continue to open the program or go setup mods.");
+            refContinueBtn->setEnabled(true);
         }
         catch (const std::exception& e) {
             delete filePathHandler;
             filePathHandler = nullptr;
+            refContinueBtn->setEnabled(false);
             mStatusErrors->setText(e.what());
             mStatusIndicator->setText("✗");
             mStatusIndicator->setStyleSheet("color: red; font-size: 30px;");
@@ -114,11 +114,6 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
         catch (...) {
             std::cerr << "FilePathHandlerFactory CRITICAL: Unknown exception" << std::endl;
         }
-
-
-        
-
-
 
         });
 

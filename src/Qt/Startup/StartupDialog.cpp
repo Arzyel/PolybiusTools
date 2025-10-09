@@ -14,7 +14,7 @@ void StartupDialog::setupUI(FilePathHandler*& filePathHandler) {
 
 	QVBoxLayout* mainLayout = new QVBoxLayout(this);
 	QTabWidget* tabWidget = new QTabWidget(this);
-	StartupGameBox* GameTab = new StartupGameBox(filePathHandler, nullptr);
+	StartupGameBox* GameTab = new StartupGameBox(filePathHandler,mContinueButton, nullptr);
 
 	QWidget* ModTab = new QWidget();
 	QWidget* LoadTab = new QWidget();

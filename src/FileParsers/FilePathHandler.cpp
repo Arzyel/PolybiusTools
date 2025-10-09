@@ -2,6 +2,34 @@
 
 
 
+
+
+void FilePathHandler::initAllPaths()
+{
+    for (size_t i = 0; i < mRelativePaths.size(); i++)
+    {
+        const char* key = mRelativePaths.at(i);
+        fs::path path = mRoot;
+        path += fs::path(key);
+        if (!fs::exists(path)) {
+            throw std::runtime_error("Absolute Path does not exist : " + path.string());
+        }
+
+        if (fs::is_directory(path)) {
+            if (fs::is_empty(path)) {
+                throw std::runtime_error("No file present in folder : " + path.string());
+            }
+            addFilesFromFolder(path, key);
+        }
+        else if (fs::is_regular_file(path)) {
+            addPath(path, key);
+        }
+        else {
+            throw std::runtime_error("Unknown error at :  " + path.string());
+        }
+    }
+}
+
 fs::path FilePathHandler::getExportPath(const fs::path& filePath)
 {
     static const auto separator = fs::path::preferred_separator;
@@ -16,7 +44,6 @@ fs::path FilePathHandler::getExportPath(const fs::path& filePath)
         --ptr;
     }
 
-    //check optimisation in notes. basically create a bitmask to do bit operator && once 
     while (!exportRule[*ptr]) {
 
         if (*ptr == separator) {
@@ -28,11 +55,11 @@ fs::path FilePathHandler::getExportPath(const fs::path& filePath)
 
     
     
-    return fs::path(mRootExport) += fs::path(validatedRelative);
+    return mRootExport / validatedRelative;
 
 }
 
-void FilePathHandler::addFilesFromFolder(const fs::path& folderPath)
+void FilePathHandler::addFilesFromFolder(const fs::path& folderPath, const char* folderKey)
 {
     std::vector<fs::path> items;
     for (const auto& entry : fs::directory_iterator(folderPath)) {
@@ -44,11 +71,11 @@ void FilePathHandler::addFilesFromFolder(const fs::path& folderPath)
     std::ranges::sort(items);
 
     for (const auto& filePath : items) {
-        addPath(filePath);
+        addPath(filePath, folderKey);
     }
 }
 
-void FilePathHandler::addPath(const fs::path& path)
+void FilePathHandler::addPath(const fs::path& path, const char* folderKey)
 {
 
     if (!mPathToIndex.empty() && mPathToIndex.contains(path.filename())) {
@@ -57,6 +84,7 @@ void FilePathHandler::addPath(const fs::path& path)
     else {
         mAbsolutePaths.emplace_back(path);
         mPathToIndex[path.filename()] = mAbsolutePaths.size() - 1;
+        mOrderedByFolder[folderKey].push_back(mAbsolutePaths.size() - 1);
     }
 }
 
@@ -66,20 +94,11 @@ void FilePathHandler::removePath(const fs::path& path)
 
 FilePathHandler* FilePathHandlerFactory::createFPH(const std::string& game, const std::string& root, const std::string& rootExport)
 {
-    //try {
-        if (game == GAMES[0]) return create_eu4(root, rootExport);
-        if (game == GAMES[2]) return create_hoi4(root, rootExport);
-        if (game == GAMES[3]) return create_ck3(root, rootExport);
-        throw std::runtime_error(std::string("Invalid game choice : " + game));
-    //}
-    //catch(const std::exception& e){
-    //    std::cerr << "FilePathHandlerFactory CRITICAL: " << e.what() << std::endl;
-    //    std::abort();
-    //}
-    //catch(...) {
-    //    std::cerr << "FilePathHandlerFactory CRITICAL: Unknown exception" << std::endl;
-    //    std::abort();
-    //}
+    if (game == GAMES[0]) return create_eu4(root, rootExport);
+    if (game == GAMES[2]) return create_hoi4(root, rootExport);
+    if (game == GAMES[3]) return create_ck3(root, rootExport);
+    throw std::runtime_error(std::string("Invalid game choice : " + game));
+
 
 }
 
@@ -97,17 +116,27 @@ FilePathHandler* FilePathHandlerFactory::create_eu4(const std::string& root, con
             relative_path::eu4::common::RELIGIONS_,
             relative_path::eu4::common::TRADE_GOODS_,
             relative_path::eu4::common::TRADE_NODES_,
-            },
-            [](const std::filesystem::path& path) -> bool {
-                // TODO add logic
-                std::string pathStr = path.string();
-                return true;
-            },
-            [](const std::filesystem::path& path) -> bool {
-                // TODO add logic
-                std::string pathStr = path.string();
-                return true; 
-            });
+            relative_path::eu4::common::COUNTRY_TAGS_,
+            relative_path::eu4::history::PROVINCES_,
+            relative_path::eu4::history::COUNTRIES_,
+            relative_path::eu4::map::ADJACENCIES,
+            relative_path::eu4::map::AREA,
+            relative_path::eu4::map::CLIMATE,
+            relative_path::eu4::map::CONTINENT,
+            relative_path::eu4::map::DEFAULT,
+            relative_path::eu4::map::DEFINITION,
+            relative_path::eu4::map::POSITIONS,
+            relative_path::eu4::map::PROVINCEGROUP,
+            relative_path::eu4::map::PROVINCES,
+            relative_path::eu4::map::REGION,
+            relative_path::eu4::map::SEASONS,
+            relative_path::eu4::map::SUPERREGION,
+            relative_path::eu4::map::TERRAIN_TXT,
+            //relative_path::eu4::map::TERRAIN_BMP,
+            //relative_path::eu4::map::TRADE_WINDS,
+            //relative_path::eu4::map::TREES,
+            //relative_path::eu4::map::WORLD_NORMAL,
+             });
 
         return handler1;
     }
