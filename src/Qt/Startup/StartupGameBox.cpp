@@ -102,6 +102,8 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
             mStatusIndicator->setStyleSheet("color: green; font-size: 30px;");
             mStatusErrors->setText("All folders and minimum file requirement met. Click Continue to open the program or go setup mods.");
             refContinueBtn->setEnabled(true);
+            saveStartupPaths(gameFolders);
+
         }
         catch (const std::exception& e) {
             delete filePathHandler;
@@ -119,6 +121,61 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
 
 }
 
+void StartupGameBox::saveStartupPaths(GameFolders& gameFolders)
+{
+    std::cout << "Current directory: " << fs::current_path() << std::endl;
+
+    // Check each level
+    std::cout << "Exists '..': " << fs::exists("..") << std::endl;
+    std::cout << "Exists '../..': " << fs::exists("../..") << std::endl;
+    std::cout << "Exists 'init': " << fs::exists("init") << std::endl;
+    std::cout << "Exists 'init/startup.ini': " << fs::exists("init/startup.ini") << std::endl;
+
+    std::ifstream inFile(relative_path::STARTUP);
+    if (!inFile.is_open()) {
+        throw std::runtime_error("Error opening startup data file for reading");
+    }
+
+    std::string tempFilename = std::string(relative_path::STARTUP) + ".tmp";
+    std::ofstream outFile(tempFilename);
+    if (!outFile.is_open()) {
+        inFile.close();
+        throw std::runtime_error("Error creating temporary file for writing");
+    }
+
+    std::string line;
+    bool linePresent = false;
+    while (std::getline(inFile, line)) {
+        auto delimiter = line.find(';');
+        if (delimiter != std::string::npos &&
+            std::stoi(line.substr(0, delimiter)) == gameFolders.nameIndex) {
+            // Write updated line
+            outFile << std::to_string(gameFolders.nameIndex) << ";"
+                << gameFolders.gameFolder << ";"
+                << gameFolders.exportFolder << "\n";
+            linePresent = true;
+        }
+        else {
+            // Write original line
+            outFile << line << "\n";
+        }
+    }
+    if (!linePresent) {
+        outFile << std::to_string(gameFolders.nameIndex) << ";"
+            << gameFolders.gameFolder << ";"
+            << gameFolders.exportFolder << "\n";
+    }
+    inFile.close();
+    outFile.close();
+
+    // Replace original file with temporary file
+    if (std::remove(relative_path::STARTUP) != 0) {
+        throw std::runtime_error("Error replacing original file");
+    }
+    if (std::rename(tempFilename.c_str(), relative_path::STARTUP) != 0) {
+        throw std::runtime_error("Error renaming temporary file");
+    }
+}
 GameFolders StartupGameBox::getGameFoldersData()
 {
     GameFolders gameFolders;

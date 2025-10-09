@@ -44,6 +44,8 @@ namespace games_names {
 
 
 namespace relative_path {
+    constexpr const char* STARTUP = R"(init\startup.ini)";
+    constexpr const char* OPTIONS = R"(init\options.ini)";
     namespace eu4 {
         namespace common {
             constexpr const char* BUILDINGS_ = R"(\common\buildings)";

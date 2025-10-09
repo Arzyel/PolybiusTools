@@ -35,5 +35,5 @@ void CountryContainer::initializeData()
 
         tagToName[key] = value;
     }
-
+    file.close();
 }

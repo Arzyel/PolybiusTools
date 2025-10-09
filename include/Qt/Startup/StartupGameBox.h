@@ -11,6 +11,7 @@
 #include <QtWidgets\qlineedit.h>
 #include <string>
 #include <iostream>
+#include <fstream>
 
 #include "KEYS.h"
 #include "FilePathHandler.h"
@@ -43,6 +44,7 @@ private:
     QPushButton*& refContinueBtn;
 
     void loadWidgets(FilePathHandler*& filePathHandler);
+    void saveStartupPaths(GameFolders& gameFolders);
 };
 
 #endif // STARTUP_GAME_BOX_H
