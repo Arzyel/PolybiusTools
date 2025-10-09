@@ -42,9 +42,12 @@ private:
     QLabel* mStatusIndicator;
     QLabel* mStatusErrors;
     QPushButton*& refContinueBtn;
+    std::unordered_map<int, GameFolders> mSavedPaths;
 
     void loadWidgets(FilePathHandler*& filePathHandler);
     void saveStartupPaths(GameFolders& gameFolders);
+    int getStartupPaths();
+    void onGameTypeActivated(int index);
 };
 
 #endif // STARTUP_GAME_BOX_H

@@ -1,9 +1,6 @@
 ﻿#include "FilePathHandler.h"
 
 
-
-
-
 void FilePathHandler::initAllPaths()
 {
     for (size_t i = 0; i < mRelativePaths.size(); i++)
@@ -99,7 +96,6 @@ FilePathHandler* FilePathHandlerFactory::createFPH(const std::string& game, cons
     if (game == GAMES[3]) return create_ck3(root, rootExport);
     throw std::runtime_error(std::string("Invalid game choice : " + game));
 
-
 }
 
 FilePathHandler* FilePathHandlerFactory::create_eu4(const std::string& root, const std::string& rootExport)
@@ -148,19 +144,11 @@ FilePathHandler* FilePathHandlerFactory::create_eu4(const std::string& root, con
 FilePathHandler* FilePathHandlerFactory::create_hoi4(const std::string& root, const std::string& rootExport)
 {
     throw std::runtime_error("Hoi4 is not implemented");
-    try {
-    }
-    catch (const std::exception& e) {
 
-    }
 }
 
 FilePathHandler* FilePathHandlerFactory::create_ck3(const std::string& root, const std::string& rootExport)
 {
-    try {
-        throw std::runtime_error("Ck3 is not implemented");
-    }
-    catch (const std::exception& e) {
+    throw std::runtime_error("Ck3 is not implemented");
 
-    }
 }

@@ -20,6 +20,7 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
     for (auto& game : GAMES) {
         mGameType->addItem(game);
     }
+    
     gameName->setBuddy(mGameType);
     gameTypeLayout->addWidget(gameName);
     gameTypeLayout->addWidget(mGameType);
@@ -70,6 +71,11 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
     mainLayout->addLayout(expBrowseLayout);
     mainLayout->addLayout(testLayout);
 
+
+
+    getStartupPaths();
+    connect(mGameType, QOverload<int>::of(&QComboBox::activated),
+        this, &StartupGameBox::onGameTypeActivated);
 
 
     connect(browseBtn, &QPushButton::clicked, this, [this]() {
@@ -123,14 +129,6 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
 
 void StartupGameBox::saveStartupPaths(GameFolders& gameFolders)
 {
-    std::cout << "Current directory: " << fs::current_path() << std::endl;
-
-    // Check each level
-    std::cout << "Exists '..': " << fs::exists("..") << std::endl;
-    std::cout << "Exists '../..': " << fs::exists("../..") << std::endl;
-    std::cout << "Exists 'init': " << fs::exists("init") << std::endl;
-    std::cout << "Exists 'init/startup.ini': " << fs::exists("init/startup.ini") << std::endl;
-
     std::ifstream inFile(relative_path::STARTUP);
     if (!inFile.is_open()) {
         throw std::runtime_error("Error opening startup data file for reading");
@@ -149,14 +147,12 @@ void StartupGameBox::saveStartupPaths(GameFolders& gameFolders)
         auto delimiter = line.find(';');
         if (delimiter != std::string::npos &&
             std::stoi(line.substr(0, delimiter)) == gameFolders.nameIndex) {
-            // Write updated line
             outFile << std::to_string(gameFolders.nameIndex) << ";"
                 << gameFolders.gameFolder << ";"
                 << gameFolders.exportFolder << "\n";
             linePresent = true;
         }
         else {
-            // Write original line
             outFile << line << "\n";
         }
     }
@@ -168,7 +164,6 @@ void StartupGameBox::saveStartupPaths(GameFolders& gameFolders)
     inFile.close();
     outFile.close();
 
-    // Replace original file with temporary file
     if (std::remove(relative_path::STARTUP) != 0) {
         throw std::runtime_error("Error replacing original file");
     }
@@ -176,6 +171,64 @@ void StartupGameBox::saveStartupPaths(GameFolders& gameFolders)
         throw std::runtime_error("Error renaming temporary file");
     }
 }
+int StartupGameBox::getStartupPaths()
+{
+    std::ifstream startFile(relative_path::STARTUP);
+    if (!startFile.is_open())
+    {
+        return 1;
+    }
+
+    for (int i = 0; i < GAMES.size(); ++i) {
+        mSavedPaths[i];
+    }
+
+
+    std::string line;
+    while (std::getline(startFile, line))
+    {
+        if (line.empty()) continue;
+        GameFolders gameF;
+        const char* start = line.data();
+        const char* end = start + line.size();
+
+        const char* ptr = start;
+
+
+        std::string tempChars = "";
+        while (*ptr != ';') {
+            tempChars.push_back(*ptr);
+            ++ptr;
+        }
+        ++ptr;
+        gameF.nameIndex = std::stoi(tempChars);
+
+        while (*ptr != ';') {
+            gameF.gameFolder.push_back(*ptr);
+            ++ptr;
+        }
+        ++ptr;
+        while (ptr < end) {
+            gameF.exportFolder.push_back(*ptr);
+            ++ptr;
+        }
+
+        mSavedPaths[gameF.nameIndex] = gameF;
+    }
+    return 0;
+}
+
+void StartupGameBox::onGameTypeActivated(int index)
+{
+    if (mSavedPaths.contains(index)) {
+        GameFolders temp = mSavedPaths.at(index);
+        mGameFolderEdit->setText(QString::fromStdString(temp.gameFolder));
+        mExportFolderEdit->setText(QString::fromStdString(temp.exportFolder));
+    }
+
+}
+
+
 GameFolders StartupGameBox::getGameFoldersData()
 {
     GameFolders gameFolders;
