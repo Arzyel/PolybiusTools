@@ -29,10 +29,6 @@ public:
     ~StartupGameBox() = default;
     StartupGameBox(FilePathHandler*& filePathHandler, QPushButton*& continueBtn, QWidget* parent = nullptr);
     
-    
-public slots:
-    GameFolders getGameFoldersData();
-
 protected:
 
 private:

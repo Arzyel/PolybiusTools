@@ -33,7 +33,6 @@ inline static const char* handleBracketLists(const char* ptr,const char* end,
 
 		case '\n':
 		case '\t': {
-			// Only add space if buffer is not empty AND last char isn't already a space
 			if (!valueBuffer.empty() && valueBuffer.back() != ' ') {
 				valueBuffer.push_back(' ');
 			}
@@ -117,7 +116,6 @@ static int parseEu4File(const std::string& filePath, Callable callable) {
 					++ptr;
 				}
 				captureKey = true;
-				//std::cout << "Value : " << valueBuffer << "\n";
 				callable(keyStack, valueBuffer);
 				if (!keyStack.empty()) {
 					keyStack.pop_back();

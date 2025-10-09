@@ -1,0 +1,18 @@
+TODO
+
+- Add Mod page
+
+- Add Advanced mod options page
+
+- Add Options page
+
+- Refactor to use fileHandler and a master container
+
+- Refactor parsing that doesnt use the Eu4Parser static functions. Would need to make new callables to handle the keyData
+
+- Refactor Eu4Parser to use custom rules instead of multiples equivalences in ifs. PRIORITY : really low until profiling
+
+- Refactor data containers to be like location.h constructor to have the name of the file from where the data is coming from
+
+- Add new boxes
+
