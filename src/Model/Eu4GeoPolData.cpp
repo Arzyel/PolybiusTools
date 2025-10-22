@@ -1,6 +1,6 @@
-#include "GeoPolContainers.h"
+#include "Eu4GeoPolData.h"
 
-void GeoPolContainers::fillColorToID()
+void Eu4GeoPolData::fillColorToID()
 {
 	FILE* file = NULL;
 		errno_t err = fopen_s(&file, DEFINITIONS, "r");
@@ -38,12 +38,12 @@ void GeoPolContainers::fillColorToID()
 
 }
 
-uint16_t GeoPolContainers::getIDFromColor(uint32_t packedRGB) const
+uint16_t Eu4GeoPolData::getIDFromColor(uint32_t packedRGB) const
 {
 	return locColorToID.at(packedRGB);
 }
 
-void GeoPolContainers::initLocationData()
+void Eu4GeoPolData::initLocationData()
 {
 	auto start = std::chrono::high_resolution_clock::now();
 	std::cout << "Initiate Location Data from file\t----\t";

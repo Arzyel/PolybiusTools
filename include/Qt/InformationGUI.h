@@ -9,7 +9,7 @@
 #include <QtCore\qobject.h>
 #include <QtCore\qdebug.h>
 #include "LocMainWidget.h"
-#include "GeoPolContainers.h"
+#include "Eu4GeoPolData.h"
 #include "QtUtils.h"
 #include "CultRelContainer.h"
 #include "CountryContainer.h"
@@ -18,7 +18,7 @@
 class InformationGUI : public QTabWidget {
 	Q_OBJECT
 public:
-	InformationGUI(const GeoPolContainers& refGeoPolCont, const CultRelContainer& refCultRel, const CountryContainer& countryContainer, QWidget* parent = nullptr);
+	InformationGUI(const Eu4GeoPolData& refGeoPolCont, const CultRelContainer& refCultRel, const CountryContainer& countryContainer, QWidget* parent = nullptr);
 	void loadWidgets();
 	void loadProvInfo (const Location& location) const;
 	void initialiseWidgetsInfo();
@@ -29,7 +29,7 @@ signals:
 	void signalInitOwnership(const std::unordered_map<std::string, std::string>& data) const;
 protected:
 private:
-	const GeoPolContainers& mRefGeoPolCont;
+	const Eu4GeoPolData& mRefGeoPolCont;
 	const CultRelContainer& mRefCultRelCont;
 	const CountryContainer& mRefCountryContainer;
 };

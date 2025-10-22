@@ -69,7 +69,7 @@
     <ClCompile Include="src\Qt\TopMenuBar.cpp">
       <Filter>Fichiers sources\Qt</Filter>
     </ClCompile>
-    <ClCompile Include="src\Model\GeoPolContainers.cpp">
+    <ClCompile Include="src\Model\Eu4GeoPolData.cpp">
       <Filter>Fichiers sources\Model</Filter>
     </ClCompile>
     <ClCompile Include="src\Model\Location.cpp">
@@ -164,7 +164,7 @@
     <ClInclude Include="include\Model\Location.h">
       <Filter>Fichiers d%27en-tête\Model</Filter>
     </ClInclude>
-    <ClInclude Include="include\Model\GeoPolContainers.h">
+    <ClInclude Include="include\Model\Eu4GeoPolData.h">
       <Filter>Fichiers d%27en-tête\Model</Filter>
     </ClInclude>
     <ClInclude Include="include\Utils\SimpleParser.h">

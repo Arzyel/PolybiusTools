@@ -1,6 +1,6 @@
 #pragma once
-#ifndef GEO_POL_CONTAINER_H
-#define GEO_POL_CONTAINER_H
+#ifndef EU4_GEO_POL_DATA_H
+#define EU4_GEO_POL_DATA_H
 
 #include <unordered_map>
 #include <stdint.h>
@@ -24,7 +24,7 @@ struct InformationBuffer {
 	std::unordered_map<uint16_t, Location> mLocations;
 };
 
-class GeoPolContainers {
+class Eu4GeoPolData {
 public:
 	void fillColorToID();
 	uint16_t getIDFromColor(uint32_t packedRGB) const;
@@ -41,4 +41,4 @@ private:
 	
 };
 
-#endif // !GEO_POL_CONTAINER_H
+#endif // !EU4_GEO_POL_DATA_H

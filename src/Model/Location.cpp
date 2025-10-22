@@ -79,10 +79,8 @@ void Location::handleKeyData(const std::vector<std::string>& keyStack, const std
         
         break;
     case ADD_PROVINCE_TRIGGERED_MODIFIER_HASH:
-        
         break;
     case EXTRA_COST_HASH:
-        
         break;
 
     default:

@@ -16,3 +16,9 @@ TODO
 
 - Add new boxes
 
+- Refactor to add province name on click inside the corresponding box
+
+- Refactor to order the QComboBoxes by alphabetical order
+
+- Add persistant data for last game selected
+

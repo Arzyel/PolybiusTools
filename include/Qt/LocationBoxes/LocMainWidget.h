@@ -6,7 +6,7 @@
 #include <QtWidgets\qgroupbox.h>
 #include <QtWidgets\qpushbutton.h>
 #include <QtWidgets\qlabel.h>
-#include "GeoPolContainers.h"
+#include "Eu4GeoPolData.h"
 #include "Location.h"
 #include "LocInfoBoxes.h"
 

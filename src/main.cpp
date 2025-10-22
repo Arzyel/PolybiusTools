@@ -26,7 +26,7 @@
 #include "ImageViewa.h"
 #include "TopMenuBar.h"
 #include "filenfolder_CONST.h"
-#include "GeoPolContainers.h"
+#include "Eu4GeoPolData.h"
 #include "InformationGUI.h"
 #include "CultRelContainer.h"
 #include "Eu4MainParser.h"
@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
     CountryContainer countryContainer;
     countryContainer.initializeData();
 
-    GeoPolContainers geoPolContainers;
+    Eu4GeoPolData geoPolContainers;
     geoPolContainers.fillColorToID();
     geoPolContainers.initLocationData();
 
@@ -100,7 +100,7 @@ int main(int argc, char* argv[]) {
     window.setCentralWidget(centralWidget);
     window.setWindowTitle("Polybius ModTools");
     window.setMinimumSize(600, 400);
-    window.resize(1200, 800);
+    window.resize(1600, 800);
     window.show();
 
 

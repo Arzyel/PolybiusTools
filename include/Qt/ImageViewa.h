@@ -13,7 +13,7 @@
 #include <cmath>
 #include <chrono>
 #include <omp.h>
-#include "GeoPolContainers.h"
+#include "Eu4GeoPolData.h"
 #include "InformationGUI.h"
 #include "FileOpener.h"
 
@@ -24,7 +24,7 @@ struct PixelPos { uint16_t x, y; };
 
 class ImageView : public QGraphicsView {
 public:
-    ImageView(const QString& imagePath, const GeoPolContainers& geoPolContainers, const InformationGUI& informationGUI,QWidget* parent = nullptr);
+    ImageView(const QString& imagePath, const Eu4GeoPolData& geoPolContainers, const InformationGUI& informationGUI,QWidget* parent = nullptr);
     ~ImageView();
 
 protected:
@@ -59,7 +59,7 @@ private:
     int activeMapModeOverlay = -1;
     QVector<QImage> mapModeOverlays;
     QVector<QColor> mapModeColors;
-    const GeoPolContainers& mRefGeoPolCont;
+    const Eu4GeoPolData& mRefGeoPolCont;
     const InformationGUI& mRefInfoGUI;
 };
 

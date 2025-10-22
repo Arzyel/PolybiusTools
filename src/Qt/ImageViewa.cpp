@@ -2,7 +2,7 @@
 
 
 // ----------------------- CONSTRUCTOR -----------------------
-ImageView::ImageView(const QString& imagePath, const GeoPolContainers& geoPolContainers, const InformationGUI& informationGUI, QWidget* parent)
+ImageView::ImageView(const QString& imagePath, const Eu4GeoPolData& geoPolContainers, const InformationGUI& informationGUI, QWidget* parent)
     : QGraphicsView(parent), mRefGeoPolCont(geoPolContainers), mRefInfoGUI(informationGUI)
 {
     QPixmap pix(imagePath);

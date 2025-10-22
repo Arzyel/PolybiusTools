@@ -3,7 +3,7 @@
 
 
 
-InformationGUI::InformationGUI(const GeoPolContainers& refGeoPolCont, const CultRelContainer&  refCultRel, const CountryContainer& countryContainer, QWidget* parent)
+InformationGUI::InformationGUI(const Eu4GeoPolData& refGeoPolCont, const CultRelContainer&  refCultRel, const CountryContainer& countryContainer, QWidget* parent)
 	:QTabWidget(parent), mRefGeoPolCont(refGeoPolCont), mRefCultRelCont(refCultRel), mRefCountryContainer(countryContainer)
 {
 

@@ -172,7 +172,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Model\CountryContainer.cpp" />
     <ClCompile Include="src\Model\CultRelContainer.cpp" />
-    <ClCompile Include="src\Model\GeoPolContainers.cpp" />
+    <ClCompile Include="src\Model\Eu4GeoPolData.cpp" />
     <ClCompile Include="src\Model\Location.cpp" />
     <ClCompile Include="src\Qt\ImageViewa.cpp" />
     <ClCompile Include="src\Qt\InformationGUI.cpp" />
@@ -205,7 +205,7 @@
     <ClInclude Include="include\FileParsers\FilePathHandler.h" />
     <ClInclude Include="include\Model\CountryContainer.h" />
     <ClInclude Include="include\Model\CultRelContainer.h" />
-    <ClInclude Include="include\Model\GeoPolContainers.h" />
+    <ClInclude Include="include\Model\Eu4GeoPolData.h" />
     <ClInclude Include="include\Model\Location.h" />
     <ClInclude Include="include\Qt\ImageViewa.h" />
     <QtMoc Include="include\Qt\InformationGUI.h" />

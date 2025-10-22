@@ -20,6 +20,7 @@ struct Development {
 
 class Location {
 public:
+
 	void initFromFile(const std::string& eu4UID, const uint32_t& rgbValue,
 		const std::string& filePath, const std::string& name);
 	uint32_t packRGB(const std::array<uint8_t, 3>& rgbs);
