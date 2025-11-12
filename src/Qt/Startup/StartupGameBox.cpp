@@ -98,6 +98,8 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
         gameFolders.nameIndex = mGameType->currentIndex();
         gameFolders.gameFolder = mGameFolderEdit->text().toStdString();
         gameFolders.exportFolder = mExportFolderEdit->text().toStdString();
+        delete filePathHandler;
+        filePathHandler = nullptr;
 
         try {
             mStatusErrors->setText("");
