@@ -11,19 +11,23 @@
 #include "Eu4GeoPolData.h"
 #include "InformationGUI.h"
 #include "ImageViewa.h"
+#include "GameData.h"
+#include "Data.h"
+#include "KEYS.h"
 
 class MainApp : public QMainWindow{
     Q_OBJECT
 public:
     MainApp(const QApplication& app, FilePathHandler*& filePathHandler, QWidget* parent = nullptr);
-    ~MainApp() = default;
+    ~MainApp();
 
 protected:
 
 private:
-    Eu4GeoPolData geoPolContainers;
-    CountryContainer countryContainer;
-    CultRelContainer cultRelContainer;
+    //Eu4GeoPolData geoPolContainers;
+    //CountryContainer countryContainer;
+    //CultRelContainer cultRelContainer;
+    GameData* gameData = nullptr;
 
     void LoadWidgets();
     void InitWidgets();

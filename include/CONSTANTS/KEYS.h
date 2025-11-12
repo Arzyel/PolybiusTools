@@ -77,7 +77,7 @@ constexpr uint32_t EXTRA_COST_HASH = hash_const(EXTRA_COST_CHAR);
 
 
 constexpr std::array<const char*, 4> GAMES = {
-	"Europa Univeralis IV",
+	"Europa Universalis IV",
 	"Europa Universalis V",
 	"Hearts of Iron IV",
 	"Crusader Kings III"

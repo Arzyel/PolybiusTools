@@ -91,14 +91,14 @@ void FilePathHandler::removePath(const fs::path& path)
 
 FilePathHandler* FilePathHandlerFactory::createFPH(const std::string& game, const std::string& root, const std::string& rootExport)
 {
-    if (game == GAMES[0]) return create_eu4(root, rootExport);
+    if (game == GAMES[0]) return create_eu4(game, root, rootExport);
     if (game == GAMES[2]) return create_hoi4(root, rootExport);
     if (game == GAMES[3]) return create_ck3(root, rootExport);
     throw std::runtime_error(std::string("Invalid game choice : " + game));
 
 }
 
-FilePathHandler* FilePathHandlerFactory::create_eu4(const std::string& root, const std::string& rootExport)
+FilePathHandler* FilePathHandlerFactory::create_eu4(const std::string& game, const std::string& root, const std::string& rootExport)
 {
     try {
         if (!fs::exists(root)) {
@@ -132,7 +132,7 @@ FilePathHandler* FilePathHandlerFactory::create_eu4(const std::string& root, con
             //relative_path::eu4::map::TRADE_WINDS,
             //relative_path::eu4::map::TREES,
             //relative_path::eu4::map::WORLD_NORMAL,
-             });
+             }, game);
 
         return handler1;
     }

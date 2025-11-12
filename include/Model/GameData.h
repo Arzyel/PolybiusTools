@@ -7,10 +7,10 @@
 class GameData {
 public:
     GameData() = default;
-    ~GameData() = default;
+    virtual ~GameData() = default;
 
 protected:
-
+    const char* mGameName;
 private:
 
 };

@@ -128,7 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup;include\Qt\MainApp\Global;include\Qt\MainApp\Eu4</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup;include\Qt\MainApp\Global;include\Qt\MainApp\Eu4;include\Model\Eu4</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus
  %(AdditionalOptions)</AdditionalOptions>
@@ -150,7 +150,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup;include\Qt\MainApp\Global;include\Qt\MainApp\Eu4</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup;include\Qt\MainApp\Global;include\Qt\MainApp\Eu4;include\Model\Eu4</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus
  %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -173,6 +173,7 @@
     <ClCompile Include="src\Model\CountryContainer.cpp" />
     <ClCompile Include="src\Model\CultRelContainer.cpp" />
     <ClCompile Include="src\Model\Eu4GeoPolData.cpp" />
+    <ClCompile Include="src\Model\Eu4\Data.cpp" />
     <ClCompile Include="src\Model\Location.cpp" />
     <ClCompile Include="src\Qt\ImageViewa.cpp" />
     <ClCompile Include="src\Qt\InformationGUI.cpp" />
@@ -210,6 +211,8 @@
     <ClInclude Include="include\Model\CountryContainer.h" />
     <ClInclude Include="include\Model\CultRelContainer.h" />
     <ClInclude Include="include\Model\Eu4GeoPolData.h" />
+    <ClInclude Include="include\Model\Eu4\Data.h" />
+    <ClInclude Include="include\Model\GameData.h" />
     <ClInclude Include="include\Model\Location.h" />
     <ClInclude Include="include\Qt\ImageViewa.h" />
     <QtMoc Include="include\Qt\InformationGUI.h" />

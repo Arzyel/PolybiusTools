@@ -9,15 +9,18 @@ MainApp::MainApp(const QApplication& app, FilePathHandler*& filePathHandler, QWi
     TopMenuBar* menuBar = new TopMenuBar(app, this);
     menuBar->setupMenus();
     setMenuBar(menuBar);
+    
+    // when remaking the class and methods adjust with specific GameData right now they all work with Eu4::Data
+    auto data = dynamic_cast<Eu4::Data*>(gameData);
 
-    InformationGUI* rightMainArea = new InformationGUI(geoPolContainers, cultRelContainer, countryContainer);
+    InformationGUI* rightMainArea = new InformationGUI(data->mGeoPolData, data->mCultRelData, data->mCountryData);
     rightMainArea->loadWidgets();
     rightMainArea->initialiseWidgetsInfo();
 
     // Main layout
     QWidget* centralWidget = new QWidget;
     QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
-    mainLayout->addWidget(new ImageView(PROVINCE_MAP_FILE, geoPolContainers, *rightMainArea), 2);      // left: ImageView
+    mainLayout->addWidget(new ImageView(PROVINCE_MAP_FILE, data->mGeoPolData, *rightMainArea), 2);      // left: ImageView
     mainLayout->addWidget(rightMainArea, 1);  // right: Tabs
 
     // Attach to QMainWindow
@@ -26,6 +29,11 @@ MainApp::MainApp(const QApplication& app, FilePathHandler*& filePathHandler, QWi
     setMinimumSize(600, 400);
     resize(1600, 800);
     show();
+}
+
+MainApp::~MainApp()
+{
+    delete gameData;
 }
 
 void MainApp::LoadWidgets()
@@ -40,12 +48,10 @@ void MainApp::InitWidgets()
 
 void MainApp::InitData(FilePathHandler*& filePathHandler)
 {
-    std::vector<fs::path> ket1 = filePathHandler->getPathsFromFolderKey(relative_path::eu4::common::CULTURES_);
-    cultRelContainer.loadCultureData(ket1);
-    cultRelContainer.loadReligionData(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\religions\00_religion.txt)");
-    
-    countryContainer.initializeData();
-
-    geoPolContainers.fillColorToID();
-    geoPolContainers.initLocationData();
+    if (filePathHandler->mGame == GAMES[0]) {
+        gameData = new Eu4::Data(filePathHandler);
+    }
+    else {
+        throw std::runtime_error("Wrong Game type");
+    }
 }

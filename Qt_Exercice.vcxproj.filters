@@ -76,6 +76,12 @@
     <Filter Include="Fichiers sources\Qt\MainApp\Eu4">
       <UniqueIdentifier>{8454de05-edb2-428d-b92e-6f7f25f25e77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Model\Eu4">
+      <UniqueIdentifier>{08ed58d4-ac74-4758-9083-9f41534dfe7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Model\Eu4">
+      <UniqueIdentifier>{78489943-bbbf-4260-b2d3-77f85ed2af97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -177,6 +183,9 @@
     <ClCompile Include="src\Qt\MainApp\Global\TechInfo.cpp">
       <Filter>Fichiers sources\Qt\MainApp\Global</Filter>
     </ClCompile>
+    <ClCompile Include="src\Model\Eu4\Data.cpp">
+      <Filter>Fichiers sources\Model\Eu4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Qt\ImageViewa.h">
@@ -192,9 +201,6 @@
       <Filter>Fichiers d%27en-tête\CONSTANTS</Filter>
     </ClInclude>
     <ClInclude Include="include\Model\Location.h">
-      <Filter>Fichiers d%27en-tête\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Model\Eu4GeoPolData.h">
       <Filter>Fichiers d%27en-tête\Model</Filter>
     </ClInclude>
     <ClInclude Include="include\Utils\SimpleParser.h">
@@ -221,9 +227,6 @@
     <ClInclude Include="FlowLayout.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\Model\CultRelContainer.h">
-      <Filter>Fichiers d%27en-tête\Model</Filter>
-    </ClInclude>
     <ClInclude Include="include\FileParsers\FileParser.h">
       <Filter>Fichiers d%27en-tête\FileParsers</Filter>
     </ClInclude>
@@ -235,9 +238,6 @@
     </ClInclude>
     <ClInclude Include="include\FileParsers\Eu4\Eu4ReligionParser.h">
       <Filter>Fichiers d%27en-tête\FileParsers\Eu4</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Model\CountryContainer.h">
-      <Filter>Fichiers d%27en-tête\Model</Filter>
     </ClInclude>
     <ClInclude Include="include\CONSTANTS\KEYS.h">
       <Filter>Fichiers d%27en-tête\CONSTANTS</Filter>
@@ -271,6 +271,21 @@
     </ClInclude>
     <ClInclude Include="include\Qt\MainApp\Global\TechInfo.h">
       <Filter>Fichiers d%27en-tête\Qt\MainApp\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\Eu4\Data.h">
+      <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\GameData.h">
+      <Filter>Fichiers d%27en-tête\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\Eu4GeoPolData.h">
+      <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\CountryContainer.h">
+      <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\CultRelContainer.h">
+      <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
