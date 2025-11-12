@@ -58,6 +58,24 @@
     <Filter Include="Fichiers sources\Qt\Startup">
       <UniqueIdentifier>{e8175af8-a7ca-495d-8596-7ae1e4126dbf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Qt\MainApp">
+      <UniqueIdentifier>{765e30b6-31fa-491c-beae-c8752d236760}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Qt\MainApp\Global">
+      <UniqueIdentifier>{904d6d52-7d7d-49d2-88f4-bad38a504f59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Qt\MainApp\Eu4">
+      <UniqueIdentifier>{e219f11b-9806-443f-9289-68c7a6369778}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Qt\MainApp">
+      <UniqueIdentifier>{463ff68a-ca3d-428f-8b3f-8b0b979f09af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Qt\MainApp\Global">
+      <UniqueIdentifier>{9cebd36f-d196-4979-8123-65f3ab718880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Qt\MainApp\Eu4">
+      <UniqueIdentifier>{8454de05-edb2-428d-b92e-6f7f25f25e77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -147,6 +165,18 @@
     <ClCompile Include="src\FileParsers\FilePathHandler.cpp">
       <Filter>Fichiers sources\FileParsers</Filter>
     </ClCompile>
+    <ClCompile Include="src\Qt\MainApp\Global\MainApp.cpp">
+      <Filter>Fichiers sources\Qt\MainApp\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\MainApp\Global\SGPUnitInfoBoxes.cpp">
+      <Filter>Fichiers sources\Qt\MainApp\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\MainApp\Global\SGPUnitMainWidget.cpp">
+      <Filter>Fichiers sources\Qt\MainApp\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\MainApp\Global\TechInfo.cpp">
+      <Filter>Fichiers sources\Qt\MainApp\Global</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Qt\ImageViewa.h">
@@ -233,6 +263,15 @@
     <ClInclude Include="include\FileParsers\FilePathHandler.h">
       <Filter>Fichiers d%27en-tête\FileParsers</Filter>
     </ClInclude>
+    <ClInclude Include="include\Qt\MainApp\Global\SGPUnitInfoBoxes.h">
+      <Filter>Fichiers d%27en-tête\Qt\MainApp\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\MainApp\Global\SGPUnitMainWidget.h">
+      <Filter>Fichiers d%27en-tête\Qt\MainApp\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\MainApp\Global\TechInfo.h">
+      <Filter>Fichiers d%27en-tête\Qt\MainApp\Global</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -261,6 +300,9 @@
     </QtMoc>
     <QtMoc Include="include\Qt\Startup\StartupGameBox.h">
       <Filter>Fichiers d%27en-tête\Qt\Startup</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\MainApp\Global\MainApp.h">
+      <Filter>Fichiers d%27en-tête\Qt\MainApp\Global</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

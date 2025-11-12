@@ -128,7 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup;include\Qt\MainApp\Global;include\Qt\MainApp\Eu4</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus
  %(AdditionalOptions)</AdditionalOptions>
@@ -150,7 +150,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup;include\Qt\MainApp\Global;include\Qt\MainApp\Eu4</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus
  %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -186,6 +186,10 @@
     <ClCompile Include="src\Qt\LocationBoxes\ProvOthersBox.cpp" />
     <ClCompile Include="src\Qt\LocationBoxes\TechInfoBox.cpp" />
     <ClCompile Include="src\Qt\LocationBoxes\TradeBox.cpp" />
+    <ClCompile Include="src\Qt\MainApp\Global\MainApp.cpp" />
+    <ClCompile Include="src\Qt\MainApp\Global\SGPUnitInfoBoxes.cpp" />
+    <ClCompile Include="src\Qt\MainApp\Global\SGPUnitMainWidget.cpp" />
+    <ClCompile Include="src\Qt\MainApp\Global\TechInfo.cpp" />
     <ClCompile Include="src\Qt\Startup\StartupDialog.cpp" />
     <ClCompile Include="src\Qt\Startup\StartupGameBox.cpp" />
     <ClCompile Include="src\Qt\Startup\StartupLoadBox.cpp" />
@@ -222,6 +226,10 @@
     <ClInclude Include="include\Qt\LocationBoxes\TradeBox.h" />
     <QtMoc Include="include\Qt\Startup\StartupDialog.h" />
     <QtMoc Include="include\Qt\Startup\StartupGameBox.h" />
+    <QtMoc Include="include\Qt\MainApp\Global\MainApp.h" />
+    <ClInclude Include="include\Qt\MainApp\Global\SGPUnitInfoBoxes.h" />
+    <ClInclude Include="include\Qt\MainApp\Global\SGPUnitMainWidget.h" />
+    <ClInclude Include="include\Qt\MainApp\Global\TechInfo.h" />
     <ClInclude Include="include\Qt\Startup\StartupLoadBox.h" />
     <ClInclude Include="include\Qt\Startup\StartupModBox.h" />
     <ClInclude Include="include\Qt\Startup\StartupOptionBox.h" />
