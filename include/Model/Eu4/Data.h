@@ -14,7 +14,8 @@ namespace Eu4 {
         ~Data() = default;
         CountryContainer mCountryData;
         CultRelContainer mCultRelData;
-        Eu4GeoPolData mGeoPolData;
+        Eu4::GeoPolData mGeoPolData;
+        //Eu4::GeoPolData mGeoPolTest;
     protected:
 
     private:

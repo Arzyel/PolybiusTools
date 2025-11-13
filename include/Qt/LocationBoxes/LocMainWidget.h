@@ -7,7 +7,7 @@
 #include <QtWidgets\qpushbutton.h>
 #include <QtWidgets\qlabel.h>
 #include "Eu4GeoPolData.h"
-#include "Location.h"
+#include "Eu4GeoPolUnits.h"
 #include "LocInfoBoxes.h"
 
 class LocMainWidget : public QWidget {
@@ -17,7 +17,7 @@ public:
 	void loadWidgets();
 
 public slots:
-	void loadProvInfo(const Location& location);
+	void loadProvInfo(const Eu4::Province& province);
 protected:
 private:
 };

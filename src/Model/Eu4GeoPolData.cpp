@@ -75,3 +75,92 @@ void Eu4GeoPolData::initLocationData()
 
 
 
+///---------------------TEST new version -----------------------------//////////
+
+void Eu4::GeoPolData::fillColorToID() {
+	FILE* file = NULL;
+	errno_t err = fopen_s(&file, DEFINITIONS, "r");
+	if (err != 0 || file == NULL) {
+		perror("Failed to open file");
+		return;
+	}
+	char line[256];
+	uint16_t provID;
+	uint8_t R;
+	uint8_t G;
+	uint8_t B;
+
+
+	if (fgets(line, sizeof(line), file) == NULL) {
+		fclose(file);
+		throw std::runtime_error("Empty definition.csv file");
+	}
+
+	while (fgets(line, sizeof(line), file)) {
+		int n = sscanf_s(line, "%hu;%hhu;%hhu;%hhu;", &provID, &R, &G, &B);
+		if (n == 4) {
+			uint32_t packedRGB = (R << 16) | (G << 8) | B;
+			mProvColorToUID.insert(std::make_pair(packedRGB, provID));
+			mProvUIDToColor.insert(std::make_pair(provID, packedRGB));
+		}
+		else {
+			throw std::runtime_error("Invalid definition.csv file");
+		}
+	}
+	fclose(file);
+}
+
+uint16_t Eu4::GeoPolData::getIDFromColor(uint32_t packedRGB) const{
+	return mProvColorToUID.at(packedRGB);
+}
+
+void Eu4::GeoPolData::initData() {
+	initDataProvinces();
+	initDataAreas();
+	initDataRegions();
+	initDataSuperRegions();
+	initDataContinents();
+}
+
+const Eu4::Province& Eu4::GeoPolData::getProvinceData(const int& UID) const {
+	return mProvinces.at(UID);
+}
+
+void Eu4::GeoPolData::initDataProvinces() {
+	auto start = std::chrono::high_resolution_clock::now();
+	std::cout << "Initiate Province Data from file\t----\t";
+	mProvinces.clear();
+	mProvinces.resize(mProvUIDToColor.size() + 1);
+
+	// No copy - reuse vector
+	std::vector<std::tuple<uint16_t, std::string, std::filesystem::path>> fileData;
+	SimpleParser::getNumberedTxtFiles(fileData, PROV_HISTORY_FOLDER);
+
+	std::for_each(std::execution::par, fileData.begin(), fileData.end(),
+		[&](const auto& tuple) {
+			const auto& [provUID, name, path] = tuple;
+			mProvinces.at(provUID).initFromFile(
+				std::to_string(provUID),
+				mProvUIDToColor.at(provUID),
+				path.string(),
+				name
+			);
+		}
+	);
+
+	auto end = std::chrono::high_resolution_clock::now();
+	auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+	std::cout << "Elapsed Time : " << elapsed.count() << " ms" << std::endl;
+}
+void Eu4::GeoPolData::initDataAreas() {
+
+}
+void Eu4::GeoPolData::initDataRegions() {
+
+}
+void Eu4::GeoPolData::initDataSuperRegions() {
+
+}
+void Eu4::GeoPolData::initDataContinents() {
+
+}

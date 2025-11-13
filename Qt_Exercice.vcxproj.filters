@@ -186,6 +186,9 @@
     <ClCompile Include="src\Model\Eu4\Data.cpp">
       <Filter>Fichiers sources\Model\Eu4</Filter>
     </ClCompile>
+    <ClCompile Include="src\Model\Eu4\Eu4GeoPolUnits.cpp">
+      <Filter>Fichiers sources\Model\Eu4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Qt\ImageViewa.h">
@@ -285,6 +288,12 @@
       <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
     </ClInclude>
     <ClInclude Include="include\Model\CultRelContainer.h">
+      <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\GeoPolUnit.h">
+      <Filter>Fichiers d%27en-tête\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\Eu4\Eu4GeoPolUnits.h">
       <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
     </ClInclude>
   </ItemGroup>

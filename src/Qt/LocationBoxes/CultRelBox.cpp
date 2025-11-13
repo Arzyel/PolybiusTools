@@ -57,13 +57,13 @@ void CultRelBox::initializeData(const std::unordered_map<std::string, sCulture>&
 	}
 }
 
-void CultRelBox::loadProvInfo(const Location& location) {
-	int index = cultCBox->findText(location.eu4CultureID.c_str());
+void CultRelBox::loadProvInfo(const Eu4::Province& province) {
+	int index = cultCBox->findText(province.mCultureID.c_str());
 	if (index != 1) {
 		cultCBox->setCurrentIndex(index);
 	}
 
-	int indexRel = relCBox->findText(location.eu4ReligionID.c_str());
+	int indexRel = relCBox->findText(province.mReligionID.c_str());
 	if (indexRel != 1) {
 		relCBox->setCurrentIndex(indexRel);
 	}

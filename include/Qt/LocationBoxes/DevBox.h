@@ -8,7 +8,7 @@
 #include <QtWidgets\qlabel.h>
 #include <QtWidgets\qpushbutton.h>
 #include <random>
-#include "Location.h"
+#include "Eu4GeoPolUnits.h"
 
 
 //TODO refactor random out of the class
@@ -21,7 +21,7 @@ public:
     void loadWidgets();
 
 public slots:
-    void loadDevInfo(const Location& location);
+    void loadDevInfo(const Eu4::Province& province);
 protected:
 
 private:

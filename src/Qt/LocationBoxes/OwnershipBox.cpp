@@ -57,13 +57,13 @@ void OwnershipBox::initializeData(const std::unordered_map<std::string, std::str
 
 }
 
-void OwnershipBox::loadProvInfo(const Location& location) {
-	int index = ownerBox->findText(location.eu4OwnerID.c_str(), Qt::MatchStartsWith);
+void OwnershipBox::loadProvInfo(const Eu4::Province& province) {
+	int index = ownerBox->findText(province.mOwnerID.c_str(), Qt::MatchStartsWith);
 	if (index != 1) {
 		ownerBox->setCurrentIndex(index);
 	}
 
-	int index2 = controllerBox->findText(location.eu4ControllerID.c_str(), Qt::MatchStartsWith);
+	int index2 = controllerBox->findText(province.mControllerID.c_str(), Qt::MatchStartsWith);
 	if (index2 != 1) {
 		controllerBox->setCurrentIndex(index2);
 	}

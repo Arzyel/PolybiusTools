@@ -6,7 +6,7 @@
 #include <QtWidgets\qcombobox.h>
 #include <QtWidgets\qlabel.h>
 #include "CultRelContainer.h"
-#include "Location.h"
+#include "Eu4GeoPolUnits.h"
 
 
 class CultRelBox : public QGroupBox{
@@ -19,7 +19,7 @@ public:
 public slots:
     void initializeData(const std::unordered_map<std::string, sCulture>& cultureData,
         const std::unordered_map<std::string, sReligion>& religionData);
-    void loadProvInfo(const Location& location);
+    void loadProvInfo(const Eu4::Province& province);
 protected:
 
 private:

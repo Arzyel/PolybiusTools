@@ -24,7 +24,7 @@ struct PixelPos { uint16_t x, y; };
 
 class ImageView : public QGraphicsView {
 public:
-    ImageView(const QString& imagePath, const Eu4GeoPolData& geoPolContainers, const InformationGUI& informationGUI,QWidget* parent = nullptr);
+    ImageView(const QString& imagePath, const Eu4::GeoPolData& geoPolContainers, const InformationGUI& informationGUI,QWidget* parent = nullptr);
     ~ImageView();
 
 protected:
@@ -59,7 +59,7 @@ private:
     int activeMapModeOverlay = -1;
     QVector<QImage> mapModeOverlays;
     QVector<QColor> mapModeColors;
-    const Eu4GeoPolData& mRefGeoPolCont;
+    const Eu4::GeoPolData& mRefGeoPolCont;
     const InformationGUI& mRefInfoGUI;
 };
 

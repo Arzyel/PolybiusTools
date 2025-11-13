@@ -3,7 +3,7 @@
 
 
 
-InformationGUI::InformationGUI(const Eu4GeoPolData& refGeoPolCont, const CultRelContainer&  refCultRel, const CountryContainer& countryContainer, QWidget* parent)
+InformationGUI::InformationGUI(const Eu4::GeoPolData& refGeoPolCont, const CultRelContainer&  refCultRel, const CountryContainer& countryContainer, QWidget* parent)
 	:QTabWidget(parent), mRefGeoPolCont(refGeoPolCont), mRefCultRelCont(refCultRel), mRefCountryContainer(countryContainer)
 {
 
@@ -68,9 +68,9 @@ void InformationGUI::loadWidgets()
 	
 }
 
-void InformationGUI::loadProvInfo(const Location& location) const
+void InformationGUI::loadProvInfo(const Eu4::Province& province) const
 {
-	signalLoadInfo(location);
+	signalLoadInfo(province);
 }
 
 void InformationGUI::initialiseWidgetsInfo()

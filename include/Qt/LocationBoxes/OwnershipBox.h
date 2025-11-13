@@ -5,10 +5,10 @@
 #include <QtWidgets\qboxlayout.h>
 #include <QtWidgets\qcombobox.h>
 #include <QtWidgets\qlabel.h>
-#include "CultRelContainer.h"
-#include "Location.h"
 #include <unordered_map>
 #include <string>
+#include "Eu4GeoPolUnits.h"
+#include "CultRelContainer.h"
 
 class OwnershipBox : public QGroupBox{
     Q_OBJECT
@@ -19,7 +19,7 @@ public:
     void loadWidget();
 public slots:
     void initializeData(const std::unordered_map<std::string, std::string>& data);
-    void loadProvInfo(const Location& location);
+    void loadProvInfo(const Eu4::Province& province);
 protected:
 
 private:

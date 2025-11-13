@@ -2,7 +2,7 @@
 
 
 // ----------------------- CONSTRUCTOR -----------------------
-ImageView::ImageView(const QString& imagePath, const Eu4GeoPolData& geoPolContainers, const InformationGUI& informationGUI, QWidget* parent)
+ImageView::ImageView(const QString& imagePath, const Eu4::GeoPolData& geoPolContainers, const InformationGUI& informationGUI, QWidget* parent)
     : QGraphicsView(parent), mRefGeoPolCont(geoPolContainers), mRefInfoGUI(informationGUI)
 {
     QPixmap pix(imagePath);
@@ -193,12 +193,12 @@ void ImageView::mousePressEvent(QMouseEvent* event) {
         QRgb clickedRgb = qRgb(p[0], p[1], p[2]);
 
         auto UID = mRefGeoPolCont.getIDFromColor((p[0] << 16) | (p[1] << 8) | p[2]);
-        auto& loc = mRefGeoPolCont.getLocationData(UID);
+        auto& prov = mRefGeoPolCont.getProvinceData(UID);
         qDebug() << "Clicked at pixel:" << x << y << "RGB:" << p[0] << p[1] << p[2] 
             << "\nProvince ID : " << UID
-            <<"Province Name : " << loc.eu4ProvinceName;
+            <<"Province Name : " << prov.mName;
 
-        mRefInfoGUI.loadProvInfo(loc);
+        mRefInfoGUI.loadProvInfo(prov);
 
         overlayColor = Qt::white;  // change if you want a different overlay
         createSelectionOverlay(clickedRgb);
@@ -227,8 +227,8 @@ void ImageView::mouseDoubleClickEvent(QMouseEvent* event) {
         QRgb clickedRgb = qRgb(p[0], p[1], p[2]);
 
         auto UID = mRefGeoPolCont.getIDFromColor((p[0] << 16) | (p[1] << 8) | p[2]);
-        auto& loc = mRefGeoPolCont.getLocationData(UID);
-        FileOpener::openTextFile(loc.filePath);
+        auto& prov = mRefGeoPolCont.getProvinceData(UID);
+        FileOpener::openTextFile(prov.mFilePath);
     }
 
     QGraphicsView::mouseDoubleClickEvent(event);
