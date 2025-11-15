@@ -117,9 +117,9 @@ uint16_t Eu4::GeoPolData::getIDFromColor(uint32_t packedRGB) const{
 void Eu4::GeoPolData::initData(FilePathHandler*& filePathHandler) {
 	initDataProvinces();
 	initDataAreas(filePathHandler);
-	initDataRegions();
-	initDataSuperRegions();
-	initDataContinents();
+	//initDataRegions(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::REGION).at(0).string());
+	//initDataSuperRegions(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::SUPERREGION).at(0).string());
+	//initDataContinents(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::CONTINENT).at(0).string());
 }
 
 const Eu4::Province& Eu4::GeoPolData::getProvinceData(const int& UID) const {
@@ -156,93 +156,94 @@ void Eu4::GeoPolData::initDataAreas(FilePathHandler*& filePathHandler) {
 	auto start = std::chrono::high_resolution_clock::now();
 	std::cout << "Initiate Area Data from file\t----\t";
 	auto test = filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::AREA).at(0).string();
-	mmap::Handle handle;
-	if (!mmap::open(test, handle)) {
-		throw std::runtime_error("Could not open file : " + test);
-	}
 
-	const char* ptr = handle.data;
-	const char* end = ptr + handle.size;
+	Eu4::GeoPolData::helperReadData<Eu4::Area>(test, mAreas, mAreasNameToArea);
+	//mmap::Handle handle;
+	//if (!mmap::open(test, handle)) {
+	//	throw std::runtime_error("Could not open file : " + test);
+	//}
 
-	const char* keyStart = nullptr;
-	const char* keyEnd = nullptr;
+	//const char* ptr = handle.data;
+	//const char* end = ptr + handle.size;
 
-	const char* valueStart = nullptr;
-	const char* valueEnd = nullptr;
+	//const char* keyStart = nullptr;
+	//const char* keyEnd = nullptr;
 
-	while (ptr < end) {
-		char c = *ptr;
-		switch (c) {
-		case '#': {
-			while (ptr < end && *ptr != '\n') {
-				++ptr;
-			}
-			break;
-		}
-		case '{': {
-			++ptr;
-			while (*ptr != '}') {
-				switch (*ptr) {
-					case '\n':
-					case '\t':
-					case ' ':
-						break;
-					case '#': {
-						while (ptr < end && *ptr != '\n') {
-							++ptr;
-						}
-						break;
-					}
-					case 'c': {
-						while (*ptr != '}') {
-							++ptr;
-						}
-						++ptr;
-						break;
-					}
-					default: {
-						while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#') {
-							if (valueStart == nullptr) {
-								valueStart = ptr;
-							}
-							++ptr;
+	//const char* valueStart = nullptr;
+	//const char* valueEnd = nullptr;
 
-						}
-						uint16_t value;
-						std::from_chars(valueStart, ptr, value);
-						mAreas.back().mGeoPolIDs.push_back(value);
-						valueStart = nullptr;
-						--ptr;
-					}
-				}
+	//while (ptr < end) {
+	//	char c = *ptr;
+	//	switch (c) {
+	//	case '#': {
+	//		while (ptr < end && *ptr != '\n') {
+	//			++ptr;
+	//		}
+	//		break;
+	//	}
+	//	case '{': {
+	//		++ptr;
+	//		while (*ptr != '}') {
+	//			switch (*ptr) {
+	//				case '\n':
+	//				case '\t':
+	//				case ' ':
+	//					break;
+	//				case '#': {
+	//					while (ptr < end && *ptr != '\n') {
+	//						++ptr;
+	//					}
+	//					break;
+	//				}
+	//				case 'c': {
+	//					while (*ptr != '}') {
+	//						++ptr;
+	//					}
+	//					++ptr;
+	//					break;
+	//				}
+	//				default: {
+	//					while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#') {
+	//						if (valueStart == nullptr) {
+	//							valueStart = ptr;
+	//						}
+	//						++ptr;
 
-				++ptr;
-			}
-			break;
-		}
-		case '\n':
-		case '\t':
-		case ' ':
-		case '=': {
-			break;
-		}
-		default: {
-			while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '=') {
-				if (keyStart == nullptr) {
-					keyStart = ptr;
-				}
-				++ptr;
-			}
+	//					}
+	//					uint16_t value;
+	//					std::from_chars(valueStart, ptr, value);
+	//					mAreas.back().mGeoPolIDs.push_back(value);
+	//					valueStart = nullptr;
+	//					--ptr;
+	//				}
+	//			}
 
-			mAreas.emplace_back(Area());
-			mAreas.back().mName = std::string(keyStart, ptr);
-			keyStart = nullptr;
-		}
-		}
-		++ptr;
-	}
+	//			++ptr;
+	//		}
+	//		break;
+	//	}
+	//	case '\n':
+	//	case '\t':
+	//	case ' ':
+	//	case '=': {
+	//		break;
+	//	}
+	//	default: {
+	//		while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '=') {
+	//			if (keyStart == nullptr) {
+	//				keyStart = ptr;
+	//			}
+	//			++ptr;
+	//		}
 
-	mmap::close(handle);
+	//		mAreas.emplace_back(Area());
+	//		mAreas.back().mName = std::string(keyStart, ptr);
+	//		keyStart = nullptr;
+	//	}
+	//	}
+	//	++ptr;
+	//}
+	//mmap::close(handle);
 
 
 
@@ -258,12 +259,27 @@ void Eu4::GeoPolData::initDataAreas(FilePathHandler*& filePathHandler) {
 	auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(time_end - start);
 	std::cout << "Elapsed Time : " << elapsed.count() << " us" << std::endl;
 }
-void Eu4::GeoPolData::initDataRegions() {
+void Eu4::GeoPolData::initDataRegions(const std::string& filePath) {
+	auto start = std::chrono::high_resolution_clock::now();
+	std::cout << "Initiate Region Data from file\t----\t";
+
+	//Eu4::GeoPolData::helperReadData<Eu4::Region>(filePath, mRegions);
+
+	// Add area id to corresponding province
+	for (int i = 0; i < mRegions.size(); ++i) {
+		for (const uint16_t UID : mRegions[i].mGeoPolIDs) {
+			mProvinces.at(UID).mRegionID = i;
+		}
+	}
+
+
+	auto time_end = std::chrono::high_resolution_clock::now();
+	auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(time_end - start);
+	std::cout << "Elapsed Time : " << elapsed.count() << " us" << std::endl;
+}
+void Eu4::GeoPolData::initDataSuperRegions(const std::string& filePath) {
 
 }
-void Eu4::GeoPolData::initDataSuperRegions() {
-
-}
-void Eu4::GeoPolData::initDataContinents() {
+void Eu4::GeoPolData::initDataContinents(const std::string& filePath) {
 
 }

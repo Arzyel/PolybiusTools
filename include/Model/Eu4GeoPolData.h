@@ -61,7 +61,7 @@ namespace Eu4 {
 		std::vector<Eu4::Province> mProvinces;
 		InformationBuffer mInformationBuffer;
 		std::vector<Eu4::Area> mAreas;
-		std::vector<uint16_t> mOrderedAreasIDs;
+		std::unordered_map<std::string, uint16_t> mAreasNameToArea;
 		std::vector<Eu4::Region> mRegions;
 		std::vector<uint16_t> mOrderedRegionsIDs;
 		std::vector<Eu4::SuperRegion> mSuperRegions;
@@ -71,10 +71,102 @@ namespace Eu4 {
 
 		void initDataProvinces();
 		void initDataAreas(FilePathHandler*& filePathHandler);
-		void initDataRegions();
-		void initDataSuperRegions();
-		void initDataContinents();
+		void initDataRegions(const std::string& filePath);
+		void initDataSuperRegions(const std::string& filePath);
+		void initDataContinents(const std::string& filePath);
+
+		template<typename T>
+		void helperReadData(const std::string& filePath, std::vector<T>& data, std::unordered_map<std::string, uint16_t>& nameToGPDUnit);
 	};
+	template<typename T>
+	inline void GeoPolData::helperReadData(const std::string& filePath, std::vector<T>& data, std::unordered_map<std::string, uint16_t>& nameToGPDUnit)
+	{
+		mmap::Handle handle;
+		if (!mmap::open(filePath, handle)) {
+			throw std::runtime_error("Could not open file : " + filePath);
+		}
+
+		const char* ptr = handle.data;
+		const char* end = ptr + handle.size;
+
+		const char* keyStart = nullptr;
+		const char* valueStart = nullptr;
+
+		while (ptr < end) {
+			char c = *ptr;
+			switch (c) {
+			case '#': {
+				while (ptr < end && *ptr != '\n') {
+					++ptr;
+				}
+				break;
+			}
+			case '{': {
+				++ptr;
+				while (*ptr != '}') {
+					switch (*ptr) {
+					case '\n':
+					case '\t':
+					case ' ':
+						break;
+					case '#': {
+						while (ptr < end && *ptr != '\n') {
+							++ptr;
+						}
+						break;
+					}
+					case 'c': {
+						while (*ptr != '}') {
+							++ptr;
+						}
+						++ptr;
+						break;
+					}
+					default: {
+						while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#') {
+							if (valueStart == nullptr) {
+								valueStart = ptr;
+							}
+							++ptr;
+
+						}
+						uint16_t value;
+						std::from_chars(valueStart, ptr, value);
+						data.back().mGeoPolIDs.push_back(value);
+						valueStart = nullptr;
+						--ptr;
+					}
+					}
+
+					++ptr;
+				}
+				break;
+			}
+			case '\n':
+			case '\t':
+			case ' ':
+			case '=': {
+				break;
+			}
+			default: {
+				while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '=') {
+					if (keyStart == nullptr) {
+						keyStart = ptr;
+					}
+					++ptr;
+				}
+
+				data.emplace_back(T());
+				data.back().mName = std::string(keyStart, ptr);
+				nameToGPDUnit.insert(std::make_pair(data.back().mName, data.size() - 1));
+				keyStart = nullptr;
+			}
+			}
+			++ptr;
+		}
+
+		mmap::close(handle);
+	}
 }
 
 
