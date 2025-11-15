@@ -63,7 +63,7 @@ namespace Eu4 {
 		std::vector<Eu4::Area> mAreas;
 		std::unordered_map<std::string, uint16_t> mAreasNameToArea;
 		std::vector<Eu4::Region> mRegions;
-		std::vector<uint16_t> mOrderedRegionsIDs;
+		std::unordered_map<std::string, uint16_t> mRegionNameToIndex;
 		std::vector<Eu4::SuperRegion> mSuperRegions;
 		std::vector<uint16_t> mOrderedSuperRegionsIDs;
 		std::vector<Eu4::Continent> mContinents;
@@ -78,6 +78,7 @@ namespace Eu4 {
 		template<typename T>
 		void helperReadData(const std::string& filePath, std::vector<T>& data, std::unordered_map<std::string, uint16_t>& nameToGPDUnit);
 	};
+
 	template<typename T>
 	inline void GeoPolData::helperReadData(const std::string& filePath, std::vector<T>& data, std::unordered_map<std::string, uint16_t>& nameToGPDUnit)
 	{

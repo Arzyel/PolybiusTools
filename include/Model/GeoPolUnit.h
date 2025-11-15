@@ -49,6 +49,7 @@ public:
     virtual ~NSGeoPolUnit() = default;
 
     std::vector<uint16_t> mGeoPolIDs;
+    std::vector<std::string> mGeoPolContainedNames;
 };
 
 

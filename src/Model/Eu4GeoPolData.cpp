@@ -117,7 +117,7 @@ uint16_t Eu4::GeoPolData::getIDFromColor(uint32_t packedRGB) const{
 void Eu4::GeoPolData::initData(FilePathHandler*& filePathHandler) {
 	initDataProvinces();
 	initDataAreas(filePathHandler);
-	//initDataRegions(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::REGION).at(0).string());
+	initDataRegions(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::REGION).at(0).string());
 	//initDataSuperRegions(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::SUPERREGION).at(0).string());
 	//initDataContinents(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::CONTINENT).at(0).string());
 }
@@ -263,12 +263,123 @@ void Eu4::GeoPolData::initDataRegions(const std::string& filePath) {
 	auto start = std::chrono::high_resolution_clock::now();
 	std::cout << "Initiate Region Data from file\t----\t";
 
-	//Eu4::GeoPolData::helperReadData<Eu4::Region>(filePath, mRegions);
+	mmap::Handle handle;
+	if (!mmap::open(filePath, handle)) {
+		throw std::runtime_error("Could not open file : " + filePath);
+	}
 
-	// Add area id to corresponding province
+	const char* ptr = handle.data;
+	const char* end = ptr + handle.size;
+
+	const char* keyStart = nullptr;
+	const char* valueStart = nullptr;
+
+	while (ptr < end) {
+
+		switch (*ptr) {
+		case '#': {
+			/*while (ptr < end && *ptr != '\n') {
+				++ptr;
+			}
+			break;*/
+			// Skip comment until '\n' efficiently
+			const char* commentEnd = (const char*)memchr(ptr, '\n', end - ptr);
+			ptr = commentEnd ? commentEnd : end;
+			break;
+		}
+		case '{': {
+			++ptr;
+			while (*ptr != '}') {
+				switch (*ptr) {
+				case '\n':
+				case '\t':
+				case ' ':
+					break;
+				case '#': {
+					/*while (ptr < end && *ptr != '\n') {
+						++ptr;
+					}*/
+					ptr = (const char*)memchr(ptr, '\n', end - ptr);
+					break;
+				}
+
+				default: {
+					if (*(ptr + 4) == 's') {
+						ptr += 5;
+						/*while (*ptr != '{') {
+							++ptr;
+						}*/
+						ptr = (const char*)memchr(ptr, '{', end - ptr);
+
+						++ptr;
+						while (*ptr != '}') {
+							while ((*ptr < 97 || *ptr > 122) && *ptr != '}' && *ptr != '#') {
+								++ptr;
+							}
+							if (*ptr == '}') {
+								continue;
+							}
+							if (*ptr == '#') {
+								/*while (*ptr != '\n') {
+									++ptr;
+								}*/
+								ptr = (const char*)memchr(ptr, '\n', end - ptr);
+								continue;
+							}
+							valueStart = ptr;
+							while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#') {
+								++ptr;
+							}
+							mRegions.back().mGeoPolContainedNames.push_back(std::string(valueStart, ptr));
+							valueStart = nullptr;
+						}
+					}
+					else if (*(ptr + 6) == 'n') {
+						//monsoon isnt taken into account for now but it would be ther
+						/*while (*ptr != '}') {
+							++ptr;
+						}*/
+						ptr = (const char*)memchr(ptr, '}', end - ptr);
+
+					}
+				}
+				}
+
+				++ptr;
+			}
+			break;
+		}
+		case '\n':
+		case '\t':
+		case ' ':
+		case '=': {
+			break;
+		}
+		default: {
+			keyStart = ptr;
+			while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '=') {
+				++ptr;
+			}
+
+			mRegions.emplace_back(Eu4::Region());
+			mRegions.back().mName = std::string(keyStart, ptr);
+			//mRegionNameToIndex.insert(std::make_pair(mRegions.back().mName, mRegions.size() - 1));
+			mRegionNameToIndex.emplace(mRegions.back().mName, mRegions.size() - 1);
+			keyStart = nullptr;
+		}
+		}
+		++ptr;
+	}
+
+	mmap::close(handle);
+
+	// Add region id to corresponding province
+	/*#pragma omp parallel for*/
 	for (int i = 0; i < mRegions.size(); ++i) {
-		for (const uint16_t UID : mRegions[i].mGeoPolIDs) {
-			mProvinces.at(UID).mRegionID = i;
+		for (const auto& area : mRegions[i].mGeoPolContainedNames) {
+			for (const uint16_t UID : mAreas[mAreasNameToArea.at(area)].mGeoPolIDs) {
+				mProvinces.at(UID).mRegionID = i;
+			}
 		}
 	}
 

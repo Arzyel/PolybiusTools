@@ -55,6 +55,8 @@ namespace Eu4 {
 
 	class Region : public NSGeoPolUnit {
 	public:
+		Region() = default;
+		~Region() = default;
 		void initFromFile(const std::string& filePath) override;
 		void handleKeyData(const std::vector<std::string>& keyStack, const std::string& value) override;
 	};
