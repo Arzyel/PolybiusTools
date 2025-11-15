@@ -96,9 +96,6 @@
     <ClCompile Include="src\Model\Eu4GeoPolData.cpp">
       <Filter>Fichiers sources\Model</Filter>
     </ClCompile>
-    <ClCompile Include="src\Model\Location.cpp">
-      <Filter>Fichiers sources\Model</Filter>
-    </ClCompile>
     <ClCompile Include="src\Qt\InformationGUI.cpp">
       <Filter>Fichiers sources\Qt</Filter>
     </ClCompile>
@@ -202,9 +199,6 @@
     </ClInclude>
     <ClInclude Include="include\CONSTANTS\filenfolder_CONST.h">
       <Filter>Fichiers d%27en-tête\CONSTANTS</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Model\Location.h">
-      <Filter>Fichiers d%27en-tête\Model</Filter>
     </ClInclude>
     <ClInclude Include="include\Utils\SimpleParser.h">
       <Filter>Fichiers d%27en-tête\Utils</Filter>

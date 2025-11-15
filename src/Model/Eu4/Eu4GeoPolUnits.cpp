@@ -85,3 +85,15 @@ void Eu4::Province::handleKeyData(const std::vector<std::string>& keyStack, cons
         break;
     }
 }
+
+void Eu4::Area::initFromFile(const std::string& filePath)
+{
+
+}
+
+void Eu4::Area::handleKeyData(const std::vector<std::string>& keyStack, const std::string& value)
+{
+    mName = keyStack.back();
+
+
+}

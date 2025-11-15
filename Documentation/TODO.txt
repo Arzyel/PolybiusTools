@@ -12,13 +12,12 @@ TODO
 
 - Refactor Eu4Parser to use custom rules instead of multiples equivalences in ifs. PRIORITY : really low until profiling
 
-- Refactor data containers to be like location.h constructor to have the name of the file from where the data is coming from
-
 - Add new boxes
-
-- Refactor to add province name on click inside the corresponding box
 
 - Refactor to order the QComboBoxes by alphabetical order
 
-- Add persistant data for last game selected
+- Add Area data
+- Add Region data
+- Add SuperREgion data
+- Add Continent Data
 

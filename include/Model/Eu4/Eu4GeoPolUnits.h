@@ -3,9 +3,11 @@
 #define EU4_GEO_POL_UNITS_H
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include "GeoPolUnit.h"
 #include "Eu4Parser.h"
 #include "KEYS.h"
+#include "MemoryMappingFile.h"
 
 namespace Eu4 {
 	struct Development {

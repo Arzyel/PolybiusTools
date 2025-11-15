@@ -9,30 +9,33 @@
 #include <iostream>
 #include <execution>
 #include <vector>
-#include "Location.h"
+#include <chrono>
+#include "SimpleParser.h"
 #include "filenfolder_CONST.h"
 #include "Eu4GeoPolUnits.h"
+#include "FilePathHandler.h"
+#include "MemoryMappingFile.h"
 
 struct InformationBuffer {
-	std::unordered_map<uint16_t, Location> mLocations;
+	std::unordered_map<uint16_t, Eu4::Province> mProvinces;
 };
 
-class Eu4GeoPolData {
-public:
-	void fillColorToID();
-	uint16_t getIDFromColor(uint32_t packedRGB) const;
-	void initLocationData();
-	const Location& getLocationData(const int& UID) const { return mLocations.at(UID); };
-protected:
-
-private:
-	std::unordered_map<uint32_t, uint16_t> locColorToID;
-	std::unordered_map<uint16_t, uint32_t> locIDToColor;
-	std::vector<Location> mLocations;
-	//std::vector<Province> mProvinces;
-	InformationBuffer mInformationBuffer;
-	
-};
+//class Eu4GeoPolData {
+//public:
+//	void fillColorToID();
+//	uint16_t getIDFromColor(uint32_t packedRGB) const;
+//	void initLocationData();
+//	const Location& getLocationData(const int& UID) const { return mLocations.at(UID); };
+//protected:
+//
+//private:
+//	std::unordered_map<uint32_t, uint16_t> locColorToID;
+//	std::unordered_map<uint16_t, uint32_t> locIDToColor;
+//	std::vector<Location> mLocations;
+//	//std::vector<Province> mProvinces;
+//	InformationBuffer mInformationBuffer;
+//	
+//};
 
 
 
@@ -46,7 +49,7 @@ namespace Eu4 {
 
 		void fillColorToID();
 		uint16_t getIDFromColor(uint32_t packedRGB) const;
-		void initData();
+		void initData(FilePathHandler*& filePathHandler);
 		const Eu4::Province& getProvinceData(const int& UID) const;
 
 	private:
@@ -67,7 +70,7 @@ namespace Eu4 {
 		std::vector<uint8_t> mOrderedContinentsIDs;
 
 		void initDataProvinces();
-		void initDataAreas();
+		void initDataAreas(FilePathHandler*& filePathHandler);
 		void initDataRegions();
 		void initDataSuperRegions();
 		void initDataContinents();

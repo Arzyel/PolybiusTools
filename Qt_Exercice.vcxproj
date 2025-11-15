@@ -175,7 +175,6 @@
     <ClCompile Include="src\Model\Eu4GeoPolData.cpp" />
     <ClCompile Include="src\Model\Eu4\Data.cpp" />
     <ClCompile Include="src\Model\Eu4\Eu4GeoPolUnits.cpp" />
-    <ClCompile Include="src\Model\Location.cpp" />
     <ClCompile Include="src\Qt\ImageViewa.cpp" />
     <ClCompile Include="src\Qt\InformationGUI.cpp" />
     <ClCompile Include="src\Qt\LocationBoxes\BuildingsBox.cpp" />
@@ -216,7 +215,6 @@
     <ClInclude Include="include\Model\Eu4\Eu4GeoPolUnits.h" />
     <ClInclude Include="include\Model\GameData.h" />
     <ClInclude Include="include\Model\GeoPolUnit.h" />
-    <ClInclude Include="include\Model\Location.h" />
     <ClInclude Include="include\Qt\ImageViewa.h" />
     <QtMoc Include="include\Qt\InformationGUI.h" />
     <ClInclude Include="include\Qt\InstantMenuStyle.h" />

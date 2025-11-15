@@ -10,7 +10,7 @@ Eu4::Data::Data(FilePathHandler*& filePathHandler)
 	mCountryData.initializeData();
 
 	mGeoPolData.fillColorToID();
-	mGeoPolData.initData();
+	mGeoPolData.initData(filePathHandler);
 	/*mGeoPolData.fillColorToID();
 	mGeoPolData.initLocationData();*/
 }
