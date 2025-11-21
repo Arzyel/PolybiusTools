@@ -6,6 +6,7 @@
 #include <InstantMenuStyle.h>
 #include "StartupDialog.h"
 #include "FilePathHandler.h"
+#include "FileManager.h"
 #include "MainApp.h"
 
 #define _CRTDBG_MAP_ALLOC
@@ -18,6 +19,7 @@ int main(int argc, char* argv[]) {
     app.setStyle(new InstantMenuStyle(QStyleFactory::create("")));
     
     FilePathHandler* filePathHandler = nullptr;
+    DM::FileManager* fileManager = new DM::FileManager();
 
     StartupDialog startupBox = StartupDialog(filePathHandler);
     if (startupBox.exec() != QDialog::Accepted) {
@@ -25,9 +27,10 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    MainApp mainApp = MainApp(app, filePathHandler);
+    MainApp mainApp = MainApp(app, filePathHandler, fileManager);
 
     delete filePathHandler;
+    delete fileManager;
     return app.exec();
 
    

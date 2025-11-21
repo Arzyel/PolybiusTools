@@ -93,8 +93,6 @@ void Eu4::Area::initFromFile(const std::string& filePath)
 
 void Eu4::Area::handleKeyData(const std::vector<std::string>& keyStack, const std::string& value)
 {
-    mName = keyStack.back();
-
 
 }
 
@@ -103,5 +101,13 @@ void Eu4::Region::initFromFile(const std::string& filePath)
 }
 
 void Eu4::Region::handleKeyData(const std::vector<std::string>& keyStack, const std::string& value)
+{
+}
+
+void Eu4::SuperRegion::initFromFile(const std::string& filePath)
+{
+}
+
+void Eu4::SuperRegion::handleKeyData(const std::vector<std::string>& keyStack, const std::string& value)
 {
 }

@@ -1,6 +1,6 @@
 ﻿#include "Data.h"
 
-Eu4::Data::Data(FilePathHandler*& filePathHandler)
+Eu4::Data::Data(FilePathHandler*& filePathHandler, DM::FileManager* fileManager)
 {
 	std::vector<fs::path> ket1 = filePathHandler->getPathsFromFolderKey(relative_path::eu4::common::CULTURES_);
 	mCultRelData.loadCultureData(ket1);
@@ -10,7 +10,7 @@ Eu4::Data::Data(FilePathHandler*& filePathHandler)
 	mCountryData.initializeData();
 
 	mGeoPolData.fillColorToID();
-	mGeoPolData.initData(filePathHandler);
+	mGeoPolData.initData(filePathHandler, fileManager);
 	/*mGeoPolData.fillColorToID();
 	mGeoPolData.initLocationData();*/
 }

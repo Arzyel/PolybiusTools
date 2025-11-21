@@ -82,6 +82,12 @@
     <Filter Include="Fichiers sources\Model\Eu4">
       <UniqueIdentifier>{78489943-bbbf-4260-b2d3-77f85ed2af97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\FileDataManager">
+      <UniqueIdentifier>{ede59709-b839-4c36-8205-f4a9ff53f2b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\FileDataManager">
+      <UniqueIdentifier>{fe434e51-3ef1-4aeb-9f71-a28697717b4a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -186,6 +192,9 @@
     <ClCompile Include="src\Model\Eu4\Eu4GeoPolUnits.cpp">
       <Filter>Fichiers sources\Model\Eu4</Filter>
     </ClCompile>
+    <ClCompile Include="src\FileDataManager\FileManager.cpp">
+      <Filter>Fichiers sources\FileDataManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Qt\ImageViewa.h">
@@ -289,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="include\Model\Eu4\Eu4GeoPolUnits.h">
       <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FileDataManager\FileManager.h">
+      <Filter>Fichiers d%27en-tête\FileDataManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

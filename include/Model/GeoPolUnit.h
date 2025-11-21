@@ -13,6 +13,8 @@ public:
 
     std::string mName;
     uint32_t mRGB;
+    std::string mFilePath;
+    //DM::DataToken mName2;
 
     uint32_t packRGB(const std::array<uint8_t, 3>& rgbs) {
         mRGB = ((rgbs.at(0) << 16) | (rgbs.at(1) << 8) | rgbs.at(2));

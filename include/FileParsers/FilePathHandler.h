@@ -146,6 +146,7 @@ public:
     void initAllPaths();
     std::function<void()> mDirectoryValidator;
     fs::path getExportPath(const fs::path& filePath);
+    std::string getExportFromFullPath(const std::string& filePath);
     const std::vector<fs::path> getPathsFromFolderKey(const char* key) {
         std::vector<fs::path> paths;
                 

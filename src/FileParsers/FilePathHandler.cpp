@@ -56,6 +56,34 @@ fs::path FilePathHandler::getExportPath(const fs::path& filePath)
 
 }
 
+std::string FilePathHandler::getExportFromFullPath(const std::string& filePath)
+{
+    static const auto separator = fs::path::preferred_separator;
+
+    const auto* start = filePath.c_str();
+    auto size = filePath.size();
+    const auto* end = start + size;
+    const auto* ptr = end - 1;
+    const auto* validatedRelative = end;
+
+    while (*ptr != separator) {
+        --ptr;
+    }
+
+    while (!exportRule[*ptr]) {
+
+        if (*ptr == separator) {
+            validatedRelative = ptr;
+        }
+
+        --ptr;
+    }
+
+
+
+    return mRootExport.string() + validatedRelative;
+}
+
 void FilePathHandler::addFilesFromFolder(const fs::path& folderPath, const char* folderKey)
 {
     std::vector<fs::path> items;

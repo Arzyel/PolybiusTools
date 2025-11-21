@@ -15,6 +15,7 @@
 #include "Eu4GeoPolUnits.h"
 #include "FilePathHandler.h"
 #include "MemoryMappingFile.h"
+#include "FileManager.h"
 
 struct InformationBuffer {
 	std::unordered_map<uint16_t, Eu4::Province> mProvinces;
@@ -49,7 +50,7 @@ namespace Eu4 {
 
 		void fillColorToID();
 		uint16_t getIDFromColor(uint32_t packedRGB) const;
-		void initData(FilePathHandler*& filePathHandler);
+		void initData(FilePathHandler*& filePathHandler, DM::FileManager* fileManager);
 		const Eu4::Province& getProvinceData(const int& UID) const;
 
 	private:
@@ -65,15 +66,20 @@ namespace Eu4 {
 		std::vector<Eu4::Region> mRegions;
 		std::unordered_map<std::string, uint16_t> mRegionNameToIndex;
 		std::vector<Eu4::SuperRegion> mSuperRegions;
-		std::vector<uint16_t> mOrderedSuperRegionsIDs;
+		std::unordered_map<std::string, uint16_t> mSuperRegionNameToIndex;
+		uint16_t mSuperRegionDataID;
 		std::vector<Eu4::Continent> mContinents;
 		std::vector<uint8_t> mOrderedContinentsIDs;
+
+		DM::FileManager* fileManager = nullptr;
 
 		void initDataProvinces();
 		void initDataAreas(FilePathHandler*& filePathHandler);
 		void initDataRegions(const std::string& filePath);
-		void initDataSuperRegions(const std::string& filePath);
+		void initDataSuperRegions(FilePathHandler*& filePathHandler);
 		void initDataContinents(const std::string& filePath);
+		static void initHelperSuperRegion(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
+		static void initHelperContinent(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
 
 		template<typename T>
 		void helperReadData(const std::string& filePath, std::vector<T>& data, std::unordered_map<std::string, uint16_t>& nameToGPDUnit);

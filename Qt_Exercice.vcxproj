@@ -128,7 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup;include\Qt\MainApp\Global;include\Qt\MainApp\Eu4;include\Model\Eu4</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup;include\Qt\MainApp\Global;include\Qt\MainApp\Eu4;include\Model\Eu4;include\FileDataManager</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus
  %(AdditionalOptions)</AdditionalOptions>
@@ -152,7 +152,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup;include\Qt\MainApp\Global;include\Qt\MainApp\Eu4;include\Model\Eu4</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup;include\Qt\MainApp\Global;include\Qt\MainApp\Eu4;include\Model\Eu4;include\FileDataManager</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus
  %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -168,6 +168,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FlowLayout.cpp" />
+    <ClCompile Include="src\FileDataManager\FileManager.cpp" />
     <ClCompile Include="src\FileParsers\Eu4\Eu4CultureParser.cpp" />
     <ClCompile Include="src\FileParsers\Eu4\Eu4MainParser.cpp" />
     <ClCompile Include="src\FileParsers\Eu4\Eu4ReligionParser.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="FlowLayout.h" />
     <ClInclude Include="include\CONSTANTS\filenfolder_CONST.h" />
     <ClInclude Include="include\CONSTANTS\KEYS.h" />
+    <ClInclude Include="include\FileDataManager\FileManager.h" />
     <ClInclude Include="include\FileParsers\Eu4\Eu4CultureParser.h" />
     <ClInclude Include="include\FileParsers\Eu4\Eu4MainParser.h" />
     <ClInclude Include="include\FileParsers\Eu4\Eu4Parser.h" />

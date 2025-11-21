@@ -8,6 +8,7 @@
 #include "Eu4Parser.h"
 #include "KEYS.h"
 #include "MemoryMappingFile.h"
+#include "FileManager.h"
 
 namespace Eu4 {
 	struct Development {
@@ -29,7 +30,7 @@ namespace Eu4 {
 		uint16_t mRegionID;
 		uint8_t mSuperRegionID;
 		uint8_t mContinentID;
-		std::string mFilePath;
+		/*std::string mFilePath;*/
 
 		Province() = default;
 		Province(const Province&) = default;
@@ -63,6 +64,11 @@ namespace Eu4 {
 
 	class SuperRegion : public NSGeoPolUnit {
 	public:
+		SuperRegion() = default;
+		~SuperRegion() = default;
+		std::string getName() { return std::string(testName.mPtrStart, testName.mPtrStart + testName.mLength);};
+		std::vector<DM::DataToken> data;
+		DM::DataToken testName;
 		void initFromFile(const std::string& filePath) override;
 		void handleKeyData(const std::vector<std::string>& keyStack, const std::string& value) override;
 	};

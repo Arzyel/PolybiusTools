@@ -6,11 +6,12 @@
 #include "CultRelContainer.h"
 #include "Eu4GeoPolData.h"
 #include "FilePathHandler.h"
+#include "FileManager.h"
 
 namespace Eu4 {
     class Data final : public GameData {
     public:
-        Data(FilePathHandler*& filePathHandler);
+        Data(FilePathHandler*& filePathHandler, DM::FileManager* fileManager);
         ~Data() = default;
         CountryContainer mCountryData;
         CultRelContainer mCultRelData;

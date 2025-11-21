@@ -114,11 +114,12 @@ uint16_t Eu4::GeoPolData::getIDFromColor(uint32_t packedRGB) const{
 	return mProvColorToUID.at(packedRGB);
 }
 
-void Eu4::GeoPolData::initData(FilePathHandler*& filePathHandler) {
+void Eu4::GeoPolData::initData(FilePathHandler*& filePathHandler, DM::FileManager* fileManager) {
+	this->fileManager = fileManager;
 	initDataProvinces();
 	initDataAreas(filePathHandler);
 	initDataRegions(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::REGION).at(0).string());
-	//initDataSuperRegions(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::SUPERREGION).at(0).string());
+	initDataSuperRegions(filePathHandler);
 	//initDataContinents(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::CONTINENT).at(0).string());
 }
 
@@ -388,9 +389,117 @@ void Eu4::GeoPolData::initDataRegions(const std::string& filePath) {
 	auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(time_end - start);
 	std::cout << "Elapsed Time : " << elapsed.count() << " us" << std::endl;
 }
-void Eu4::GeoPolData::initDataSuperRegions(const std::string& filePath) {
+void Eu4::GeoPolData::initDataSuperRegions(FilePathHandler*& filePathHandler) {
+	auto start = std::chrono::high_resolution_clock::now();
+	std::cout << "Initiate SuperRegion Data from file\t----\t";
+
+
+	fileManager->mFiles.push_back(DM::FileData());
+	mSuperRegionDataID = fileManager->mFiles.size() - 1;
+	fileManager->mFiles.back().initData<Eu4::GeoPolData>(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::SUPERREGION).at(0).string(),
+		filePathHandler,
+		 initHelperSuperRegion,
+		*this);
+
+
+
+
+	auto time_end = std::chrono::high_resolution_clock::now();
+	auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(time_end - start);
+	std::cout << "Elapsed Time : " << elapsed.count() << " us" << std::endl;
+
 
 }
 void Eu4::GeoPolData::initDataContinents(const std::string& filePath) {
+
+}
+
+void Eu4::GeoPolData::initHelperSuperRegion(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData)
+{
+	const char* ptr = fileData.mBuffer.data();
+	const char* end = ptr + fileData.mBuffer.size();
+
+	const char* keyStart = nullptr;
+	while (ptr < end) {
+
+		switch (*ptr) {
+		case '#': {
+			const char* commentEnd = (const char*)memchr(ptr, '\n', end - ptr);
+			ptr = commentEnd ? commentEnd : end;
+			break;
+		}
+		case '{': {
+			++ptr;
+			while (*ptr != '}') {
+				switch (*ptr) {
+					case'#': {
+						const char* commentEnd = (const char*)memchr(ptr, '\n', end - ptr);
+						ptr = commentEnd ? commentEnd : end;
+					}
+					case '\n':
+					case '\t':
+					case ' ':
+						break;
+					default:
+						keyStart = ptr;
+						while (*ptr != ' ' && *ptr != '\n' && *ptr != '\t' && *ptr != '#') {
+							++ptr;
+						}
+						if (std::string(keyStart, ptr) != "restrict_charter") {
+							Eu4::SuperRegion& superRegion = GeoPolData.mSuperRegions.back();
+							superRegion.data.emplace_back(DM::DataToken());
+							superRegion.data.back().mPtrStart = keyStart;
+							superRegion.data.back().mLength = ptr - keyStart;
+						}
+						keyStart = nullptr;
+				}
+				++ptr;
+			}
+			break;
+		}
+		case '\n':
+		case '\t':
+		case ' ':
+		case '=': {
+			break;
+		}
+		default: {
+			keyStart = ptr;
+			while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '=') {
+				++ptr;
+			}
+
+			GeoPolData.mSuperRegions.emplace_back(Eu4::SuperRegion());
+			Eu4::SuperRegion& superRegion = GeoPolData.mSuperRegions.back();
+			
+			superRegion.mName = std::string(keyStart, ptr);
+			superRegion.testName.mPtrStart = keyStart;
+			superRegion.testName.mLength = ptr - keyStart;
+
+			
+
+			GeoPolData.mSuperRegionNameToIndex.emplace(superRegion.testName.getOriginName(), GeoPolData.mSuperRegions.size() - 1);
+			keyStart = nullptr;
+		}
+		}
+		++ptr;
+	}
+
+	for (int y = 0; y < GeoPolData.mSuperRegions.size(); ++y) {
+
+		for (DM::DataToken& region : GeoPolData.mSuperRegions[y].data) {
+			for (const auto& area : GeoPolData.mRegions[GeoPolData.mRegionNameToIndex[region.getOriginName()]].mGeoPolContainedNames) {
+				for (const uint16_t UID : GeoPolData.mAreas[GeoPolData.mAreasNameToArea[area]].mGeoPolIDs) {
+					GeoPolData.mProvinces.at(UID).mSuperRegionID = y;
+				}
+			}
+		}
+	}
+
+
+}
+
+void Eu4::GeoPolData::initHelperContinent(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData)
+{
 
 }
