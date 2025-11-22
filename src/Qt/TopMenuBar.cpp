@@ -43,6 +43,24 @@ void TopMenuBar::setupMenus()
     viewMenu->addSeparator();
 
 
+
+    connect(allProvinces, &QAction::triggered, this, [this] {
+        emit changeView(0);
+        });
+    connect(allAreas, &QAction::triggered, this, [this] {
+        emit changeView(1);
+        });
+    connect(allRegions, &QAction::triggered, this, [this] {
+        emit changeView(2);
+        });
+    connect(allSuperRegions, &QAction::triggered, this, [this] {
+        emit changeView(3);
+        });
+    connect(allContinents, &QAction::triggered, this, [this] {
+        emit changeView(4);
+        });
+
+
     // Connect action signals
     QObject::connect(exitAction, &QAction::triggered, &mApp, &QApplication::quit);
 

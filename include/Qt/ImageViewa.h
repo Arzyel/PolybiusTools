@@ -23,9 +23,11 @@ struct PixelPos { uint16_t x, y; };
 
 
 class ImageView : public QGraphicsView {
+    Q_OBJECT
 public:
     ImageView(const QString& imagePath, const Eu4::GeoPolData& geoPolContainers, const InformationGUI& informationGUI,QWidget* parent = nullptr);
     ~ImageView();
+    
 
 protected:
     void wheelEvent(QWheelEvent* event) override;
@@ -42,6 +44,8 @@ private:
     void precomputeColorMap();
     void precomputeColorMapOMP();
     void createOverlayForColor(QRgb rgb);
+    QVector<QRgb> generateSparseColors(int numColors);
+
 
 
     QImage overlayImage;
@@ -61,6 +65,9 @@ private:
     QVector<QColor> mapModeColors;
     const Eu4::GeoPolData& mRefGeoPolCont;
     const InformationGUI& mRefInfoGUI;
+
+public slots:
+    void changeView(uint8_t type);
 };
 
 #endif

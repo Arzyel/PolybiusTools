@@ -20,8 +20,10 @@ MainApp::MainApp(const QApplication& app, FilePathHandler*& filePathHandler, DM:
     // Main layout
     QWidget* centralWidget = new QWidget;
     QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
-    mainLayout->addWidget(new ImageView(PROVINCE_MAP_FILE, data->mGeoPolData, *rightMainArea), 2);      // left: ImageView
+    ImageView* imageView = new ImageView(PROVINCE_MAP_FILE, data->mGeoPolData, *rightMainArea);
+    mainLayout->addWidget(imageView, 2);      // left: ImageView
     mainLayout->addWidget(rightMainArea, 1);  // right: Tabs
+    connect(menuBar, &TopMenuBar::changeView, imageView, &ImageView::changeView);
 
     // Attach to QMainWindow
     setCentralWidget(centralWidget);

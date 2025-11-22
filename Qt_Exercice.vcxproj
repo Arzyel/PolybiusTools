@@ -221,7 +221,7 @@
     <ClInclude Include="include\Model\Eu4\Eu4GeoPolUnits.h" />
     <ClInclude Include="include\Model\GameData.h" />
     <ClInclude Include="include\Model\GeoPolUnit.h" />
-    <ClInclude Include="include\Qt\ImageViewa.h" />
+    <QtMoc Include="include\Qt\ImageViewa.h" />
     <QtMoc Include="include\Qt\InformationGUI.h" />
     <ClInclude Include="include\Qt\InstantMenuStyle.h" />
     <ClInclude Include="include\Qt\LocationBoxes\BuildingsBox.h" />
@@ -243,7 +243,7 @@
     <ClInclude Include="include\Qt\Startup\StartupLoadBox.h" />
     <ClInclude Include="include\Qt\Startup\StartupModBox.h" />
     <ClInclude Include="include\Qt\Startup\StartupOptionBox.h" />
-    <ClInclude Include="include\Qt\TopMenuBar.h" />
+    <QtMoc Include="include\Qt\TopMenuBar.h" />
     <ClInclude Include="include\Qt\Util\QtUtils.h" />
     <ClInclude Include="include\Utils\FileOpener.h" />
     <ClInclude Include="include\Utils\MemoryMappingFile.h" />

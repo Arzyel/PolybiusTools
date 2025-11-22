@@ -197,13 +197,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Qt\ImageViewa.h">
-      <Filter>Fichiers d%27en-tête\Qt</Filter>
-    </ClInclude>
     <ClInclude Include="include\Qt\InstantMenuStyle.h">
-      <Filter>Fichiers d%27en-tête\Qt</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Qt\TopMenuBar.h">
       <Filter>Fichiers d%27en-tête\Qt</Filter>
     </ClInclude>
     <ClInclude Include="include\CONSTANTS\filenfolder_CONST.h">
@@ -333,6 +327,12 @@
     </QtMoc>
     <QtMoc Include="include\Qt\MainApp\Global\MainApp.h">
       <Filter>Fichiers d%27en-tête\Qt\MainApp\Global</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\TopMenuBar.h">
+      <Filter>Fichiers d%27en-tête\Qt</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\ImageViewa.h">
+      <Filter>Fichiers d%27en-tête\Qt</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

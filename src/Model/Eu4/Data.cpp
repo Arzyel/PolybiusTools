@@ -11,6 +11,5 @@ Eu4::Data::Data(FilePathHandler*& filePathHandler, DM::FileManager* fileManager)
 
 	mGeoPolData.fillColorToID();
 	mGeoPolData.initData(filePathHandler, fileManager);
-	/*mGeoPolData.fillColorToID();
-	mGeoPolData.initLocationData();*/
+
 }

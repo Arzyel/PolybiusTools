@@ -10,6 +10,7 @@
 #include <execution>
 #include <vector>
 #include <chrono>
+#include <array>
 #include "SimpleParser.h"
 #include "filenfolder_CONST.h"
 #include "Eu4GeoPolUnits.h"
@@ -52,6 +53,8 @@ namespace Eu4 {
 		uint16_t getIDFromColor(uint32_t packedRGB) const;
 		void initData(FilePathHandler*& filePathHandler, DM::FileManager* fileManager);
 		const Eu4::Province& getProvinceData(const int& UID) const;
+		const std::array<int,5> getNumberPerType() const;
+		const std::vector<Eu4::Province>& getAllProvinces() const;
 
 	private:
 		// Probably remove the Ordered vector and instead simply use the index of the vector as an ID for each and lock it in a const vector.
