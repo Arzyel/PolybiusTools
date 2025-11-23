@@ -30,6 +30,8 @@ namespace Eu4 {
 		uint16_t mRegionID;
 		uint8_t mSuperRegionID;
 		uint8_t mContinentID;
+		bool isWater;
+		bool isWasteland;
 		/*std::string mFilePath;*/
 
 		Province() = default;

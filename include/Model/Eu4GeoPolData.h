@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <stdint.h>
 #include <stdio.h>
+#include <cstdint>
 #include <stdlib.h>
 #include <iostream>
 #include <execution>
@@ -22,22 +23,11 @@ struct InformationBuffer {
 	std::unordered_map<uint16_t, Eu4::Province> mProvinces;
 };
 
-//class Eu4GeoPolData {
-//public:
-//	void fillColorToID();
-//	uint16_t getIDFromColor(uint32_t packedRGB) const;
-//	void initLocationData();
-//	const Location& getLocationData(const int& UID) const { return mLocations.at(UID); };
-//protected:
-//
-//private:
-//	std::unordered_map<uint32_t, uint16_t> locColorToID;
-//	std::unordered_map<uint16_t, uint32_t> locIDToColor;
-//	std::vector<Location> mLocations;
-//	//std::vector<Province> mProvinces;
-//	InformationBuffer mInformationBuffer;
-//	
-//};
+struct defaultMapInfo {
+	uint16_t maxProvinces;
+	std::vector<uint16_t> seaStarts;
+	std::vector<uint16_t> lakes;
+};
 
 
 
@@ -63,6 +53,7 @@ namespace Eu4 {
 		std::unordered_map<uint32_t, uint16_t> mProvColorToUID;
 		std::unordered_map<uint16_t, uint32_t> mProvUIDToColor;
 		std::vector<Eu4::Province> mProvinces;
+		defaultMapInfo mMapInfo;
 		InformationBuffer mInformationBuffer;
 		std::vector<Eu4::Area> mAreas;
 		std::unordered_map<std::string, uint16_t> mAreasNameToArea;
@@ -77,6 +68,7 @@ namespace Eu4 {
 		DM::FileManager* fileManager = nullptr;
 
 		void initDataProvinces();
+		void initMapInfo(FilePathHandler*& filePathHandler);
 		void initDataAreas(FilePathHandler*& filePathHandler);
 		void initDataRegions(const std::string& filePath);
 		void initDataSuperRegions(FilePathHandler*& filePathHandler);

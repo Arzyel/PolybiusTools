@@ -40,6 +40,7 @@ uint16_t Eu4::GeoPolData::getIDFromColor(uint32_t packedRGB) const{
 
 void Eu4::GeoPolData::initData(FilePathHandler*& filePathHandler, DM::FileManager* fileManager) {
 	this->fileManager = fileManager;
+	initMapInfo(filePathHandler);
 	initDataProvinces();
 	initDataAreas(filePathHandler);
 	initDataRegions(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::REGION).at(0).string());
@@ -72,7 +73,7 @@ void Eu4::GeoPolData::initDataProvinces() {
 	auto start = std::chrono::high_resolution_clock::now();
 	std::cout << "Initiate Province Data from file\t----\t";
 	mProvinces.clear();
-	mProvinces.resize(mProvUIDToColor.size() + 1);
+	mProvinces.resize(mMapInfo.maxProvinces + 1);
 
 	// No copy - reuse vector
 	std::vector<std::tuple<uint16_t, std::string, std::filesystem::path>> fileData;
@@ -90,10 +91,100 @@ void Eu4::GeoPolData::initDataProvinces() {
 		}
 	);
 
+
+	for (auto id : mMapInfo.seaStarts) {
+		mProvinces[id].isWater = true;
+	}
+
+	for (auto id : mMapInfo.lakes) {
+		mProvinces[id].isWater = true;
+	}
+
 	auto end = std::chrono::high_resolution_clock::now();
 	auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 	std::cout << "Elapsed Time : " << elapsed.count() << " ms" << std::endl;
 }
+void Eu4::GeoPolData::initMapInfo(FilePathHandler*& filePathHandler)
+{
+	mmap::Handle handle;
+	if (!mmap::open(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::DEFAULT).at(0).string(), handle)) {
+		throw std::runtime_error("Could not open file : Default Map");
+	}
+	const char* ptr = handle.data;
+	const char* end = ptr + handle.size;
+
+	const char* keyStart = nullptr;
+	while (ptr < end) {
+
+		switch (*ptr) {
+		case '#': {
+			const char* commentEnd = (const char*)memchr(ptr, '\n', end - ptr);
+			ptr = commentEnd ? commentEnd : end;
+			break;
+		}
+		case '{':
+		case '}':
+		case '\n':
+		case '\t':
+		case ' ':
+		case '=': {
+			break;
+		}
+		default: {
+
+			char c = *ptr;
+			if (c == 'm' && *(ptr + 12) == 's') {
+				ptr += 13;
+				while (*ptr < '0' || *ptr > '9') {
+					++ptr;
+				}
+				keyStart = ptr;
+				while (*ptr >= '0' && *ptr <= '9') {
+					++ptr;
+				}
+				std::from_chars(keyStart, ptr, mMapInfo.maxProvinces);
+				keyStart = nullptr;
+				break;
+			}
+			std::vector<uint16_t>* dataContainer = nullptr;
+			if (c == 's' && *(ptr + 9) == 's') {
+				dataContainer = &mMapInfo.seaStarts;
+				ptr += 10;
+			}
+			else if (c == 'l' && *(ptr + 4) == 's') {
+				dataContainer = &mMapInfo.lakes;
+				ptr += 5;
+			}
+			else {
+				break;
+			}
+			while (*ptr != '{') {
+				++ptr;
+			}
+			while (*ptr != '}') {
+				while ((*ptr < '0' || *ptr > '9') && *ptr != '}') {
+					if (*ptr == '#') {
+						while (*ptr != '\n') ++ptr;
+					}
+					++ptr;
+				}
+				keyStart = ptr;
+				while (*ptr >= '0' && *ptr <= '9') {
+					++ptr;
+				}
+				uint16_t value;
+				std::from_chars(keyStart, ptr, value);
+				dataContainer->push_back(value);
+			}
+
+
+			keyStart = nullptr;
+		}
+		}
+		++ptr;
+	}
+}
+
 void Eu4::GeoPolData::initDataAreas(FilePathHandler*& filePathHandler) {
 	auto start = std::chrono::high_resolution_clock::now();
 	std::cout << "Initiate Area Data from file\t----\t";
@@ -201,6 +292,7 @@ void Eu4::GeoPolData::initDataAreas(FilePathHandler*& filePathHandler) {
 	auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(time_end - start);
 	std::cout << "Elapsed Time : " << elapsed.count() << " us" << std::endl;
 }
+
 void Eu4::GeoPolData::initDataRegions(const std::string& filePath) {
 	auto start = std::chrono::high_resolution_clock::now();
 	std::cout << "Initiate Region Data from file\t----\t";
@@ -330,6 +422,7 @@ void Eu4::GeoPolData::initDataRegions(const std::string& filePath) {
 	auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(time_end - start);
 	std::cout << "Elapsed Time : " << elapsed.count() << " us" << std::endl;
 }
+
 void Eu4::GeoPolData::initDataSuperRegions(FilePathHandler*& filePathHandler) {
 	auto start = std::chrono::high_resolution_clock::now();
 	std::cout << "Initiate SuperRegion Data from file\t----\t";
@@ -348,6 +441,7 @@ void Eu4::GeoPolData::initDataSuperRegions(FilePathHandler*& filePathHandler) {
 
 
 }
+
 void Eu4::GeoPolData::initDataContinents(const std::string& filePath) {
 
 }
