@@ -111,3 +111,11 @@ void Eu4::SuperRegion::initFromFile(const std::string& filePath)
 void Eu4::SuperRegion::handleKeyData(const std::vector<std::string>& keyStack, const std::string& value)
 {
 }
+
+void Eu4::Continent::initFromFile(const std::string& filePath)
+{
+}
+
+void Eu4::Continent::handleKeyData(const std::vector<std::string>& keyStack, const std::string& value)
+{
+}

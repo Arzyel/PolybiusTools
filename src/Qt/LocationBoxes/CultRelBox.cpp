@@ -20,7 +20,6 @@ void CultRelBox::loadWidget() {
 	QHBoxLayout* cultContainerLayout = new QHBoxLayout(cultContainer);
 	QLabel* cultLabel = new QLabel("Culture  : ",cultContainer);
 	cultCBox = new QComboBox(cultContainer);
-	cultCBox->addItems({ "french", "english","englisher","englisherer""englishman", "german"});
 	cultCBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	cultCBox->setMinimumWidth(0);
 	cultContainerLayout->addWidget(cultLabel);
@@ -31,7 +30,6 @@ void CultRelBox::loadWidget() {
 	QHBoxLayout* relContainerLayout = new QHBoxLayout(relContainer);
 	QLabel* relLabel = new QLabel("Religion : ", relContainer);
 	relCBox = new QComboBox(relContainer);
-	relCBox->addItems({ "christian", "islam", "dharmic"});
 	relCBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	relCBox->setMinimumWidth(cultCBox->width());
 	relContainerLayout->addWidget(relLabel);
@@ -59,12 +57,9 @@ void CultRelBox::initializeData(const std::unordered_map<std::string, sCulture>&
 
 void CultRelBox::loadProvInfo(const Eu4::Province& province) {
 	int index = cultCBox->findText(province.mCultureID.c_str());
-	if (index != 1) {
-		cultCBox->setCurrentIndex(index);
-	}
+	cultCBox->setCurrentIndex(index);
 
 	int indexRel = relCBox->findText(province.mReligionID.c_str());
-	if (indexRel != 1) {
-		relCBox->setCurrentIndex(indexRel);
-	}
+	relCBox->setCurrentIndex(indexRel);
+
 }

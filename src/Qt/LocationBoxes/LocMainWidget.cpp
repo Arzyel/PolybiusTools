@@ -60,6 +60,7 @@ void LocMainWidget::loadProvInfo(const Eu4::Province& province)
 	this->findChild<QLabel*>("R")->setText(("R : " + std::to_string(rgb.at(0))).c_str());
 	this->findChild<QLabel*>("G")->setText(("G : " + std::to_string(rgb.at(1))).c_str());
 	this->findChild<QLabel*>("B")->setText(("B : " + std::to_string(rgb.at(2))).c_str());
+	this->findChild<QLabel*>("W")->setText(("Water : " + std::to_string(province.isWater)).c_str());
 }
 
 

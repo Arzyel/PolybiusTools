@@ -45,7 +45,7 @@ void Eu4::GeoPolData::initData(FilePathHandler*& filePathHandler, DM::FileManage
 	initDataAreas(filePathHandler);
 	initDataRegions(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::REGION).at(0).string());
 	initDataSuperRegions(filePathHandler);
-	//initDataContinents(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::CONTINENT).at(0).string());
+	initDataContinents(filePathHandler);
 }
 
 const Eu4::Province& Eu4::GeoPolData::getProvinceData(const int& UID) const {
@@ -67,6 +67,11 @@ const std::array<int, 5> Eu4::GeoPolData::getNumberPerType() const
 const std::vector<Eu4::Province>& Eu4::GeoPolData::getAllProvinces() const
 {
 	return mProvinces;
+}
+
+const int Eu4::GeoPolData::getNbAreas() const
+{
+	return mAreas.size();
 }
 
 void Eu4::GeoPolData::initDataProvinces() {
@@ -104,6 +109,7 @@ void Eu4::GeoPolData::initDataProvinces() {
 	auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 	std::cout << "Elapsed Time : " << elapsed.count() << " ms" << std::endl;
 }
+
 void Eu4::GeoPolData::initMapInfo(FilePathHandler*& filePathHandler)
 {
 	mmap::Handle handle;
@@ -155,6 +161,13 @@ void Eu4::GeoPolData::initMapInfo(FilePathHandler*& filePathHandler)
 				dataContainer = &mMapInfo.lakes;
 				ptr += 5;
 			}
+			else if (!mMapInfo.seaStarts.empty() && !mMapInfo.lakes.empty()) {
+				while (ptr < end) {
+					++ptr;
+				}
+				--ptr;
+				break;
+			}
 			else {
 				break;
 			}
@@ -183,6 +196,7 @@ void Eu4::GeoPolData::initMapInfo(FilePathHandler*& filePathHandler)
 		}
 		++ptr;
 	}
+	mmap::close(handle);
 }
 
 void Eu4::GeoPolData::initDataAreas(FilePathHandler*& filePathHandler) {
@@ -442,8 +456,21 @@ void Eu4::GeoPolData::initDataSuperRegions(FilePathHandler*& filePathHandler) {
 
 }
 
-void Eu4::GeoPolData::initDataContinents(const std::string& filePath) {
+void Eu4::GeoPolData::initDataContinents(FilePathHandler*& filePathHandler) {
+	auto start = std::chrono::high_resolution_clock::now();
+	std::cout << "Initiate Continent Data from file\t----\t";
 
+
+	fileManager->mFiles.push_back(DM::FileData());
+	mSuperRegionDataID = fileManager->mFiles.size() - 1;
+	fileManager->mFiles.back().initData<Eu4::GeoPolData>(filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::CONTINENT).at(0).string(),
+		filePathHandler,
+		initHelperContinent,
+		*this);
+
+	auto time_end = std::chrono::high_resolution_clock::now();
+	auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(time_end - start);
+	std::cout << "Elapsed Time : " << elapsed.count() << " us" << std::endl;
 }
 
 void Eu4::GeoPolData::initHelperSuperRegion(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData)
@@ -533,5 +560,77 @@ void Eu4::GeoPolData::initHelperSuperRegion(DM::FileData& fileData, Eu4::GeoPolD
 
 void Eu4::GeoPolData::initHelperContinent(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData)
 {
+	const char* ptr = fileData.mBuffer.data();
+	const char* end = ptr + fileData.mBuffer.size();
+
+	const char* keyStart = nullptr;
+	while (ptr < end) {
+
+		switch (*ptr) {
+		case '#': {
+			const char* commentEnd = (const char*)memchr(ptr, '\n', end - ptr);
+			ptr = commentEnd ? commentEnd : end;
+			
+			break;
+		}
+		case '{': {
+			++ptr;
+			while (*ptr != '}') {
+				switch (*ptr) {
+				case'#': {
+					const char* commentEnd = (const char*)memchr(ptr, '\n', end - ptr);
+					ptr = commentEnd ? commentEnd : end;
+				}
+				case '\n':
+				case '\t':
+				case ' ':
+					break;
+				default:
+					keyStart = ptr;
+					ptr += strcspn(ptr, "\n \t#=");
+					Eu4::Continent& continent = GeoPolData.mContinents.back();
+					uint16_t value;
+					std::from_chars(keyStart,ptr,value);
+					continent.mGeoPolIDs.push_back(value);
+					keyStart = nullptr;
+				}
+				++ptr;
+			}
+			break;
+		}
+		case '\n':
+		case '\t':
+		case ' ':
+		case '=': {
+			break;
+		}
+		default: {
+			keyStart = ptr;
+			ptr += strcspn(ptr, "\n \t#=");
+			if (std::string(keyStart, ptr) != "island_check_provinces") {
+				GeoPolData.mContinents.emplace_back(Eu4::Continent());
+				Eu4::Continent& continent = GeoPolData.mContinents.back();
+
+				continent.mName = std::string(keyStart, ptr);
+				continent.testName.mPtrStart = keyStart;
+				continent.testName.mLength = ptr - keyStart;
+
+				GeoPolData.mContinentNameToIndex.emplace(continent.testName.getOriginName(), GeoPolData.mContinents.size() - 1);
+			}
+			else {
+				ptr += strcspn(ptr, "}");
+			}
+			keyStart = nullptr;
+		}
+		}
+		++ptr;
+	}
+
+	for (int i = 0; i < GeoPolData.mContinents.size(); ++i) {
+		for (auto& id : GeoPolData.mContinents[i].mGeoPolIDs) {
+			GeoPolData.mProvinces[id].mContinentID = i;
+		}
+	}
+
 
 }

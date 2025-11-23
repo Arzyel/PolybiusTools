@@ -20,7 +20,6 @@ void OwnershipBox::loadWidget() {
 	QHBoxLayout* ownerContainerLayout = new QHBoxLayout(ownerContainer);
 	QLabel* ownerLabel = new QLabel("Owner : ", ownerContainer);
 	ownerBox = new QComboBox(ownerContainer);
-	ownerBox->addItems({ "french", "english","englisher","englisherer""englishman", "german" });
 	ownerBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	ownerBox->setMinimumWidth(0);
 	ownerContainerLayout->addWidget(ownerLabel);
@@ -31,12 +30,11 @@ void OwnershipBox::loadWidget() {
 	QHBoxLayout* controllerContainerLayout = new QHBoxLayout(controllerContainer);
 	QLabel* controllerLabel = new QLabel("Controller : ", controllerContainer);
 	controllerBox = new QComboBox(controllerContainer);
-	controllerBox->addItems({ "christian", "islam", "dharmic" });
 	controllerBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	controllerBox->setMinimumWidth(controllerBox->width());
 	controllerContainerLayout->addWidget(controllerLabel);
 	controllerContainerLayout->addWidget(controllerBox);
-
+	controllerBox->setCurrentIndex(0);
 
 	leftPartLayout->addWidget(ownerContainer);
 	leftPartLayout->addWidget(controllerContainer);
@@ -59,12 +57,14 @@ void OwnershipBox::initializeData(const std::unordered_map<std::string, std::str
 
 void OwnershipBox::loadProvInfo(const Eu4::Province& province) {
 	int index = ownerBox->findText(province.mOwnerID.c_str(), Qt::MatchStartsWith);
-	if (index != 1) {
-		ownerBox->setCurrentIndex(index);
+	if (index == 0) {
+		index = -1;
 	}
+	ownerBox->setCurrentIndex(index);
 
 	int index2 = controllerBox->findText(province.mControllerID.c_str(), Qt::MatchStartsWith);
-	if (index2 != 1) {
-		controllerBox->setCurrentIndex(index2);
+	if (index2 == 0) {
+		index2 = -1;
 	}
+	controllerBox->setCurrentIndex(index2);
 }

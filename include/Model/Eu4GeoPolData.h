@@ -45,6 +45,7 @@ namespace Eu4 {
 		const Eu4::Province& getProvinceData(const int& UID) const;
 		const std::array<int,5> getNumberPerType() const;
 		const std::vector<Eu4::Province>& getAllProvinces() const;
+		const int getNbAreas() const;
 
 	private:
 		// Probably remove the Ordered vector and instead simply use the index of the vector as an ID for each and lock it in a const vector.
@@ -63,7 +64,7 @@ namespace Eu4 {
 		std::unordered_map<std::string, uint16_t> mSuperRegionNameToIndex;
 		uint16_t mSuperRegionDataID;
 		std::vector<Eu4::Continent> mContinents;
-		std::vector<uint8_t> mOrderedContinentsIDs;
+		std::unordered_map<std::string, uint16_t> mContinentNameToIndex;
 
 		DM::FileManager* fileManager = nullptr;
 
@@ -72,7 +73,7 @@ namespace Eu4 {
 		void initDataAreas(FilePathHandler*& filePathHandler);
 		void initDataRegions(const std::string& filePath);
 		void initDataSuperRegions(FilePathHandler*& filePathHandler);
-		void initDataContinents(const std::string& filePath);
+		void initDataContinents(FilePathHandler*& filePathHandler);
 		static void initHelperSuperRegion(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
 		static void initHelperContinent(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
 

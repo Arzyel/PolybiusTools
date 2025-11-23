@@ -12,9 +12,9 @@
 
 namespace Eu4 {
 	struct Development {
-		uint16_t base_tax;
-		uint16_t base_prod;
-		uint16_t base_manpower;
+		uint16_t base_tax = 0;
+		uint16_t base_prod = 0;
+		uint16_t base_manpower = 0;
 	};
 
 	class Province : public SGeoPolUnit {
@@ -29,9 +29,8 @@ namespace Eu4 {
 		uint16_t mAreaID;
 		uint16_t mRegionID;
 		uint8_t mSuperRegionID;
-		uint8_t mContinentID;
+		uint8_t mContinentID = 0;
 		bool isWater;
-		bool isWasteland;
 		/*std::string mFilePath;*/
 
 		Province() = default;
@@ -69,8 +68,6 @@ namespace Eu4 {
 		SuperRegion() = default;
 		~SuperRegion() = default;
 		std::string getName() { return std::string(testName.mPtrStart, testName.mPtrStart + testName.mLength);};
-		std::vector<DM::DataToken> data;
-		DM::DataToken testName;
 		void initFromFile(const std::string& filePath) override;
 		void handleKeyData(const std::vector<std::string>& keyStack, const std::string& value) override;
 	};

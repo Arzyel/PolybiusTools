@@ -36,7 +36,7 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     void drawForeground(QPainter* painter, const QRectF& rect) override;
-    void precomputeOverlays(const QVector<QRgb>& ruleRGBs, const QColor& overlayColor);
+    void precomputeOverlays();
     void setActiveOverlay(const int& index);
     void createSelectionOverlay(QRgb rgb);
     QVector<PixelPos> getBorderPixels(const QVector<PixelPos>& pixels, int width, int height);
@@ -44,7 +44,8 @@ private:
     void precomputeColorMap();
     void precomputeColorMapOMP();
     void createOverlayForColor(QRgb rgb);
-    QVector<QRgb> generateSparseColors(int numColors);
+    QVector<QRgb> generateSparseColorsLand(int numColors);
+    QVector<QRgb> generateSparseColorsSea(int numColors);
     void createAllOverlays();
 
 

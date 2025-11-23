@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <array>
 #include <vector>
+#include "FileManager.h"
 
 class GeoPolUnit {
 public:
@@ -50,6 +51,8 @@ public:
     NSGeoPolUnit() = default;
     virtual ~NSGeoPolUnit() = default;
 
+    std::vector<DM::DataToken> data;
+    DM::DataToken testName;
     std::vector<uint16_t> mGeoPolIDs;
     std::vector<std::string> mGeoPolContainedNames;
 };

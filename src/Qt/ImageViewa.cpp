@@ -25,7 +25,7 @@ ImageView::ImageView(const QString& imagePath, const Eu4::GeoPolData& geoPolCont
 
     //precomputeColorMapOMP();
     precomputeColorMap();
-    precomputeOverlays({ qRgb(202,46,173), qRgb(74,48,32), qRgb(148,133,60)}, Qt::black);
+    precomputeOverlays();
     
 
 
@@ -136,11 +136,11 @@ void ImageView::createOverlayForColor(QRgb rgb) {
         overlayImage.setPixel(pos.x, pos.y, overlayRgb | 0xFF000000); // alpha 255
     }
 }
-QVector<QRgb> ImageView::generateSparseColors(int numColors)
+QVector<QRgb> ImageView::generateSparseColorsLand(int numColors)
 {
     QVector<QRgb> colors;
     //colors.reserve(numColors);
-    int n = 1000;
+    int n = numColors;
     colors.reserve(n);
 
     int min_val = 128; // pastel minimum
@@ -156,27 +156,29 @@ QVector<QRgb> ImageView::generateSparseColors(int numColors)
         int B = 50; // no blue
         colors.push_back(qRgb(R,G,B));
     }
+  
+    return colors;
+}
+QVector<QRgb> ImageView::generateSparseColorsSea(int numColors)
+{
+    int n = numColors; // number of blue colors
+    QVector<QRgb> colors;
+    colors.reserve(n);
 
+    int min_val = 128;
+    int max_val = 255;
+    int range = max_val - min_val + 1;
 
-    //for (int i = 0; i < numColors; ++i) {
-    //    int sector = (i * 6 / numColors) % 6;
-    //    int t = (i * 255 / numColors) & 0xFF;
+    int B_step = 61; // prime step for blue
+    int R_step = 17; // small offset for red
+    int G_step = 13; // small offset for green
 
-    //    int r = 0, g = 0, b = 0;
-    //    switch (sector) {
-    //    case 0: r = 255; g = t; b = 0; break;
-    //    case 1: r = 255 - t; g = 255; b = 0; break;
-    //    case 2: r = 0; g = 255; b = t; break;
-    //    case 3: r = 0; g = 255 - t; b = 255; break;
-    //    case 4: r = t; g = 0; b = 255; break;
-    //    case 5: r = 255; g = 0; b = 255 - t; break;
-    //    }
-
-    //    colors.push_back(qRgb(r, g, b));
-    //}
-
-    
-
+    for (int i = 0; i < n; ++i) {
+        int B = min_val + (i * B_step) % range;
+        int R = min_val + (i * R_step) % (range / 2); // smaller offset to keep blue dominant
+        int G = min_val + (i * G_step) % (range / 2);
+        colors.push_back(qRgb( 0, 0, B ));
+    }
     return colors;
 }
 void ImageView::createAllOverlays()
@@ -186,7 +188,14 @@ void ImageView::createAllOverlays()
     //    colorRuleSet.emplace_back(generateSparseColors(size));
     //}
 
-    colorRuleSet.emplace_back(generateSparseColors(1000));
+    colorRuleSet.emplace_back(generateSparseColorsLand(mRefGeoPolCont.getNbAreas()));
+    colorRuleSet.emplace_back(generateSparseColorsSea(mRefGeoPolCont.getNbAreas()));
+    QVector<QRgb> wastelandRule;
+    for (int i = 0; i < mRefGeoPolCont.getNbAreas(); ++i) {
+        wastelandRule.push_back(qRgb(255, 255, 255));
+    }
+    colorRuleSet.emplace_back(wastelandRule);
+
     const QSize size = pixmapItem->pixmap().size();
     QImage overlayAreas(size, QImage::Format_ARGB32);
     overlayAreas.fill(Qt::transparent);
@@ -202,18 +211,25 @@ void ImageView::createAllOverlays()
         uint8_t g = static_cast<uint8_t>(((prov.mRGB & 0x00FF00) >> 8));
         uint8_t b = static_cast<uint8_t>((prov.mRGB & 0x0000FF));
         const QVector<PixelPos>& pixels = colorMap.value(qRgb(r, g, b));
+        int type = 0;
+        if (prov.isWater) {
+            type = 1;
+        }
+        else if (prov.mDev.base_manpower == 0) {
+            type = 2;
+        }
         for (const PixelPos& pos : pixels) {
-            overlayAreas.setPixel(pos.x, pos.y, colorRuleSet.at(0).at(prov.mAreaID) | 0xFF000000);
-            overlayRegions.setPixel(pos.x, pos.y, colorRuleSet.at(0).at(prov.mRegionID) | 0xFF000000);
-            overlaySuperRegions.setPixel(pos.x, pos.y, colorRuleSet.at(0).at(prov.mSuperRegionID) | 0xFF000000);
-            //overlayContinents.setPixel(pos.x, pos.y, colorRuleSet.at(4).at(prov.mContinentID) | 0xFF000000);
+            overlayAreas.setPixel(pos.x, pos.y, colorRuleSet.at(type).at(prov.mAreaID) | 0xFF000000);
+            overlayRegions.setPixel(pos.x, pos.y, colorRuleSet.at(type).at(prov.mRegionID) | 0xFF000000);
+            overlaySuperRegions.setPixel(pos.x, pos.y, colorRuleSet.at(type).at(prov.mSuperRegionID) | 0xFF000000);
+            overlayContinents.setPixel(pos.x, pos.y, colorRuleSet.at(type).at(prov.mContinentID) | 0xFF000000);
         }
 
     }
     mapModeOverlays.append(std::move(overlayAreas));
     mapModeOverlays.append(std::move(overlayRegions));
     mapModeOverlays.append(std::move(overlaySuperRegions));
-    //mapModeOverlays.append(std::move(overlayContinents));
+    mapModeOverlays.append(std::move(overlayContinents));
 }
 void ImageView::changeView(uint8_t type)
 {
@@ -355,20 +371,13 @@ void ImageView::drawForeground(QPainter* painter, const QRectF&) {
 
 
 
-void ImageView::precomputeOverlays(const QVector<QRgb>& ruleRGBs, const QColor& overlayColor)
+void ImageView::precomputeOverlays()
 {
     const QSize size = pixmapItem->pixmap().size();
     QImage overlay(size, QImage::Format_ARGB32);
     overlay.fill(Qt::transparent);
 
     QRgb color = qRgb(overlayColor.red(), overlayColor.green(), overlayColor.blue());
-
-    for (QRgb rgb : ruleRGBs) {
-        const QVector<PixelPos>& pixels = colorMap.value(rgb);
-        for (const PixelPos& pos : pixels) {
-            overlay.setPixel(pos.x, pos.y, color | 0xFF000000);
-        }
-    }
 
     mapModeOverlays.append(std::move(overlay));
 }
