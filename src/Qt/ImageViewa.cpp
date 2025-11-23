@@ -27,29 +27,9 @@ ImageView::ImageView(const QString& imagePath, const Eu4::GeoPolData& geoPolCont
     precomputeColorMap();
     precomputeOverlays({ qRgb(202,46,173), qRgb(74,48,32), qRgb(148,133,60)}, Qt::black);
     
-    std::vector<QVector<QRgb>> colorRuleSet;
-    for (int size : geoPolContainers.getNumberPerType()) {
-        colorRuleSet.emplace_back(generateSparseColors(size));
-    }
-
-    const QSize size = pixmapItem->pixmap().size();
-    QImage overlay(size, QImage::Format_ARGB32);
-    overlay.fill(Qt::transparent);
-    //QRgb color = qRgb(overlayColor.red(), overlayColor.green(), overlayColor.blue()); // this needs to change to the correct color depending on wich rule
-    
-    for (auto& prov :  geoPolContainers.getAllProvinces()) {
-            uint8_t r = static_cast<uint8_t>(((prov.mRGB & 0xFF0000) >> 16));
-            uint8_t g = static_cast<uint8_t>(((prov.mRGB & 0x00FF00) >> 8));
-            uint8_t b = static_cast<uint8_t>((prov.mRGB & 0x0000FF));
-            const QVector<PixelPos>& pixels = colorMap.value(qRgb(r,g,b));
-            for (const PixelPos& pos : pixels) {
-                overlay.setPixel(pos.x, pos.y, colorRuleSet.at(3).at(prov.mSuperRegionID) | 0xFF000000);
-            }
-
-    }
-        mapModeOverlays.append(std::move(overlay));
 
 
+    createAllOverlays();
     setActiveOverlay(0);
 }
 
@@ -159,26 +139,81 @@ void ImageView::createOverlayForColor(QRgb rgb) {
 QVector<QRgb> ImageView::generateSparseColors(int numColors)
 {
     QVector<QRgb> colors;
-    colors.reserve(numColors);
+    //colors.reserve(numColors);
+    int n = 1000;
+    colors.reserve(n);
 
-    for (int i = 0; i < numColors; ++i) {
-        int sector = (i * 6 / numColors) % 6;
-        int t = (i * 255 / numColors) & 0xFF;
+    int min_val = 128; // pastel minimum
+    int max_val = 255; // pastel maximum
+    int range = max_val - min_val + 1;
+    // We'll step red and green with larger increments to maximize contrast
+    int R_step = 61; // choose numbers that don't evenly divide 127
+    int G_step = 37;
 
-        int r = 0, g = 0, b = 0;
-        switch (sector) {
-        case 0: r = 255; g = t; b = 0; break;
-        case 1: r = 255 - t; g = 255; b = 0; break;
-        case 2: r = 0; g = 255; b = t; break;
-        case 3: r = 0; g = 255 - t; b = 255; break;
-        case 4: r = t; g = 0; b = 255; break;
-        case 5: r = 255; g = 0; b = 255 - t; break;
-        }
-
-        colors.push_back(qRgb(r, g, b));
+    for (int i = 0; colors.size() < n; ++i) {
+        int R = min_val + (i * R_step) % range;
+        int G = min_val + (i * G_step) % range;
+        int B = 50; // no blue
+        colors.push_back(qRgb(R,G,B));
     }
 
+
+    //for (int i = 0; i < numColors; ++i) {
+    //    int sector = (i * 6 / numColors) % 6;
+    //    int t = (i * 255 / numColors) & 0xFF;
+
+    //    int r = 0, g = 0, b = 0;
+    //    switch (sector) {
+    //    case 0: r = 255; g = t; b = 0; break;
+    //    case 1: r = 255 - t; g = 255; b = 0; break;
+    //    case 2: r = 0; g = 255; b = t; break;
+    //    case 3: r = 0; g = 255 - t; b = 255; break;
+    //    case 4: r = t; g = 0; b = 255; break;
+    //    case 5: r = 255; g = 0; b = 255 - t; break;
+    //    }
+
+    //    colors.push_back(qRgb(r, g, b));
+    //}
+
+    
+
     return colors;
+}
+void ImageView::createAllOverlays()
+{
+    std::vector<QVector<QRgb>> colorRuleSet;
+    //for (int size : mRefGeoPolCont.getNumberPerType()) {
+    //    colorRuleSet.emplace_back(generateSparseColors(size));
+    //}
+
+    colorRuleSet.emplace_back(generateSparseColors(1000));
+    const QSize size = pixmapItem->pixmap().size();
+    QImage overlayAreas(size, QImage::Format_ARGB32);
+    overlayAreas.fill(Qt::transparent);
+    QImage overlayRegions(size, QImage::Format_ARGB32);
+    overlayRegions.fill(Qt::transparent);
+    QImage overlaySuperRegions(size, QImage::Format_ARGB32);
+    overlaySuperRegions.fill(Qt::transparent);
+    QImage overlayContinents(size, QImage::Format_ARGB32);
+    overlayContinents.fill(Qt::transparent);
+
+    for (auto& prov : mRefGeoPolCont.getAllProvinces()) {
+        uint8_t r = static_cast<uint8_t>(((prov.mRGB & 0xFF0000) >> 16));
+        uint8_t g = static_cast<uint8_t>(((prov.mRGB & 0x00FF00) >> 8));
+        uint8_t b = static_cast<uint8_t>((prov.mRGB & 0x0000FF));
+        const QVector<PixelPos>& pixels = colorMap.value(qRgb(r, g, b));
+        for (const PixelPos& pos : pixels) {
+            overlayAreas.setPixel(pos.x, pos.y, colorRuleSet.at(0).at(prov.mAreaID) | 0xFF000000);
+            overlayRegions.setPixel(pos.x, pos.y, colorRuleSet.at(0).at(prov.mRegionID) | 0xFF000000);
+            overlaySuperRegions.setPixel(pos.x, pos.y, colorRuleSet.at(0).at(prov.mSuperRegionID) | 0xFF000000);
+            //overlayContinents.setPixel(pos.x, pos.y, colorRuleSet.at(4).at(prov.mContinentID) | 0xFF000000);
+        }
+
+    }
+    mapModeOverlays.append(std::move(overlayAreas));
+    mapModeOverlays.append(std::move(overlayRegions));
+    mapModeOverlays.append(std::move(overlaySuperRegions));
+    //mapModeOverlays.append(std::move(overlayContinents));
 }
 void ImageView::changeView(uint8_t type)
 {

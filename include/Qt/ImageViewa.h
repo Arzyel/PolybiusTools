@@ -45,7 +45,7 @@ private:
     void precomputeColorMapOMP();
     void createOverlayForColor(QRgb rgb);
     QVector<QRgb> generateSparseColors(int numColors);
-
+    void createAllOverlays();
 
 
     QImage overlayImage;
