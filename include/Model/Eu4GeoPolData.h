@@ -58,6 +58,7 @@ namespace Eu4 {
 		InformationBuffer mInformationBuffer;
 		std::vector<Eu4::Area> mAreas;
 		std::unordered_map<std::string, uint16_t> mAreasNameToArea;
+		uint16_t mAreaDataID;
 		std::vector<Eu4::Region> mRegions;
 		std::unordered_map<std::string, uint16_t> mRegionNameToIndex;
 		uint16_t mRegionDataID;
@@ -77,6 +78,7 @@ namespace Eu4 {
 		void initDataRegions2(FilePathHandler*& filePathHandler);
 		void initDataSuperRegions(FilePathHandler*& filePathHandler);
 		void initDataContinents(FilePathHandler*& filePathHandler);
+		static void initHelperArea(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
 		static void initHelperRegion(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
 		static void initHelperSuperRegion(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
 		static void initHelperContinent(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
