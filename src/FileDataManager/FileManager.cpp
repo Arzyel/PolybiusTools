@@ -1,5 +1,48 @@
 ﻿#include "FileManager.h"
 
+void DM::FileData::writeIntoFile()
+{
+
+	namespace fs = std::filesystem;
+
+	fs::path path(mExportPath);
+	fs::path dir = path.parent_path();
+
+	if (!dir.empty() && !fs::exists(dir)) {
+		if (!fs::create_directories(dir)) {
+			std::cerr << "Failed to create directories: " << dir << "\n";
+			return;
+		}
+	}
+
+
+	std::ofstream out(mExportPath, std::ios::binary);
+	if (!out.is_open()) {
+		throw std::runtime_error("Failed to open output file: " + mExportPath);
+	}
+	const char* base = mBuffer.data();
+	const char* cursor = base;
+	for (const auto& dataToken : mDataTokens) {
+		if (cursor < dataToken.mPtrStart) {
+			out.write(cursor, dataToken.mPtrStart - cursor);
+		}
+		if (dataToken.erase) {}
+		else if (!dataToken.mNewData.empty()) {
+			out.write(dataToken.mNewData.data(), dataToken.mNewData.size());
+		}
+		else {
+			out.write(dataToken.mPtrStart, dataToken.mLength);
+		}
+		cursor = dataToken.mPtrStart + dataToken.mLength;
+	}
+	const char* end = base + mBuffer.size();
+	if (cursor < end) {
+		out.write(cursor, end - cursor);
+	}
+}
+
+
+
 void DM::FileData::initDataBuffer(const std::string& importPath)
 {
 	std::ifstream file(importPath, std::ios::binary | std::ios::ate);
@@ -44,4 +87,12 @@ std::string DM::DataToken::getCurrentName()
 	}
 
 	return getOriginName();
+}
+
+DM::FileManager::~FileManager()
+{
+	for (auto* obj : mFiles) {
+		delete obj;
+	}
+	mFiles.clear();
 }

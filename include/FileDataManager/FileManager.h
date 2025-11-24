@@ -13,12 +13,12 @@ namespace DM {
     public:
         DataToken() = default;
         ~DataToken() = default;
-        inline std::string getOriginName() { return std::string(mPtrStart, mPtrStart + mLength); }
+        std::string getOriginName() { return std::string(mPtrStart, mPtrStart + mLength); }
         std::string getCurrentName();
         const char* mPtrStart = nullptr;
         uint8_t mLength = 0;
         std::string mNewData;
-
+        bool erase = false;
     };
 
     class FileData {
@@ -28,7 +28,7 @@ namespace DM {
 
         template<typename T, typename Callable>
         void initData(const std::string& importPath, FilePathHandler*& filePathHandler, const Callable& callable, T& target);
-        
+        void writeIntoFile();
         std::vector<DataToken> mDataTokens;
         std::string mExportPath;
         std::string mBuffer;
@@ -43,8 +43,8 @@ namespace DM {
     class FileManager {
     public:
         FileManager() = default;
-        ~FileManager() = default;
-        std::vector<FileData> mFiles;
+        ~FileManager();
+        std::vector<FileData*> mFiles;
 
     };
 
