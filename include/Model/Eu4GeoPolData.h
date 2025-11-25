@@ -37,7 +37,7 @@ namespace Eu4 {
 		GeoPolData() = default;
 		GeoPolData(const Eu4::GeoPolData&) = default;
 		GeoPolData& operator=(const Eu4::GeoPolData&) = default;
-		~GeoPolData() = default;
+		~GeoPolData();
 
 		void fillColorToID();
 		uint16_t getIDFromColor(uint32_t packedRGB) const;
@@ -54,6 +54,7 @@ namespace Eu4 {
 		std::unordered_map<uint32_t, uint16_t> mProvColorToUID;
 		std::unordered_map<uint16_t, uint32_t> mProvUIDToColor;
 		std::vector<Eu4::Province> mProvinces;
+		std::vector<DM::FileData*> mProvinceDataFiles;
 		defaultMapInfo mMapInfo;
 		InformationBuffer mInformationBuffer;
 		std::vector<Eu4::Area> mAreas;
@@ -71,18 +72,22 @@ namespace Eu4 {
 
 		DM::FileManager* fileManager = nullptr;
 
-		void initDataProvinces();
+		void initDataProvinces(FilePathHandler*& filePathHandler);
 		void initMapInfo(FilePathHandler*& filePathHandler);
 		void initDataAreas(FilePathHandler*& filePathHandler);
-		void initDataRegions(const std::string& filePath);
-		void initDataRegions2(FilePathHandler*& filePathHandler);
+		//void initDataRegions(const std::string& filePath);
+		void initDataRegions(FilePathHandler*& filePathHandler);
 		void initDataSuperRegions(FilePathHandler*& filePathHandler);
 		void initDataContinents(FilePathHandler*& filePathHandler);
+		void initHelperProvince(DM::FileData* fileData, Eu4::Province& prov);
+		static void initHelperProvince(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
 		static void initHelperArea(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
 		static void initHelperRegion(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
 		static void initHelperSuperRegion(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
 		static void initHelperContinent(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
-
+		static inline void parserSkipUntilValueStd(const char*& ptr, DM::FileData*& fileData);
+		static inline void parserCaptureAllValuesBracket(const char*& ptr, DM::FileData*& fileData, std::vector<uint16_t>& container);
+		static inline void parserCaptureCapital(const char*& ptr, DM::FileData*& fileData, uint16_t& capital);
 		template<typename T>
 		void helperReadData(const std::string& filePath, std::vector<T>& data, std::unordered_map<std::string, uint16_t>& nameToGPDUnit);
 	};

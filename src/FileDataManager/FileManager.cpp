@@ -1,5 +1,11 @@
 ﻿#include "FileManager.h"
 
+DM::FileData::FileData(const std::string& importPath, const std::string& exportPath)
+	: mExportPath(exportPath)
+{
+	initDataBuffer(importPath);
+}
+
 void DM::FileData::writeIntoFile()
 {
 
@@ -87,6 +93,13 @@ std::string DM::DataToken::getCurrentName()
 	}
 
 	return getOriginName();
+}
+
+uint16_t DM::DataToken::get_uint16_t_Value()
+{
+	uint16_t value;
+	std::from_chars(mPtrStart, mPtrStart + mLength, value);
+	return value;
 }
 
 DM::FileManager::~FileManager()

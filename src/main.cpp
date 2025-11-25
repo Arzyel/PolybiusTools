@@ -24,6 +24,7 @@ int main(int argc, char* argv[]) {
     StartupDialog startupBox = StartupDialog(filePathHandler);
     if (startupBox.exec() != QDialog::Accepted) {
         delete filePathHandler;
+        delete fileManager;
         return 0;
     }
 

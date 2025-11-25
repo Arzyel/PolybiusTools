@@ -18,6 +18,15 @@ void Eu4::Province::initFromFile(const std::string& eu4UID, const uint32_t& rgbV
     );
 }
 
+
+void Eu4::Province::initFromFile2(const std::string& eu4UID, const uint32_t& rgbValue, const std::string& name, const std::string& filePath)
+{
+    mUID = std::stoi(eu4UID);
+    mRGB = rgbValue;
+    mName = name;
+    mFilePath = filePath;
+}
+
 void Eu4::Province::handleKeyData(const std::vector<std::string>& keyStack, const std::string& value)
 {
     uint32_t keyHash = hash_runtime(keyStack.back());
