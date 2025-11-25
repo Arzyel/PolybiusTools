@@ -24,6 +24,7 @@ namespace Eu4 {
 
 	class Province : public SGeoPolUnit {
 	public:
+		DM::FileData* mFileData = nullptr;
 		std::string mOwnerID;
 		uint16_t mOwnerID2;
 		std::string mControllerID;
@@ -54,7 +55,6 @@ namespace Eu4 {
 		std::vector<uint16_t> mLatentTradeGood;
 
 
-
 		uint16_t mAreaID;
 		uint16_t mRegionID;
 		uint8_t mSuperRegionID;
@@ -65,7 +65,7 @@ namespace Eu4 {
 		Province() = default;
 		Province(const Province&) = default;
 		Province& operator=(const Province&) = default;
-		~Province() = default;
+		~Province();
 
 
 
@@ -73,6 +73,7 @@ namespace Eu4 {
 		void initFromFile(const std::string& eu4UID, const uint32_t& rgbValue,
 			const std::string& filePath, const std::string& name);
 		void initFromFile2(const std::string& eu4UID, const uint32_t& rgbValue, const std::string& name, const std::string& filePath);
+		void initFromFile2(const uint16_t eu4UID, const uint32_t& rgbValue, const std::string& name, const std::string& filePath);
 		void handleKeyData(const std::vector<std::string>& keyStack, const std::string& value) override;
 	};
 

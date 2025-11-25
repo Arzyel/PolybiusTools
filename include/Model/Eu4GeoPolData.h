@@ -79,15 +79,14 @@ namespace Eu4 {
 		void initDataRegions(FilePathHandler*& filePathHandler);
 		void initDataSuperRegions(FilePathHandler*& filePathHandler);
 		void initDataContinents(FilePathHandler*& filePathHandler);
-		void initHelperProvince(DM::FileData* fileData, Eu4::Province& prov);
-		static void initHelperProvince(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
+		void initHelperProvince(Eu4::Province& prov);
 		static void initHelperArea(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
 		static void initHelperRegion(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
 		static void initHelperSuperRegion(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
 		static void initHelperContinent(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
-		static inline void parserSkipUntilValueStd(const char*& ptr, DM::FileData*& fileData);
-		static inline void parserCaptureAllValuesBracket(const char*& ptr, DM::FileData*& fileData, std::vector<uint16_t>& container);
-		static inline void parserCaptureCapital(const char*& ptr, DM::FileData*& fileData, uint16_t& capital);
+		void parserSkipUntilValueStd(const char*& ptr, std::vector<DM::DataToken>& dataTokens);
+		void parserCaptureAllValuesBracket(const char*& ptr, std::vector<DM::DataToken>& dataTokens, std::vector<uint16_t>& container);
+		void parserCaptureCapital(const char*& ptr, std::vector<DM::DataToken>& dataTokens, uint16_t& capital);
 		template<typename T>
 		void helperReadData(const std::string& filePath, std::vector<T>& data, std::unordered_map<std::string, uint16_t>& nameToGPDUnit);
 	};

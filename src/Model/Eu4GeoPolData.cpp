@@ -87,29 +87,31 @@ void Eu4::GeoPolData::initDataProvinces(FilePathHandler*& filePathHandler) {
 	std::cout << "Initiate Province Data from file\t----\t";
 	mProvinces.clear();
 	mProvinces.resize(mMapInfo.maxProvinces + 1);
-	mProvinceDataFiles.clear();
-	mProvinceDataFiles.resize(mMapInfo.maxProvinces + 1);
+
 
 	// No copy - reuse vector
 	std::vector<std::tuple<uint16_t, std::string, std::filesystem::path>> fileData;
 	SimpleParser::getNumberedTxtFiles(fileData, PROV_HISTORY_FOLDER);
 	
+
 	std::for_each(std::execution::par, fileData.begin(), fileData.end(),
 		[&](const auto& tuple) {
-
 			const auto& [provUID, name, path] = tuple;
-			mProvinceDataFiles[provUID] = new DM::FileData(path.string(), filePathHandler->getExportFromFullPath(path.string()));
-
+			mProvinces[provUID].mFileData = new DM::FileData(path.string(), filePathHandler->getExportFromFullPath(path.string()));
+		}
+	);
+	std::for_each(std::execution::par, fileData.begin(), fileData.end(),
+		[&](const auto& tuple) {
+			const auto& [provUID, name, path] = tuple;
 			mProvinces[provUID].initFromFile2(
-				std::to_string(provUID),
+				provUID,
 				mProvUIDToColor[provUID],
 				name,
 				path.string()
 			);
-			initHelperProvince(mProvinceDataFiles[provUID], mProvinces[provUID]);
+			initHelperProvince(mProvinces[provUID]);
 		}
 	);
-
 
 
 	for (auto id : mMapInfo.seaStarts) {
@@ -398,12 +400,13 @@ void Eu4::GeoPolData::initDataContinents(FilePathHandler*& filePathHandler) {
 	std::cout << "Elapsed Time : " << elapsed.count() << " us" << std::endl;
 }
 
-void Eu4::GeoPolData::initHelperProvince(DM::FileData* fileData, Eu4::Province& prov)
+
+void Eu4::GeoPolData::initHelperProvince(Eu4::Province& prov)
 {
-	const char* ptr = fileData->mBuffer.data();
-	const char* end = ptr + fileData->mBuffer.size();
-	
-	
+	const char* ptr = prov.mFileData->mBuffer.data();
+	const char* end = ptr + prov.mFileData->mBuffer.size();
+	std::vector<DM::DataToken>& dataTokens = prov.mFileData->mDataTokens;
+
 	while (ptr < end) {
 		switch (*ptr) {
 		case '\n':
@@ -461,7 +464,7 @@ void Eu4::GeoPolData::initHelperProvince(DM::FileData* fileData, Eu4::Province& 
 				/* capital */
 				else if (*(ptr + 6) == 'l') {
 					ptr += 7;
-					Eu4::GeoPolData::parserCaptureCapital(ptr, fileData, prov.mCapital2);
+					Eu4::GeoPolData::parserCaptureCapital(ptr, dataTokens, prov.mCapital2);
 					goto skip_to;
 				}
 				/* culture */
@@ -520,7 +523,7 @@ void Eu4::GeoPolData::initHelperProvince(DM::FileData* fileData, Eu4::Province& 
 				// latent_trade_goods
 				if (*(ptr + 17) == 's') {
 					ptr += 18;
-					Eu4::GeoPolData::parserCaptureAllValuesBracket(ptr,fileData,prov.mLatentTradeGood);
+					Eu4::GeoPolData::parserCaptureAllValuesBracket(ptr, dataTokens, prov.mLatentTradeGood);
 					goto skip_to;
 					break;
 				}
@@ -577,27 +580,22 @@ void Eu4::GeoPolData::initHelperProvince(DM::FileData* fileData, Eu4::Province& 
 			}
 			}
 			if (value != nullptr) {
-				Eu4::GeoPolData::parserSkipUntilValueStd(ptr, fileData);
-				*value = fileData->mDataTokens.size() - 1;
+				Eu4::GeoPolData::parserSkipUntilValueStd(ptr, dataTokens);
+				*value = prov.mFileData->mDataTokens.size() - 1;
 			}
 			else {
 				ptr = end;
 			}
 		}
 		}
-		skip_to:
+	skip_to:
 		++ptr;
 	}
-	if (prov.mDev2.base_tax != 0 && !fileData->mDataTokens.empty()) {
-		prov.mDev.base_tax = fileData->mDataTokens[prov.mDev2.base_tax].get_uint16_t_Value();
-		prov.mDev.base_prod = fileData->mDataTokens[prov.mDev2.base_prod].get_uint16_t_Value();
-		prov.mDev.base_manpower = fileData->mDataTokens[prov.mDev2.base_manpower].get_uint16_t_Value();
+	if (prov.mDev2.base_tax != 0 && !dataTokens.empty()) {
+		prov.mDev.base_tax = dataTokens[prov.mDev2.base_tax].get_uint16_t_Value();
+		prov.mDev.base_prod = dataTokens[prov.mDev2.base_prod].get_uint16_t_Value();
+		prov.mDev.base_manpower = dataTokens[prov.mDev2.base_manpower].get_uint16_t_Value();
 	}
-}
-
-void Eu4::GeoPolData::initHelperProvince(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData)
-{
-
 }
 
 void Eu4::GeoPolData::initHelperArea(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData)
@@ -964,50 +962,54 @@ void Eu4::GeoPolData::initHelperContinent(DM::FileData& fileData, Eu4::GeoPolDat
 
 }
 
-inline void Eu4::GeoPolData::parserSkipUntilValueStd(const char*& ptr, DM::FileData*& fileData)
+inline void Eu4::GeoPolData::parserSkipUntilValueStd(const char*& ptr, std::vector<DM::DataToken>& dataTokens)
 {
 	while (*ptr != '=') ++ptr;
 	++ptr;
 	while (*ptr == ' ' || *ptr == '\t'  || *ptr == '\"') ++ptr;
 	const char* keyStart = ptr;
 	while (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' && *ptr != '#' && *ptr != '\"') ++ptr;
-	fileData->mDataTokens.emplace_back(DM::DataToken());
-	fileData->mDataTokens.back().mPtrStart = keyStart;
-	fileData->mDataTokens.back().mLength = ptr - keyStart;
+	dataTokens.emplace_back(DM::DataToken());
+	dataTokens.back().mPtrStart = keyStart;
+	dataTokens.back().mLength = ptr - keyStart;
 	keyStart = nullptr;
 }
 
-inline void Eu4::GeoPolData::parserCaptureAllValuesBracket(const char*& ptr, DM::FileData*& fileData, std::vector<uint16_t>& container)
+inline void Eu4::GeoPolData::parserCaptureAllValuesBracket(const char*& ptr, std::vector<DM::DataToken>& dataTokens, std::vector<uint16_t>& container)
 {
+	while (*ptr != '=') ++ptr;
+	++ptr;
+	while (*ptr != '{') ++ptr;
+	++ptr;
 	while (*ptr != '}') {
-		while (*ptr != '=') ++ptr;
-		++ptr;
-		while (*ptr != '{') ++ptr;
-		++ptr;
 		while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n') ++ptr;
 		const char* keyStart = ptr;
 		while (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' && *ptr != '#' && *ptr != '\"') ++ptr;
-		if (*ptr == '#') continue;
-		fileData->mDataTokens.emplace_back(DM::DataToken());
-		fileData->mDataTokens.back().mPtrStart = keyStart;
-		fileData->mDataTokens.back().mLength = ptr - keyStart;
-		container.emplace_back(fileData->mDataTokens.size() - 1);
-		keyStart = nullptr;
+		if (*ptr == '#') {
+			while (*ptr != '\n') ++ptr;
+		}
+		else {
+			dataTokens.emplace_back(DM::DataToken());
+			dataTokens.back().mPtrStart = keyStart;
+			dataTokens.back().mLength = ptr - keyStart;
+			container.emplace_back(dataTokens.size() - 1);
+			keyStart = nullptr;
+		}
 		++ptr;
 	}
 }
 
-inline void Eu4::GeoPolData::parserCaptureCapital(const char*& ptr, DM::FileData*& fileData, uint16_t& capital)
+inline void Eu4::GeoPolData::parserCaptureCapital(const char*& ptr, std::vector<DM::DataToken>& dataTokens, uint16_t& capital)
 {
 	while (*ptr != '=') ++ptr;
 	++ptr;
 	while (*ptr == ' ' || *ptr == '\t' || *ptr == '\"') ++ptr;
 	const char* keyStart = ptr;
 	while (*ptr != '\"') ++ptr;
-	fileData->mDataTokens.emplace_back(DM::DataToken());
-	fileData->mDataTokens.back().mPtrStart = keyStart;
-	fileData->mDataTokens.back().mLength = ptr - keyStart;
-	capital = fileData->mDataTokens.size() - 1;
+	dataTokens.emplace_back(DM::DataToken());
+	dataTokens.back().mPtrStart = keyStart;
+	dataTokens.back().mLength = ptr - keyStart;
+	capital = dataTokens.size() - 1;
 	++ptr;
 	keyStart = nullptr;
 }

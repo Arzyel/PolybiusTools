@@ -298,14 +298,16 @@ void ImageView::mousePressEvent(QMouseEvent* event) {
 
         auto UID = mRefGeoPolCont.getIDFromColor((p[0] << 16) | (p[1] << 8) | p[2]);
         auto& prov = mRefGeoPolCont.getProvinceData(UID);
-        qDebug() << "Clicked at pixel:" << x << y << "RGB:" << p[0] << p[1] << p[2] 
-            << "\nProvince ID : " << UID
-            <<"Province Name : " << prov.mName;
+        if (prov.mFileData != nullptr) {
+            qDebug() << "Clicked at pixel:" << x << y << "RGB:" << p[0] << p[1] << p[2] 
+                << "\nProvince ID : " << UID
+                <<"Province Name : " << prov.mName;
 
-        mRefInfoGUI.loadProvInfo(prov);
+            mRefInfoGUI.loadProvInfo(prov);
 
-        overlayColor = Qt::white;  // change if you want a different overlay
-        createSelectionOverlay(clickedRgb);
+            overlayColor = Qt::white;  // change if you want a different overlay
+            createSelectionOverlay(clickedRgb);
+        }
 
         viewport()->update(); // redraw overlay
     }

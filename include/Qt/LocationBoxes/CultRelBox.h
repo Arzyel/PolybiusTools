@@ -5,6 +5,7 @@
 #include <QtWidgets\qboxlayout.h>
 #include <QtWidgets\qcombobox.h>
 #include <QtWidgets\qlabel.h>
+#include <QtCore\qstring.h>
 #include "CultRelContainer.h"
 #include "Eu4GeoPolUnits.h"
 
