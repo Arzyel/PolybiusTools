@@ -24,6 +24,17 @@ void CultRelBox::loadWidget() {
 	cultCBox->setMinimumWidth(0);
 	cultContainerLayout->addWidget(cultLabel);
 	cultContainerLayout->addWidget(cultCBox);
+	connect(cultCBox, &QComboBox::activated,
+		this,
+		[this](int index) {
+			if (!currentProvince) return;
+			QString text = cultCBox->itemText(index);
+			QByteArray data = text.toUtf8();
+			currentProvince->mFileData->mDataTokens[currentProvince->mCultureID2].mNewData = std::string(data.constData(), data.size());
+		});
+
+
+
 
 	
 	QWidget* relContainer = new QWidget(leftPart);
@@ -34,14 +45,23 @@ void CultRelBox::loadWidget() {
 	relCBox->setMinimumWidth(cultCBox->width());
 	relContainerLayout->addWidget(relLabel);
 	relContainerLayout->addWidget(relCBox);
-
+	connect(relCBox, &QComboBox::activated,
+		this,
+		[this](int index) {
+			if (!currentProvince) return;
+			QString text = relCBox->itemText(index);
+			QByteArray data = text.toUtf8();
+			currentProvince->mFileData->mDataTokens[currentProvince->mReligionID2].mNewData = std::string(data.constData(), data.size());
+		});
 
 	leftPartLayout->addWidget(cultContainer);
 	leftPartLayout->addWidget(relContainer);
 
 	mainLayout->addWidget(leftPart,19);
 	mainLayout->addWidget(rightPart,1);
+
 }
+
 
 void CultRelBox::initializeData(const std::unordered_map<std::string, sCulture>& cultureData, const std::unordered_map<std::string, sReligion>& religionData)
 {
@@ -55,14 +75,19 @@ void CultRelBox::initializeData(const std::unordered_map<std::string, sCulture>&
 	}
 }
 
-void CultRelBox::loadProvInfo(const Eu4::Province& province) {
-	
-
-
+void CultRelBox::loadProvInfo(Eu4::Province& province) {
 	int index = cultCBox->findText(province.mFileData->mDataTokens[province.mCultureID2].getCurrentName().c_str());
 	cultCBox->setCurrentIndex(index);
 
 	int indexRel = relCBox->findText(province.mFileData->mDataTokens[province.mReligionID2].getCurrentName().c_str());
 	relCBox->setCurrentIndex(indexRel);
 
+	currentProvince = &province;
+}
+
+void CultRelBox::onCultureChanged(const QString& text)
+{
+	if (!currentProvince) return;
+	/*std::string newData = text.toUtf8().constData();
+	currentProvince->mFileData->mDataTokens[currentProvince->mCultureID2].mNewData = std::move(newData);*/
 }

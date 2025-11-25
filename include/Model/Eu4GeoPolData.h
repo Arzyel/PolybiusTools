@@ -43,6 +43,7 @@ namespace Eu4 {
 		uint16_t getIDFromColor(uint32_t packedRGB) const;
 		void initData(FilePathHandler*& filePathHandler, DM::FileManager* fileManager);
 		const Eu4::Province& getProvinceData(const int& UID) const;
+		Eu4::Province& getProvinceData(const int& UID);
 		const std::array<int,5> getNumberPerType() const;
 		const std::vector<Eu4::Province>& getAllProvinces() const;
 		const int getNbAreas() const;

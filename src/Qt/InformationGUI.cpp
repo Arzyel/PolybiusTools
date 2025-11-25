@@ -68,7 +68,7 @@ void InformationGUI::loadWidgets()
 	
 }
 
-void InformationGUI::loadProvInfo(const Eu4::Province& province) const
+void InformationGUI::loadProvInfo(Eu4::Province& province) const
 {
 	signalLoadInfo(province);
 }

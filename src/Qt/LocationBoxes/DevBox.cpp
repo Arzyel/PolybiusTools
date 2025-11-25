@@ -124,7 +124,7 @@ void DevBox::loadWidgets() {
 	
 }
 
-void DevBox::loadDevInfo(const Eu4::Province& province)
+void DevBox::loadDevInfo(Eu4::Province& province)
 {
 	taxSpinBox->setValue(province.mDev.base_tax);
 	prodSpinBox->setValue(province.mDev.base_prod);

@@ -55,7 +55,7 @@ void OwnershipBox::initializeData(const std::unordered_map<std::string, std::str
 
 }
 
-void OwnershipBox::loadProvInfo(const Eu4::Province& province) {
+void OwnershipBox::loadProvInfo(Eu4::Province& province) {
 	int index = ownerBox->findText(province.mOwnerID.c_str(), Qt::MatchStartsWith);
 	if (index == 0) {
 		index = -1;

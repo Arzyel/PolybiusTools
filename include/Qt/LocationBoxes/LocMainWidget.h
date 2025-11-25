@@ -17,7 +17,7 @@ public:
 	void loadWidgets();
 
 public slots:
-	void loadProvInfo(const Eu4::Province& province);
+	void loadProvInfo(Eu4::Province& province);
 protected:
 private:
 };

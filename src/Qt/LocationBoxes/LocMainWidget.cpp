@@ -52,7 +52,7 @@ void LocMainWidget::loadWidgets()
 	provinceLayout->addWidget(provinceInfoBox, 9);
 }
 
-void LocMainWidget::loadProvInfo(const Eu4::Province& province)
+void LocMainWidget::loadProvInfo(Eu4::Province& province)
 {
 	this->findChild<QLabel*>("ID")->setText(("ID : " + std::to_string(province.mUID)).c_str());
 	this->findChild<QLabel*>("Name")->setText(("Name : " + province.mName).c_str());

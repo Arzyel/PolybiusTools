@@ -2,8 +2,8 @@
 
 
 // ----------------------- CONSTRUCTOR -----------------------
-ImageView::ImageView(const QString& imagePath, const Eu4::GeoPolData& geoPolContainers, const InformationGUI& informationGUI, QWidget* parent)
-    : QGraphicsView(parent), mRefGeoPolCont(geoPolContainers), mRefInfoGUI(informationGUI)
+ImageView::ImageView(const QString& imagePath, Eu4::GeoPolData& geoPolContainers, const InformationGUI& informationGUI, QWidget* parent)
+    : QGraphicsView(parent), mRefInfoGUI(informationGUI), mRefGeoPolCont(geoPolContainers)
 {
     
     QPixmap pix(imagePath);
@@ -297,7 +297,7 @@ void ImageView::mousePressEvent(QMouseEvent* event) {
         QRgb clickedRgb = qRgb(p[0], p[1], p[2]);
 
         auto UID = mRefGeoPolCont.getIDFromColor((p[0] << 16) | (p[1] << 8) | p[2]);
-        auto& prov = mRefGeoPolCont.getProvinceData(UID);
+        Eu4::Province& prov = mRefGeoPolCont.getProvinceData(UID);
         if (prov.mFileData != nullptr) {
             qDebug() << "Clicked at pixel:" << x << y << "RGB:" << p[0] << p[1] << p[2] 
                 << "\nProvince ID : " << UID

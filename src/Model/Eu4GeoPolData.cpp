@@ -59,6 +59,9 @@ void Eu4::GeoPolData::initData(FilePathHandler*& filePathHandler, DM::FileManage
 const Eu4::Province& Eu4::GeoPolData::getProvinceData(const int& UID) const {
 	return mProvinces.at(UID);
 }
+Eu4::Province& Eu4::GeoPolData::getProvinceData(const int& UID) {
+	return mProvinces.at(UID);
+}
 
 const std::array<int, 5> Eu4::GeoPolData::getNumberPerType() const
 {

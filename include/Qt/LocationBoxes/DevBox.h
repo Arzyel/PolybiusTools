@@ -21,7 +21,7 @@ public:
     void loadWidgets();
 
 public slots:
-    void loadDevInfo(const Eu4::Province& province);
+    void loadDevInfo(Eu4::Province& province);
 protected:
 
 private:

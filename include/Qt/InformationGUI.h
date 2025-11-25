@@ -20,10 +20,10 @@ class InformationGUI : public QTabWidget {
 public:
 	InformationGUI(const Eu4::GeoPolData& refGeoPolCont, const CultRelContainer& refCultRel, const CountryContainer& countryContainer, QWidget* parent = nullptr);
 	void loadWidgets();
-	void loadProvInfo (const Eu4::Province& province) const;
+	void loadProvInfo (Eu4::Province& province) const;
 	void initialiseWidgetsInfo();
 signals:
-	void signalLoadInfo(const Eu4::Province& province) const;
+	void signalLoadInfo(Eu4::Province& province) const;
 	void signalInitCultRelInfo(const std::unordered_map<std::string, sCulture>& cultureData,
 		const std::unordered_map<std::string, sReligion>& religionData) const;
 	void signalInitOwnership(const std::unordered_map<std::string, std::string>& data) const;
