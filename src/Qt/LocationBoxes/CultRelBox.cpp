@@ -24,17 +24,6 @@ void CultRelBox::loadWidget() {
 	cultCBox->setMinimumWidth(0);
 	cultContainerLayout->addWidget(cultLabel);
 	cultContainerLayout->addWidget(cultCBox);
-	connect(cultCBox, &QComboBox::activated,
-		this,
-		[this](int index) {
-			if (!currentProvince) return;
-			QString text = cultCBox->itemText(index);
-			QByteArray data = text.toUtf8();
-			currentProvince->mFileData->mDataTokens[currentProvince->mCultureID2].mNewData = std::string(data.constData(), data.size());
-		});
-
-
-
 
 	
 	QWidget* relContainer = new QWidget(leftPart);
@@ -45,14 +34,7 @@ void CultRelBox::loadWidget() {
 	relCBox->setMinimumWidth(cultCBox->width());
 	relContainerLayout->addWidget(relLabel);
 	relContainerLayout->addWidget(relCBox);
-	connect(relCBox, &QComboBox::activated,
-		this,
-		[this](int index) {
-			if (!currentProvince) return;
-			QString text = relCBox->itemText(index);
-			QByteArray data = text.toUtf8();
-			currentProvince->mFileData->mDataTokens[currentProvince->mReligionID2].mNewData = std::string(data.constData(), data.size());
-		});
+
 
 	leftPartLayout->addWidget(cultContainer);
 	leftPartLayout->addWidget(relContainer);
@@ -61,6 +43,28 @@ void CultRelBox::loadWidget() {
 	mainLayout->addWidget(rightPart,1);
 
 }
+
+void CultRelBox::makeConnections(std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable)
+{
+	connect(cultCBox, &QComboBox::activated,
+		this,
+		[this, callable](int index) {
+			QString text = cultCBox->itemText(index);
+			QByteArray data = text.toUtf8();
+			callable(&Eu4::Province::mCultureID2, std::string(data.constData(), data.size()));
+		});
+	connect(relCBox, &QComboBox::activated,
+		this,
+		[this, callable](int index) {
+			QString text = relCBox->itemText(index);
+			QByteArray data = text.toUtf8();
+			callable(&Eu4::Province::mReligionID2, std::string(data.constData(), data.size()));
+		});
+}
+
+
+
+
 
 
 void CultRelBox::initializeData(const std::unordered_map<std::string, sCulture>& cultureData, const std::unordered_map<std::string, sReligion>& religionData)
@@ -81,13 +85,4 @@ void CultRelBox::loadProvInfo(Eu4::Province& province) {
 
 	int indexRel = relCBox->findText(province.mFileData->mDataTokens[province.mReligionID2].getCurrentName().c_str());
 	relCBox->setCurrentIndex(indexRel);
-
-	currentProvince = &province;
-}
-
-void CultRelBox::onCultureChanged(const QString& text)
-{
-	if (!currentProvince) return;
-	/*std::string newData = text.toUtf8().constData();
-	currentProvince->mFileData->mDataTokens[currentProvince->mCultureID2].mNewData = std::move(newData);*/
 }

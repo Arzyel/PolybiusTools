@@ -27,11 +27,19 @@ void InformationGUI::loadWidgets()
 	QObject::connect(this, &InformationGUI::signalLoadInfo,
 		provinceTab->findChild<CultRelBox*>(), &CultRelBox::loadProvInfo);
 
+
 	QObject::connect(this, &InformationGUI::signalInitOwnership,
 		provinceTab->findChild<OwnershipBox*>(), &OwnershipBox::initializeData);
 	QObject::connect(this, &InformationGUI::signalLoadInfo,
 		provinceTab->findChild<OwnershipBox*>(), &OwnershipBox::loadProvInfo);
 
+
+	auto updater = [this](uint16_t Eu4::Province::* memberPtr, const std::string& newData) {
+		updateProvinceField(memberPtr, newData);
+		};
+
+	provinceTab->findChild<CultRelBox*>()->makeConnections(updater);
+	provinceTab->findChild<OwnershipBox*>()->makeConnections(updater);
 
 
 	// Geography Tab
@@ -77,6 +85,16 @@ void InformationGUI::initialiseWidgetsInfo()
 {
 	signalInitCultRelInfo(mRefCultRelCont.mCultures,mRefCultRelCont.mReligions);
 	signalInitOwnership(mRefCountryContainer.tagToName);
+}
+
+void InformationGUI::changeCurrentProv(Eu4::Province& prov) const
+{
+	currentProv = &prov;
+}
+
+void InformationGUI::updateProvinceField(uint16_t Eu4::Province::* memberPtr, const std::string& newData)
+{
+	currentProv->mFileData->mDataTokens[(currentProv->*memberPtr)].mNewData = newData;
 }
 
 

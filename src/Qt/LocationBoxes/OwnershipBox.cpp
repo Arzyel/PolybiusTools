@@ -56,15 +56,34 @@ void OwnershipBox::initializeData(const std::unordered_map<std::string, std::str
 }
 
 void OwnershipBox::loadProvInfo(Eu4::Province& province) {
-	int index = ownerBox->findText(province.mOwnerID.c_str(), Qt::MatchStartsWith);
+
+	int index = ownerBox->findText(province.mFileData->mDataTokens[province.mOwnerID2].getCurrentName().c_str(), Qt::MatchStartsWith);
 	if (index == 0) {
 		index = -1;
 	}
 	ownerBox->setCurrentIndex(index);
 
-	int index2 = controllerBox->findText(province.mControllerID.c_str(), Qt::MatchStartsWith);
+	int index2 = ownerBox->findText(province.mFileData->mDataTokens[province.mControllerID2].getCurrentName().c_str(), Qt::MatchStartsWith);
 	if (index2 == 0) {
 		index2 = -1;
 	}
 	controllerBox->setCurrentIndex(index2);
+}
+
+void OwnershipBox::makeConnections(std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable)
+{
+	connect(ownerBox, &QComboBox::activated,
+		this,
+		[this, callable](int index) {
+			QString text = ownerBox->itemText(index);
+			QByteArray data = text.toUtf8();
+			callable(&Eu4::Province::mOwnerID2, std::string(data.constData(), data.size()));
+		});
+	connect(controllerBox, &QComboBox::activated,
+		this,
+		[this, callable](int index) {
+			QString text = controllerBox->itemText(index);
+			QByteArray data = text.toUtf8();
+			callable(&Eu4::Province::mControllerID2, std::string(data.constData(), data.size()));
+		});
 }

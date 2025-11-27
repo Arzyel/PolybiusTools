@@ -303,7 +303,9 @@ void ImageView::mousePressEvent(QMouseEvent* event) {
                 << "\nProvince ID : " << UID
                 <<"Province Name : " << prov.mName;
 
+            mRefInfoGUI.changeCurrentProv(prov);
             mRefInfoGUI.loadProvInfo(prov);
+            
 
             overlayColor = Qt::white;  // change if you want a different overlay
             createSelectionOverlay(clickedRgb);
