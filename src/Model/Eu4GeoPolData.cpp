@@ -444,17 +444,17 @@ void Eu4::GeoPolData::initHelperProvince(Eu4::Province& prov)
 				// base_tax
 				if (*(ptr + 7) == 'x') {
 					ptr += 8;
-					value = &(prov.mDev2.base_tax);
+					value = &(prov.mBaseTax);
 				}
 				// base_production
 				else if (*(ptr + 14) == 'n') {
 					ptr += 15;
-					value = &(prov.mDev2.base_prod);
+					value = &(prov.mBaseProduction);
 				}
 				// base_manpower
 				else if (*(ptr + 12) == 'r') {
 					ptr += 13;
-					value = &(prov.mDev2.base_manpower);
+					value = &(prov.mBaseManpower);
 				}
 				break;
 			}
@@ -594,11 +594,7 @@ void Eu4::GeoPolData::initHelperProvince(Eu4::Province& prov)
 	skip_to:
 		++ptr;
 	}
-	if (prov.mDev2.base_tax != 0 && !dataTokens.empty()) {
-		prov.mDev.base_tax = dataTokens[prov.mDev2.base_tax].get_uint16_t_Value();
-		prov.mDev.base_prod = dataTokens[prov.mDev2.base_prod].get_uint16_t_Value();
-		prov.mDev.base_manpower = dataTokens[prov.mDev2.base_manpower].get_uint16_t_Value();
-	}
+
 }
 
 void Eu4::GeoPolData::initHelperArea(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData)

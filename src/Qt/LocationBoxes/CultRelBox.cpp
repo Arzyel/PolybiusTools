@@ -80,9 +80,19 @@ void CultRelBox::initializeData(const std::unordered_map<std::string, sCulture>&
 }
 
 void CultRelBox::loadProvInfo(Eu4::Province& province) {
-	int index = cultCBox->findText(province.mFileData->mDataTokens[province.mCultureID2].getCurrentName().c_str());
-	cultCBox->setCurrentIndex(index);
+	if (province.mCultureID2 != UINT16_MAX) {
+		int index = cultCBox->findText(province.mFileData->mDataTokens[province.mCultureID2].getCurrentName().c_str());
+		cultCBox->setCurrentIndex(index);
+	}
+	else {
+		cultCBox->setCurrentIndex(-1);
+	}
+	if (province.mReligionID2 != UINT16_MAX) {
+		int indexRel = relCBox->findText(province.mFileData->mDataTokens[province.mReligionID2].getCurrentName().c_str());
+		relCBox->setCurrentIndex(indexRel);
+	}
+	else {
+		relCBox->setCurrentIndex(-1);
 
-	int indexRel = relCBox->findText(province.mFileData->mDataTokens[province.mReligionID2].getCurrentName().c_str());
-	relCBox->setCurrentIndex(indexRel);
+	}
 }

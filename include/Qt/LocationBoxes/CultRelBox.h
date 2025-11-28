@@ -8,6 +8,7 @@
 #include <QtWidgets\qlabel.h>
 #include <QtCore\qstring.h>
 #include <QtCore\qoverload.h>
+#include <cstdint>
 #include "CultRelContainer.h"
 #include "Eu4GeoPolUnits.h"
 

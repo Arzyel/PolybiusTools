@@ -40,6 +40,7 @@ void InformationGUI::loadWidgets()
 
 	provinceTab->findChild<CultRelBox*>()->makeConnections(updater);
 	provinceTab->findChild<OwnershipBox*>()->makeConnections(updater);
+	provinceTab->findChild<DevBox*>()->makeConnections(updater);
 
 
 	// Geography Tab
@@ -94,7 +95,7 @@ void InformationGUI::changeCurrentProv(Eu4::Province& prov) const
 
 void InformationGUI::updateProvinceField(uint16_t Eu4::Province::* memberPtr, const std::string& newData)
 {
-	currentProv->mFileData->mDataTokens[(currentProv->*memberPtr)].mNewData = newData;
+	currentProv->updateField(memberPtr, newData);
 }
 
 

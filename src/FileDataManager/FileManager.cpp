@@ -86,6 +86,13 @@ void DM::FileData::initDataBuffer(const std::string& importPath)
 	}
 }
 
+
+DM::DataToken::DataToken(const char* lastEntry, const std::string& newData)
+{
+	mPtrStart = lastEntry;
+	mNewData = newData;
+}
+
 std::string DM::DataToken::getCurrentName()
 {
 	if (!mNewData.empty()) {
@@ -95,9 +102,21 @@ std::string DM::DataToken::getCurrentName()
 	return getOriginName();
 }
 
-uint16_t DM::DataToken::get_uint16_t_Value()
+uint16_t DM::DataToken::getOrigin_uint16_t()
 {
 	uint16_t value;
+	std::from_chars(mPtrStart, mPtrStart + mLength, value);
+	return value;
+}
+
+uint16_t DM::DataToken::getCurrent_uint16_t()
+{
+	uint16_t value;
+	if (!mNewData.empty()) {
+		std::from_chars(mNewData.data(), mNewData.data() + mNewData.size(), value);
+		return value;
+	}
+
 	std::from_chars(mPtrStart, mPtrStart + mLength, value);
 	return value;
 }

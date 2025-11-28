@@ -8,6 +8,7 @@
 #include <QtWidgets\qlabel.h>
 #include <QtWidgets\qpushbutton.h>
 #include <random>
+#include <functional>
 #include "Eu4GeoPolUnits.h"
 
 
@@ -19,6 +20,8 @@ public:
     ~DevBox();
     DevBox(const QString& title, QWidget* parent = nullptr);
     void loadWidgets();
+    void makeConnections(std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable);
+
 
 public slots:
     void loadDevInfo(Eu4::Province& province);

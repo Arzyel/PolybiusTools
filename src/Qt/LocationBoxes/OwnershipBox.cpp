@@ -56,16 +56,15 @@ void OwnershipBox::initializeData(const std::unordered_map<std::string, std::str
 }
 
 void OwnershipBox::loadProvInfo(Eu4::Province& province) {
-
-	int index = ownerBox->findText(province.mFileData->mDataTokens[province.mOwnerID2].getCurrentName().c_str(), Qt::MatchStartsWith);
-	if (index == 0) {
-		index = -1;
+	int index = -1;
+	if (province.mOwnerID2 != UINT16_MAX) {
+		index = ownerBox->findText(province.mFileData->mDataTokens[province.mOwnerID2].getCurrentName().c_str(), Qt::MatchStartsWith);
 	}
 	ownerBox->setCurrentIndex(index);
 
-	int index2 = ownerBox->findText(province.mFileData->mDataTokens[province.mControllerID2].getCurrentName().c_str(), Qt::MatchStartsWith);
-	if (index2 == 0) {
-		index2 = -1;
+	int index2 = -1;
+	if (province.mControllerID2 != UINT16_MAX) {
+		index2 = ownerBox->findText(province.mFileData->mDataTokens[province.mControllerID2].getCurrentName().c_str(), Qt::MatchStartsWith);
 	}
 	controllerBox->setCurrentIndex(index2);
 }

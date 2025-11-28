@@ -215,7 +215,7 @@ void ImageView::createAllOverlays()
         if (prov.isWater) {
             type = 1;
         }
-        else if (prov.mDev.base_manpower == 0) {
+        else if (prov.mBaseTax == UINT16_MAX && prov.mBaseManpower == UINT16_MAX && prov.mBaseProduction == UINT16_MAX) {
             type = 2;
         }
         for (const PixelPos& pos : pixels) {

@@ -9,6 +9,7 @@ void Eu4::Province::initFromFile(const std::string& filePath)
 {
 }
 
+
 void Eu4::Province::initFromFile(const std::string& eu4UID, const uint32_t& rgbValue, const std::string& filePath, const std::string& name)
 
 {
@@ -70,13 +71,13 @@ void Eu4::Province::handleKeyData(const std::vector<std::string>& keyStack, cons
     case HRE_HASH:
         break;
     case BASE_TAX_HASH:
-        mDev.base_tax = std::stoi(value);
+        
         break;
     case BASE_PRODUCTION_HASH:
-        mDev.base_prod = std::stoi(value);
+       
         break;
     case BASE_MANPOWER_HASH:
-        mDev.base_manpower = std::stoi(value);
+        
         break;
     case TRADE_GOODS_HASH:
 

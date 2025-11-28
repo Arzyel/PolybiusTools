@@ -37,7 +37,7 @@ void DevBox::loadWidgets() {
 	QLabel* taxLabel = new QLabel("Tax : ");
 	taxSpinBox = new QSpinBox;
 	taxSpinBox->setMinimum(0);
-	taxSpinBox->setMaximum(1000);
+	taxSpinBox->setMaximum(999);
 	taxSpinBox->setValue(0);
 
 	taxWidgetLayout->addWidget(taxLabel);
@@ -51,7 +51,7 @@ void DevBox::loadWidgets() {
 	QLabel* prodLabel = new QLabel("Production : ");
 	prodSpinBox = new QSpinBox;
 	prodSpinBox->setMinimum(0);
-	prodSpinBox->setMaximum(1000);
+	prodSpinBox->setMaximum(999);
 	prodSpinBox->setValue(0);
 
 	prodWidgetLayout->addWidget(prodLabel);
@@ -66,7 +66,7 @@ void DevBox::loadWidgets() {
 	QLabel* manLabel = new QLabel("Manpower : ");
 	manSpinBox = new QSpinBox;
 	manSpinBox->setMinimum(0);
-	manSpinBox->setMaximum(1000);
+	manSpinBox->setMaximum(999);
 	manSpinBox->setValue(0);
 
 	manWidgetLayout->addWidget(manLabel);
@@ -126,7 +126,89 @@ void DevBox::loadWidgets() {
 
 void DevBox::loadDevInfo(Eu4::Province& province)
 {
-	taxSpinBox->setValue(province.mDev.base_tax);
-	prodSpinBox->setValue(province.mDev.base_prod);
-	manSpinBox->setValue(province.mDev.base_manpower);
+	DM::FileData& fileData = *(province.mFileData);
+
+	uint16_t tax = 0;
+	uint16_t prod = 0;
+	uint16_t manpower = 0;
+	
+	if (province.mBaseTax != UINT16_MAX) {
+		tax = fileData.mDataTokens[province.mBaseTax].getCurrent_uint16_t();
+	}
+	if (province.mBaseProduction != UINT16_MAX) {
+		prod = fileData.mDataTokens[province.mBaseProduction].getCurrent_uint16_t();
+	}
+	if (province.mBaseManpower != UINT16_MAX) {
+		manpower = fileData.mDataTokens[province.mBaseManpower].getCurrent_uint16_t();
+	}
+	
+	taxSpinBox->setValue(tax);
+	prodSpinBox->setValue(prod);
+	manSpinBox->setValue(manpower);
+}
+
+
+void DevBox::makeConnections(std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable) {
+	connect(taxSpinBox, &QSpinBox::editingFinished,
+		this,
+		[this, callable]() {
+			int value = taxSpinBox->value();
+			char buf[3];
+			int len = 0;
+			if (value >= 100) {
+				buf[len++] = '0' + (value / 100);
+				buf[len++] = '0' + (value / 10 % 10);
+				buf[len++] = '0' + (value % 10);
+			}
+			else if (value >= 10) {
+				buf[len++] = '0' + (value / 10);
+				buf[len++] = '0' + (value % 10);
+			}
+			else {
+				buf[len++] = '0' + value;
+			}
+			callable(&Eu4::Province::mBaseTax, std::string(buf,len));
+		});
+
+	connect(prodSpinBox, &QSpinBox::editingFinished,
+		this,
+		[this, callable]() {
+			int value = prodSpinBox->value();
+			char buf[3];
+			int len = 0;
+			if (value >= 100) {
+				buf[len++] = '0' + (value / 100);
+				buf[len++] = '0' + (value / 10 % 10);
+				buf[len++] = '0' + (value % 10);
+			}
+			else if (value >= 10) {
+				buf[len++] = '0' + (value / 10);
+				buf[len++] = '0' + (value % 10);
+			}
+			else {
+				buf[len++] = '0' + value;
+			}
+			callable(&Eu4::Province::mBaseProduction, std::string(buf,len));
+		});
+
+	connect(manSpinBox, &QSpinBox::editingFinished,
+		this,
+		[this, callable]() {
+			int value = manSpinBox->value();
+			char buf[3];
+			int len = 0;
+			if (value >= 100) {
+				buf[len++] = '0' + (value / 100);
+				buf[len++] = '0' + (value / 10 % 10);
+				buf[len++] = '0' + (value % 10);
+			}
+			else if (value >= 10) {
+				buf[len++] = '0' + (value / 10);
+				buf[len++] = '0' + (value % 10);
+			}
+			else {
+				buf[len++] = '0' + value;
+			}
+			callable(&Eu4::Province::mBaseManpower, std::string(buf,len));
+		});
 }
