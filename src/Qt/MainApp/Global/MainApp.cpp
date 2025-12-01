@@ -1,10 +1,10 @@
 ﻿#include "MainApp.h"
 
 
-MainApp::MainApp(const QApplication& app, FilePathHandler*& filePathHandler, DM::FileManager* fileManager, QWidget* parent)
+MainApp::MainApp(const QApplication& app, FilePathHandler*& filePathHandler,QWidget* parent)
     : QMainWindow(parent)
 {
-    InitData(filePathHandler, fileManager);
+    InitData(filePathHandler);
 
     TopMenuBar* menuBar = new TopMenuBar(app, this);
     menuBar->setupMenus();
@@ -48,11 +48,11 @@ void MainApp::InitWidgets()
 
 }
 
-void MainApp::InitData(FilePathHandler*& filePathHandler, DM::FileManager* fileManager)
+void MainApp::InitData(FilePathHandler*& filePathHandler)
 {
 
     if (filePathHandler->mGame == GAMES[0]) {
-        gameData = new Eu4::Data(filePathHandler, fileManager);
+        gameData = new Eu4::Data(filePathHandler);
     }
     else {
         throw std::runtime_error("Wrong Game type");

@@ -8,7 +8,7 @@ DevBox::~DevBox()
 }
 
 DevBox::DevBox(const QString& title, QWidget* parent)
-	:QGroupBox(title, parent), gen(std::random_device{}()), distLow(0, 3), distMid(2, 6), distHigh(5, 10)
+	:QGroupBox(title, parent), gen(std::random_device{}()), distLow(1, 3), distMid(2, 8), distHigh(7, 15)
 {
 
 	loadWidgets();
@@ -82,11 +82,17 @@ void DevBox::loadWidgets() {
 		taxSpinBox->setValue(taxSpinBox->value() + 1);
 		prodSpinBox->setValue(prodSpinBox->value() + 1);
 		manSpinBox->setValue(manSpinBox->value() + 1);
+		taxSpinBox->editingFinished();
+		prodSpinBox->editingFinished();
+		manSpinBox->editingFinished();
 		});
 	QObject::connect(bSubDevAll, &QPushButton::clicked, [&]() {
 		taxSpinBox->setValue(taxSpinBox->value() - 1);
 		prodSpinBox->setValue(prodSpinBox->value() - 1);
 		manSpinBox->setValue(manSpinBox->value() - 1);
+		taxSpinBox->editingFinished();
+		prodSpinBox->editingFinished();
+		manSpinBox->editingFinished();
 		});
 
 	middlePartLayout->addWidget(bAddDevAll);
@@ -98,18 +104,27 @@ void DevBox::loadWidgets() {
 		taxSpinBox->setValue(distLow(gen));
 		prodSpinBox->setValue(distLow(gen));
 		manSpinBox->setValue(distLow(gen));
+		taxSpinBox->editingFinished();
+		prodSpinBox->editingFinished();
+		manSpinBox->editingFinished();
 		});
 	QPushButton* bRndMidDev = new QPushButton("Rnd Mid Dev", rightPart);
 	QObject::connect(bRndMidDev, &QPushButton::clicked, [&]() {
 		taxSpinBox->setValue(distMid(gen));
 		prodSpinBox->setValue(distMid(gen));
 		manSpinBox->setValue(distMid(gen));
+		taxSpinBox->editingFinished();
+		prodSpinBox->editingFinished();
+		manSpinBox->editingFinished();
 		});
 	QPushButton* bRndHighDev = new QPushButton("Rnd High Dev", rightPart);
 	QObject::connect(bRndHighDev, &QPushButton::clicked, [&]() {
 		taxSpinBox->setValue(distHigh(gen));
 		prodSpinBox->setValue(distHigh(gen));
 		manSpinBox->setValue(distHigh(gen));
+		taxSpinBox->editingFinished();
+		prodSpinBox->editingFinished();
+		manSpinBox->editingFinished();
 		});
 
 
@@ -126,7 +141,7 @@ void DevBox::loadWidgets() {
 
 void DevBox::loadDevInfo(Eu4::Province& province)
 {
-	DM::FileData& fileData = *(province.mFileData);
+	DM::FileData<Eu4::Province>& fileData = *(province.mFileData);
 
 	uint16_t tax = 0;
 	uint16_t prod = 0;
@@ -146,7 +161,6 @@ void DevBox::loadDevInfo(Eu4::Province& province)
 	prodSpinBox->setValue(prod);
 	manSpinBox->setValue(manpower);
 }
-
 
 void DevBox::makeConnections(std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable) {
 	connect(taxSpinBox, &QSpinBox::editingFinished,

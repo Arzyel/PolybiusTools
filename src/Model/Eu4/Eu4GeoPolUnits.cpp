@@ -11,7 +11,6 @@ void Eu4::Province::initFromFile(const std::string& filePath)
 
 
 void Eu4::Province::initFromFile(const std::string& eu4UID, const uint32_t& rgbValue, const std::string& filePath, const std::string& name)
-
 {
     mUID = std::stoi(eu4UID);
     mRGB = rgbValue;
@@ -45,7 +44,7 @@ void Eu4::Province::initFromFile2(const uint16_t eu4UID, const uint32_t& rgbValu
 
 void Eu4::Province::handleKeyData(const std::vector<std::string>& keyStack, const std::string& value)
 {
-    uint32_t keyHash = hash_runtime(keyStack.back());
+   /* uint32_t keyHash = hash_runtime(keyStack.back());
     if (keyStack.size() > 1) return;
     switch (keyHash) {
     case OWNER_HASH:
@@ -108,7 +107,7 @@ void Eu4::Province::handleKeyData(const std::vector<std::string>& keyStack, cons
     default:
 
         break;
-    }
+    }*/
 }
 
 void Eu4::Area::initFromFile(const std::string& filePath)

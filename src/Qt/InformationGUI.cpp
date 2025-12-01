@@ -70,9 +70,57 @@ void InformationGUI::loadWidgets()
 	// BufferedChanges tab
 	QWidget* bufferTab = new QWidget;
 	QVBoxLayout* bufferLayout = new QVBoxLayout(bufferTab);
-	bufferLayout->addWidget(new QPushButton("Change 1"));
+	
+	bufferLayout->addWidget([this] {
+		QPushButton* l = new QPushButton("Cancel Changes");
+		connect(l, &QPushButton::clicked, this, [this]() {
+				for (auto fileData : activeChanges) {
+					fileData->clearActiveChangedData();
+				}
+				activeChanges.clear();
+			});
+		return l;
+		}());
+
+	bufferLayout->addWidget([this] {
+		QPushButton* l = new QPushButton("Save Changes");
+		connect(l, &QPushButton::clicked, this, [this]() {
+				for (auto fileData : activeChanges) {
+					fileData->writeIntoFile();
+					fileData->resetData();
+					//fileData->resetDataAfterSave<Eu4::GeoPolData>([](Eu4::Province& prov) {}, const_cast<Eu4::GeoPolData&>(mRefGeoPolCont));
+				}
+			});
+		return l;
+		}());
 	this->addTab(bufferTab, "BufferedChanges");
 	
+
+
+	connect(this, &QTabWidget::currentChanged, this, 
+		[this](int index) {
+			switch (index) {
+			case 0: {
+				loadProvInfo(*currentProv);
+				break;
+			}
+			case 1: {
+				break;
+			}
+			case 2: {
+				break;
+			}
+			case 3: {
+				break;
+			}
+			case 4: {
+				break;
+			}
+			case 5: {
+				break;
+			}
+			}
+		});
 
 	
 }
@@ -96,6 +144,11 @@ void InformationGUI::changeCurrentProv(Eu4::Province& prov) const
 void InformationGUI::updateProvinceField(uint16_t Eu4::Province::* memberPtr, const std::string& newData)
 {
 	currentProv->updateField(memberPtr, newData);
+	activeChanges.insert(currentProv->mFileData);
+	
+	if (newData.empty() || newData[0] == '0') {
+		currentProv->scheduleDelete(memberPtr);
+	}
 }
 
 

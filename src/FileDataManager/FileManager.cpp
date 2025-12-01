@@ -1,14 +1,7 @@
 ﻿#include "FileManager.h"
 
-DM::FileData::FileData(const std::string& importPath, const std::string& exportPath)
-	: mExportPath(exportPath)
+void DM::iFileDataBase::writeIntoFile()
 {
-	initDataBuffer(importPath);
-}
-
-void DM::FileData::writeIntoFile()
-{
-
 	namespace fs = std::filesystem;
 
 	fs::path path(mExportPath);
@@ -26,11 +19,39 @@ void DM::FileData::writeIntoFile()
 	if (!out.is_open()) {
 		throw std::runtime_error("Failed to open output file: " + mExportPath);
 	}
+
+
+	std::vector<uint16_t> activeChangeIndexes(mActiveChanges.begin(), mActiveChanges.end());
+
+	std::sort(activeChangeIndexes.begin(), activeChangeIndexes.end());
+
+
+	for (auto& [index, keyDataToken] : mKeyToErase) {
+		const char* ptr = mDataTokens[index].mPtrStart;
+		while (*ptr != '=') --ptr;
+		--ptr;
+		while (*ptr == ' ' || *ptr == '\n' || *ptr == '\t') {
+			--ptr;
+		}
+		while (*ptr != ' ' && *ptr != '\n' && *ptr != '\t') {
+			--ptr;
+		}
+		keyDataToken.mPtrStart = ptr;
+	}
+
+
+
 	const char* base = mBuffer.data();
 	const char* cursor = base;
-	for (const auto& dataToken : mDataTokens) {
+	for (const auto index : activeChangeIndexes) {
+		const auto& dataToken = mDataTokens[index];
 		if (cursor < dataToken.mPtrStart) {
-			out.write(cursor, dataToken.mPtrStart - cursor);
+			if (auto it = mKeyToErase.find(index); it == mKeyToErase.end()) {
+				out.write(cursor, dataToken.mPtrStart - cursor);
+			}
+			else {
+				out.write(cursor, it->second.mPtrStart - cursor);
+			}
 		}
 		if (dataToken.erase) {}
 		else if (!dataToken.mNewData.empty()) {
@@ -41,15 +62,14 @@ void DM::FileData::writeIntoFile()
 		}
 		cursor = dataToken.mPtrStart + dataToken.mLength;
 	}
+
 	const char* end = base + mBuffer.size();
 	if (cursor < end) {
 		out.write(cursor, end - cursor);
 	}
 }
 
-
-
-void DM::FileData::initDataBuffer(const std::string& importPath)
+void DM::iFileDataBase::initDataBuffer(const std::string& importPath)
 {
 	std::ifstream file(importPath, std::ios::binary | std::ios::ate);
 	if (!file) {
@@ -86,7 +106,6 @@ void DM::FileData::initDataBuffer(const std::string& importPath)
 	}
 }
 
-
 DM::DataToken::DataToken(const char* lastEntry, const std::string& newData)
 {
 	mPtrStart = lastEntry;
@@ -121,10 +140,10 @@ uint16_t DM::DataToken::getCurrent_uint16_t()
 	return value;
 }
 
-DM::FileManager::~FileManager()
-{
-	for (auto* obj : mFiles) {
-		delete obj;
-	}
-	mFiles.clear();
-}
+//DM::FileManager::~FileManager()
+//{
+//	for (auto* obj : mFiles) {
+//		delete obj;
+//	}
+//	mFiles.clear();
+//}

@@ -93,6 +93,5 @@ void CultRelBox::loadProvInfo(Eu4::Province& province) {
 	}
 	else {
 		relCBox->setCurrentIndex(-1);
-
 	}
 }

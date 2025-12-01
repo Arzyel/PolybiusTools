@@ -19,7 +19,7 @@
 class MainApp : public QMainWindow{
     Q_OBJECT
 public:
-    MainApp(const QApplication& app, FilePathHandler*& filePathHandler, DM::FileManager* fileManager,QWidget* parent = nullptr);
+    MainApp(const QApplication& app, FilePathHandler*& filePathHandler,QWidget* parent = nullptr);
     ~MainApp();
 
 protected:
@@ -32,7 +32,7 @@ private:
 
     void LoadWidgets();
     void InitWidgets();
-    void InitData(FilePathHandler*& filePathHandler, DM::FileManager* fileManager);
+    void InitData(FilePathHandler*& filePathHandler);
 
 };
 

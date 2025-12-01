@@ -26,7 +26,6 @@ public:
 public slots:
     void loadDevInfo(Eu4::Province& province);
 protected:
-
 private:
     QSpinBox* taxSpinBox;
     QSpinBox* prodSpinBox;

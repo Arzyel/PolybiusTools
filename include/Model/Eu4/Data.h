@@ -11,7 +11,7 @@
 namespace Eu4 {
     class Data final : public GameData {
     public:
-        Data(FilePathHandler*& filePathHandler, DM::FileManager* fileManager);
+        Data(FilePathHandler*& filePathHandler);
         ~Data() = default;
         CountryContainer mCountryData;
         CultRelContainer mCultRelData;

@@ -41,21 +41,21 @@ namespace Eu4 {
 
 		void fillColorToID();
 		uint16_t getIDFromColor(uint32_t packedRGB) const;
-		void initData(FilePathHandler*& filePathHandler, DM::FileManager* fileManager);
+		void initData(FilePathHandler*& filePathHandler);
 		const Eu4::Province& getProvinceData(const int& UID) const;
 		Eu4::Province& getProvinceData(const int& UID);
 		const std::array<int,5> getNumberPerType() const;
 		const std::vector<Eu4::Province>& getAllProvinces() const;
 		const int getNbAreas() const;
+		static void initHelperProvince(DM::FileData<Eu4::Province>& fileData, Eu4::Province& prov);
+		static void parserSkipUntilValueStd(const char*& ptr, std::vector<DM::DataToken>& dataTokens);
+		static void parserCaptureAllValuesBracket(const char*& ptr, std::vector<DM::DataToken>& dataTokens, std::vector<uint16_t>& container);
+		static void parserCaptureCapital(const char*& ptr, std::vector<DM::DataToken>& dataTokens, uint16_t& capital);
 
 	private:
-		// Probably remove the Ordered vector and instead simply use the index of the vector as an ID for each and lock it in a const vector.
-		// The modifying of these should create temp buffers to work with that are simply added after like continent = {0,1,2} buffercontinent = {3,4,5}
-		// this way you keep the order and switch between them.
 		std::unordered_map<uint32_t, uint16_t> mProvColorToUID;
 		std::unordered_map<uint16_t, uint32_t> mProvUIDToColor;
 		std::vector<Eu4::Province> mProvinces;
-		std::vector<DM::FileData*> mProvinceDataFiles;
 		defaultMapInfo mMapInfo;
 		InformationBuffer mInformationBuffer;
 		std::vector<Eu4::Area> mAreas;
@@ -70,117 +70,33 @@ namespace Eu4 {
 		std::vector<Eu4::Continent> mContinents;
 		std::unordered_map<std::string, uint16_t> mContinentNameToIndex;
 		uint16_t mContinentDataID;
+		DM::FileData<Eu4::GeoPolData>* mAreasData = nullptr;
+		DM::FileData<Eu4::GeoPolData>* mRegionsData = nullptr;
+		DM::FileData<Eu4::GeoPolData>* mSuperRegionsData = nullptr;
+		DM::FileData<Eu4::GeoPolData>* mContinentsData = nullptr;
 
-		DM::FileManager* fileManager = nullptr;
 
 		void initDataProvinces(FilePathHandler*& filePathHandler);
 		void initMapInfo(FilePathHandler*& filePathHandler);
 		void initDataAreas(FilePathHandler*& filePathHandler);
-		//void initDataRegions(const std::string& filePath);
 		void initDataRegions(FilePathHandler*& filePathHandler);
 		void initDataSuperRegions(FilePathHandler*& filePathHandler);
 		void initDataContinents(FilePathHandler*& filePathHandler);
-		void initHelperProvince(Eu4::Province& prov);
-		static void initHelperArea(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
-		static void initHelperRegion(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
-		static void initHelperSuperRegion(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
-		static void initHelperContinent(DM::FileData& fileData, Eu4::GeoPolData& GeoPolData);
-		void parserSkipUntilValueStd(const char*& ptr, std::vector<DM::DataToken>& dataTokens);
-		void parserCaptureAllValuesBracket(const char*& ptr, std::vector<DM::DataToken>& dataTokens, std::vector<uint16_t>& container);
-		void parserCaptureCapital(const char*& ptr, std::vector<DM::DataToken>& dataTokens, uint16_t& capital);
-		template<typename T>
-		void helperReadData(const std::string& filePath, std::vector<T>& data, std::unordered_map<std::string, uint16_t>& nameToGPDUnit);
+		static void initHelperArea(DM::FileData<Eu4::GeoPolData>& fileData, Eu4::GeoPolData& GeoPolData);
+		static void initHelperRegion(DM::FileData<Eu4::GeoPolData>& fileData, Eu4::GeoPolData& GeoPolData);
+		static void initHelperSuperRegion(DM::FileData<Eu4::GeoPolData>& fileData, Eu4::GeoPolData& GeoPolData);
+		static void initHelperContinent(DM::FileData<Eu4::GeoPolData>& fileData, Eu4::GeoPolData& GeoPolData);
+		static void resetProvince(Eu4::Province& prov);
+		static void resetAreas(Eu4::GeoPolData& data);
+		static void resetRegions(Eu4::GeoPolData& data);
+		static void resetSuperRegions(Eu4::GeoPolData& data);
+		static void resetContinents(Eu4::GeoPolData& data);
+
+		
 	};
 
-	template<typename T>
-	inline void GeoPolData::helperReadData(const std::string& filePath, std::vector<T>& data, std::unordered_map<std::string, uint16_t>& nameToGPDUnit)
-	{
-		mmap::Handle handle;
-		if (!mmap::open(filePath, handle)) {
-			throw std::runtime_error("Could not open file : " + filePath);
-		}
 
-		const char* ptr = handle.data;
-		const char* end = ptr + handle.size;
 
-		const char* keyStart = nullptr;
-		const char* valueStart = nullptr;
-
-		while (ptr < end) {
-			char c = *ptr;
-			switch (c) {
-			case '#': {
-				while (ptr < end && *ptr != '\n') {
-					++ptr;
-				}
-				break;
-			}
-			case '{': {
-				++ptr;
-				while (*ptr != '}') {
-					switch (*ptr) {
-					case '\n':
-					case '\t':
-					case ' ':
-						break;
-					case '#': {
-						while (ptr < end && *ptr != '\n') {
-							++ptr;
-						}
-						break;
-					}
-					case 'c': {
-						while (*ptr != '}') {
-							++ptr;
-						}
-						++ptr;
-						break;
-					}
-					default: {
-						while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#') {
-							if (valueStart == nullptr) {
-								valueStart = ptr;
-							}
-							++ptr;
-
-						}
-						uint16_t value;
-						std::from_chars(valueStart, ptr, value);
-						data.back().mGeoPolIDs.push_back(value);
-						valueStart = nullptr;
-						--ptr;
-					}
-					}
-
-					++ptr;
-				}
-				break;
-			}
-			case '\n':
-			case '\t':
-			case ' ':
-			case '=': {
-				break;
-			}
-			default: {
-				while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '=') {
-					if (keyStart == nullptr) {
-						keyStart = ptr;
-					}
-					++ptr;
-				}
-
-				data.emplace_back(T());
-				data.back().mName = std::string(keyStart, ptr);
-				nameToGPDUnit.insert(std::make_pair(data.back().mName, data.size() - 1));
-				keyStart = nullptr;
-			}
-			}
-			++ptr;
-		}
-
-		mmap::close(handle);
-	}
 }
 
 

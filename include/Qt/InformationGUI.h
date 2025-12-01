@@ -2,6 +2,7 @@
 #ifndef INFORMATION_GUI_H
 #define INFORMATION_GUI_H
 #include <functional>
+#include <unordered_set>
 #include <QtWidgets/qtabwidget.h>
 #include <QtWidgets\qboxlayout.h>
 #include <QtWidgets\qgroupbox.h>
@@ -15,6 +16,7 @@
 #include "CultRelContainer.h"
 #include "CountryContainer.h"
 #include "OwnershipBox.h"
+#include "FileManager.h"
 
 class InformationGUI : public QTabWidget {
 	Q_OBJECT
@@ -32,11 +34,13 @@ signals:
 	void signalInitOwnership(const std::unordered_map<std::string, std::string>& data) const;
 
 protected:
+
 private:
 	const Eu4::GeoPolData& mRefGeoPolCont;
 	const CultRelContainer& mRefCultRelCont;
 	const CountryContainer& mRefCountryContainer;
 	mutable Eu4::Province* currentProv = nullptr;
+	std::unordered_set<DM::iFileDataBase*> activeChanges;
 };
 
 

@@ -13,21 +13,13 @@
 namespace Eu4 {
 	class Province : public SGeoPolUnit {
 	public:
-		DM::FileData* mFileData = nullptr;
-		std::string mOwnerID;
+		DM::FileData<Eu4::Province>* mFileData = nullptr;
 		uint16_t mOwnerID2 = UINT16_MAX;
-		std::string mControllerID;
 		uint16_t mControllerID2 = UINT16_MAX;
-		std::vector<std::string> mCoresID;
 		std::vector<uint16_t> mCoresID2;
-		std::string mCapital;
-		uint16_t mCapital2;
-		std::string mCultureID;
+		uint16_t mCapital2 = UINT16_MAX;
 		uint16_t mCultureID2 = UINT16_MAX;
-		std::string mReligionID;
 		uint16_t mReligionID2 = UINT16_MAX;
-
-
 		uint16_t mCenterofTrade = UINT16_MAX;
 		uint16_t mExtraCost = UINT16_MAX;
 		uint16_t mFort = UINT16_MAX;
@@ -66,7 +58,7 @@ namespace Eu4 {
 		void initFromFile2(const std::string& eu4UID, const uint32_t& rgbValue, const std::string& name, const std::string& filePath);
 		void initFromFile2(const uint16_t eu4UID, const uint32_t& rgbValue, const std::string& name, const std::string& filePath);
 		void handleKeyData(const std::vector<std::string>& keyStack, const std::string& value) override;
-
+		void resetData();
 
 
 		inline void updateField(uint16_t Eu4::Province::* memberPtr, const std::string& newData) {
@@ -75,6 +67,10 @@ namespace Eu4 {
 				return;
 			}
 			(this->*memberPtr) = this->mFileData->createNewDataToken(newData);
+		};
+
+		inline void scheduleDelete(uint16_t Eu4::Province::* memberPtr) {
+			this->mFileData->scheduleDelete(this->*memberPtr);
 		};
 	};
 
@@ -111,4 +107,29 @@ namespace Eu4 {
 	};
 }
 
+inline void Eu4::Province::resetData()
+{
+	mOwnerID2 = UINT16_MAX;
+	mControllerID2 = UINT16_MAX;
+	mCoresID2.clear();
+	mCapital2 = UINT16_MAX;
+	mCultureID2 = UINT16_MAX;
+	mReligionID2 = UINT16_MAX;
+	mCenterofTrade = UINT16_MAX;
+	mExtraCost = UINT16_MAX;
+	mFort = UINT16_MAX;
+	mIsCity = UINT16_MAX;
+	mIsHre = UINT16_MAX;
+	mTradeGood = UINT16_MAX;
+	mTribalOwner = UINT16_MAX;
+	mNativeSize = UINT16_MAX;
+	mNativeFerocity = UINT16_MAX;
+	mNativeHostile = UINT16_MAX;
+	mBaseTax = UINT16_MAX;
+	mBaseProduction = UINT16_MAX;
+	mBaseManpower = UINT16_MAX;
+	mTrigMod.clear();
+	mDiscoveredBy.clear();
+	mLatentTradeGood.clear();
+};
 #endif // EU4_GEO_POL_UNITS_H

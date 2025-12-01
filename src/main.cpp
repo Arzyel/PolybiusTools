@@ -19,19 +19,16 @@ int main(int argc, char* argv[]) {
     app.setStyle(new InstantMenuStyle(QStyleFactory::create("")));
     
     FilePathHandler* filePathHandler = nullptr;
-    DM::FileManager* fileManager = new DM::FileManager();
 
     StartupDialog startupBox = StartupDialog(filePathHandler);
     if (startupBox.exec() != QDialog::Accepted) {
         delete filePathHandler;
-        delete fileManager;
         return 0;
     }
 
-    MainApp mainApp = MainApp(app, filePathHandler, fileManager);
+    MainApp mainApp = MainApp(app, filePathHandler);
 
     delete filePathHandler;
-    delete fileManager;
     return app.exec();
 
    
