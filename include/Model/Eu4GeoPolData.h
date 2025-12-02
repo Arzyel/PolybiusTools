@@ -90,9 +90,7 @@ namespace Eu4 {
 		static void resetAreas(Eu4::GeoPolData& data);
 		static void resetRegions(Eu4::GeoPolData& data);
 		static void resetSuperRegions(Eu4::GeoPolData& data);
-		static void resetContinents(Eu4::GeoPolData& data);
-
-		
+		static void resetContinents(Eu4::GeoPolData& data);		
 	};
 
 

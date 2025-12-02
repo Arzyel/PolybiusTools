@@ -55,7 +55,9 @@ void DM::iFileDataBase::writeIntoFile()
 		}
 		if (dataToken.erase) {}
 		else if (!dataToken.mNewData.empty()) {
+			out.write(dataToken.mPrefix.data(), dataToken.mPrefix.size());
 			out.write(dataToken.mNewData.data(), dataToken.mNewData.size());
+			out.write(dataToken.mSuffix.data(), dataToken.mSuffix.size());
 		}
 		else {
 			out.write(dataToken.mPtrStart, dataToken.mLength);
@@ -139,11 +141,3 @@ uint16_t DM::DataToken::getCurrent_uint16_t()
 	std::from_chars(mPtrStart, mPtrStart + mLength, value);
 	return value;
 }
-
-//DM::FileManager::~FileManager()
-//{
-//	for (auto* obj : mFiles) {
-//		delete obj;
-//	}
-//	mFiles.clear();
-//}

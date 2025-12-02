@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 #include <cstdint>
-#include <functional>
 #include <unordered_set>
 #include <unordered_map>
 #include "FilePathHandler.h"
@@ -27,6 +26,8 @@ namespace DM {
         uint8_t mLength = 0;
         std::string mNewData;
         bool erase = false;
+		std::string mPrefix = "";
+		std::string mSuffix = "";
 
     };
 
@@ -58,12 +59,14 @@ namespace DM {
 			mDataTokens[index].erase = false;
 			mActiveChanges.insert(index);
 		};
-		inline uint16_t createNewDataToken(const std::string& newData) {
+		inline uint16_t createNewDataToken(const std::string& newData, const std::string& newKey)
+		{
 			// IMPORTANT MIGHT ACTUALLY CREATE DANGLING POINTER MIGHT NEED TO INSTEAD HAVE A VECTOR OF DataToken* or over reserve at init by an approx amount
 			if (!mDataTokens.empty()) {
 				const DM::DataToken& lastEntry = mDataTokens.back();
 				const char* newEntryPtr = lastEntry.mPtrStart + lastEntry.mLength;
 				mDataTokens.emplace_back(DM::DataToken(newEntryPtr, newData));
+				mDataTokens.back().mPrefix = std::string("\n" + newKey + " = ");
 			}
 			else {
 				mDataTokens.emplace_back(DM::DataToken(mBuffer.data(), newData));
@@ -96,8 +99,7 @@ namespace DM {
 
 
 
-        //void initData(const std::string& importPath, FilePathHandler*& filePathHandler, void(*callable)(DM::FileData<Target>&, Target&), Target& target);
-        void initData2(void(*callable)(DM::FileData<Target>&, Target&), Target* target, void(*targetResetData)(Target& target));
+        void initData(void(*callable)(DM::FileData<Target>&, Target&), Target* target, void(*targetResetData)(Target& target));
         void initDataTokens() override;
         void resetData() override;
 
@@ -134,7 +136,7 @@ DM::FileData<Target>::FileData(const std::string& importPath, const std::string&
 
 
 template<typename Target>
-void DM::FileData<Target>::initData2(void(*callable)(DM::FileData<Target>&, Target&), Target* target, void(*targetResetData)(Target& target))
+void DM::FileData<Target>::initData(void(*callable)(DM::FileData<Target>&, Target&), Target* target, void(*targetResetData)(Target& target))
 {
 	mCallinitDataTokens = callable;
 	callableTarget = target;

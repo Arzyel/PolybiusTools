@@ -71,6 +71,8 @@ void CultRelBox::initializeData(const std::unordered_map<std::string, sCulture>&
 {
 	cultCBox->clear();
 	relCBox->clear();
+	cultCBox->addItem("");
+	relCBox->addItem("");
 	for (const auto& [key, data] : cultureData) {
 		cultCBox->addItem(QString::fromStdString(key));
 	}

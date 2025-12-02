@@ -226,7 +226,7 @@ void Eu4::GeoPolData::initDataAreas(FilePathHandler*& filePathHandler) {
 
 	const std::string& path = filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::AREA).at(0).string();
 	mAreasData = new DM::FileData<Eu4::GeoPolData>(path, filePathHandler->getExportFromFullPath(path));
-	mAreasData->initData2(Eu4::GeoPolData::initHelperArea, this, Eu4::GeoPolData::resetAreas);
+	mAreasData->initData(Eu4::GeoPolData::initHelperArea, this, Eu4::GeoPolData::resetAreas);
 
 	auto time_end = std::chrono::high_resolution_clock::now();
 	auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(time_end - start);
@@ -240,7 +240,7 @@ void Eu4::GeoPolData::initDataRegions(FilePathHandler*& filePathHandler)
 
 	const std::string& path = filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::REGION).at(0).string();
 	mRegionsData = new DM::FileData<Eu4::GeoPolData>(path, filePathHandler->getExportFromFullPath(path));
-	mRegionsData->initData2(Eu4::GeoPolData::initHelperRegion, this, Eu4::GeoPolData::resetRegions);
+	mRegionsData->initData(Eu4::GeoPolData::initHelperRegion, this, Eu4::GeoPolData::resetRegions);
 
 
 	auto time_end = std::chrono::high_resolution_clock::now();
@@ -255,7 +255,7 @@ void Eu4::GeoPolData::initDataSuperRegions(FilePathHandler*& filePathHandler) {
 
 	const std::string& path = filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::SUPERREGION).at(0).string();
 	mSuperRegionsData = new DM::FileData<Eu4::GeoPolData>(path, filePathHandler->getExportFromFullPath(path));
-	mSuperRegionsData->initData2(Eu4::GeoPolData::initHelperSuperRegion, this, Eu4::GeoPolData::resetSuperRegions);
+	mSuperRegionsData->initData(Eu4::GeoPolData::initHelperSuperRegion, this, Eu4::GeoPolData::resetSuperRegions);
 
 	auto time_end = std::chrono::high_resolution_clock::now();
 	auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(time_end - start);
@@ -271,7 +271,7 @@ void Eu4::GeoPolData::initDataContinents(FilePathHandler*& filePathHandler) {
 
 	const std::string& path = filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::CONTINENT).at(0).string();
 	mContinentsData = new DM::FileData<Eu4::GeoPolData>(path, filePathHandler->getExportFromFullPath(path));
-	mContinentsData->initData2(Eu4::GeoPolData::initHelperContinent, this, Eu4::GeoPolData::resetContinents);
+	mContinentsData->initData(Eu4::GeoPolData::initHelperContinent, this, Eu4::GeoPolData::resetContinents);
 
 	auto time_end = std::chrono::high_resolution_clock::now();
 	auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(time_end - start);
