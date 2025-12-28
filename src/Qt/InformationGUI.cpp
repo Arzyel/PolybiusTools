@@ -21,8 +21,8 @@ void InformationGUI::loadWidgets()
 	QObject::connect(this, &InformationGUI::signalLoadInfo,
 		provinceTab->findChild<DevBox*>(), &DevBox::loadDevInfo);
 	
-	QObject::connect(this, &InformationGUI::signalInitCultRelInfo2,
-		provinceTab->findChild<CultRelBox*>(), &CultRelBox::initializeData2);
+	QObject::connect(this, &InformationGUI::signalInitCultRelInfo,
+		provinceTab->findChild<CultRelBox*>(), &CultRelBox::initializeData);
 	
 	QObject::connect(this, &InformationGUI::signalLoadInfo,
 		provinceTab->findChild<CultRelBox*>(), &CultRelBox::loadProvInfo);
@@ -115,8 +115,7 @@ void InformationGUI::loadProvInfo(Eu4::Province& province) const
 
 void InformationGUI::initialiseWidgetsInfo()
 {
-	//signalInitCultRelInfo(mRefCultRelCont.mCultures,mRefCultRelCont.mReligions);
-	signalInitCultRelInfo2(mRefCultRelCont.getAllCultures(), mRefCultRelCont.getAllReligions());
+	signalInitCultRelInfo(mRefCultRelCont.getAllCultures(), mRefCultRelCont.getAllReligions());
 	signalInitOwnership(mRefCountryContainer.tagToName);
 }
 

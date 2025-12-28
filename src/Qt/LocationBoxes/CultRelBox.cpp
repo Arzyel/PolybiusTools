@@ -63,21 +63,21 @@ void CultRelBox::makeConnections(std::function<void(uint16_t Eu4::Province::*, c
 }
 
 
-void CultRelBox::initializeData(const std::unordered_map<std::string, sCulture>& cultureData, const std::unordered_map<std::string, sReligion>& religionData)
-{
-	cultCBox->clear();
-	relCBox->clear();
-	cultCBox->addItem("");
-	relCBox->addItem("");
-	for (const auto& [key, data] : cultureData) {
-		cultCBox->addItem(QString::fromStdString(key));
-	}
-	for (const auto& [key, data] : religionData) {
-		relCBox->addItem(QString::fromStdString(key));
-	}
-}
+//void CultRelBox::initializeData(const std::unordered_map<std::string, sCulture>& cultureData, const std::unordered_map<std::string, sReligion>& religionData)
+//{
+//	cultCBox->clear();
+//	relCBox->clear();
+//	cultCBox->addItem("");
+//	relCBox->addItem("");
+//	for (const auto& [key, data] : cultureData) {
+//		cultCBox->addItem(QString::fromStdString(key));
+//	}
+//	for (const auto& [key, data] : religionData) {
+//		relCBox->addItem(QString::fromStdString(key));
+//	}
+//}
 
-void CultRelBox::initializeData2(const std::vector<std::string_view>& allCultures, const std::vector<std::string_view>& allReligions)
+void CultRelBox::initializeData(const std::vector<std::string_view>& allCultures, const std::vector<std::string_view>& allReligions)
 {
 	cultCBox->clear();
 	relCBox->clear();

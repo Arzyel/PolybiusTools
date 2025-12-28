@@ -34,9 +34,7 @@ public:
 	bool delInSelection(Eu4::Province& prov) const;
 signals:
 	void signalLoadInfo(Eu4::Province& province) const;
-	void signalInitCultRelInfo(const std::unordered_map<std::string, sCulture>& cultureData,
-		const std::unordered_map<std::string, sReligion>& religionData) const;
-	void signalInitCultRelInfo2(const std::vector<std::string_view>& allCultures, const std::vector<std::string_view>& allReligions) const;
+	void signalInitCultRelInfo(const std::vector<std::string_view>& allCultures, const std::vector<std::string_view>& allReligions) const;
 	void signalInitOwnership(const std::unordered_map<std::string, std::string>& data) const;
 
 protected:

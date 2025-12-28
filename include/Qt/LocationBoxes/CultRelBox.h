@@ -23,9 +23,9 @@ public:
     void loadWidget();
     void makeConnections(std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable);
 public slots:
-    void initializeData(const std::unordered_map<std::string, sCulture>& cultureData,
-        const std::unordered_map<std::string, sReligion>& religionData);
-    void initializeData2(const std::vector<std::string_view>& allCultures, const std::vector<std::string_view>& allReligions);
+    //void initializeData(const std::unordered_map<std::string, sCulture>& cultureData,
+    //    const std::unordered_map<std::string, sReligion>& religionData);
+    void initializeData(const std::vector<std::string_view>& allCultures, const std::vector<std::string_view>& allReligions);
     void loadProvInfo(Eu4::Province& province);
 protected:
 
