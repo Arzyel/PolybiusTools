@@ -31,6 +31,8 @@ protected:
 private:
     QComboBox* box = nullptr;
     QTableWidget* table = nullptr;
+
+    void addRow(const QString& tag);
 };
 
 #endif // CORES_BOX_H

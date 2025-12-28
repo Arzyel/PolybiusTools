@@ -14,13 +14,15 @@ void CoresBox::loadWidget()
 	table = new QTableWidget(this);
 	table->setColumnCount(3);
 	table->setHorizontalHeaderLabels({ "Icon", "Tag", "Delete" });
-	table->horizontalHeader()->setStretchLastSection(true);
+	table->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+	table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 	table->verticalHeader()->setVisible(false);
 	table->setSelectionMode(QAbstractItemView::NoSelection);
 	table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 	table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 	table->verticalHeader()->setDefaultSectionSize(24);
+	table->setColumnWidth(2, 55);
 	table->setShowGrid(true);
 
 	mainLayout->addWidget(table,9);
@@ -37,7 +39,11 @@ void CoresBox::loadWidget()
 
 	QPushButton* addBtn = new QPushButton("Add Core");
 	connect(addBtn, &QPushButton::clicked, this, [this]() {
-		box->setCurrentIndex(box->currentIndex() + 1);
+
+		if (table->findItems(box->itemText(box->currentIndex()).left(3), Qt::MatchExactly).size() == 0) {
+			addRow(box->itemText(box->currentIndex()).left(3));
+		}
+
 		});
 	footerLayout->addWidget(addBtn);
 }
@@ -56,23 +62,30 @@ void CoresBox::loadProvInfo(Eu4::Province& province) {
 	// add logic to load all cores into the tab widget
 	table->setUpdatesEnabled(false);
 	table->setRowCount(0);
-	table->setRowCount(province.mCoresID2.size());
 
-	int row = 0;
 	for (const auto& coreID : province.mCoresID2) {
-
-		//QTableWidgetItem* icon;
-		QTableWidgetItem* tag = new QTableWidgetItem(
-			QString::fromUtf8(province.mFileData->mDataTokens[coreID].mPtrStart, province.mFileData->mDataTokens[coreID].mLength)
-		);
-		//QTableWidgetItem* delBtn;
-		
-		//table->setItem(row, 0, icon);
-		table->setItem(row, 1, tag);
-		//table->setItem(row, 2, delBtn);
-		++row;
+		addRow(QString::fromUtf8(province.mFileData->mDataTokens[coreID].mPtrStart, province.mFileData->mDataTokens[coreID].mLength));
 	}
 	table->setUpdatesEnabled(true);
+}
+
+void CoresBox::addRow(const QString& tag)
+{
+	int row = table->rowCount();
+	table->insertRow(row);
+	QTableWidgetItem* itemTag = new QTableWidgetItem(tag);
+	table->setItem(row, 1, itemTag);
+
+	QPushButton* del = new QPushButton("x");
+	del->setIconSize(QSize(16, 16));
+	del->setFixedSize(16, 16);
+	connect(del, &QPushButton::clicked, this, [this, del]() {
+		int row = table->indexAt(del->pos()).row();
+		if (row < 0) return;
+		table->removeRow(row);
+		});
+	table->setCellWidget(row, 2, del);
+
 }
 
 void CoresBox::makeConnections(std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable)
