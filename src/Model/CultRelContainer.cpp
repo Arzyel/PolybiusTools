@@ -171,9 +171,6 @@ void CultRelContainer::loadReligionData(const std::string& religionFilePath) {
             }
         }
         
-
-
-
         // REVISE ONE DAY
        /* processGroupRecursive<sReligionGroup, sReligion>(
             groupName, groupNode, parser,
@@ -192,6 +189,17 @@ void CultRelContainer::initData(FilePathHandler*& filePathHandler)
     initDataCulture(filePathHandler);
 }
 
+const std::vector<std::string_view> CultRelContainer::getAllCultures() const
+{
+    std::vector<std::string_view> cultures;
+    cultures.reserve(mCulturestest.size());
+    for (const auto& culture : mCulturestest) {
+        auto& token = mCultureData->mDataTokens[culture.mNameID];
+        cultures.emplace_back(token.mPtrStart, token.mLength);
+    }
+    return cultures;
+}
+
 void CultRelContainer::initDataCulture(FilePathHandler*& filePathHandler)
 {
     auto start = std::chrono::high_resolution_clock::now();
@@ -205,15 +213,15 @@ void CultRelContainer::initDataCulture(FilePathHandler*& filePathHandler)
 
 
     auto time_end = std::chrono::high_resolution_clock::now();
-    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(time_end - start);
-    std::cout << "Elapsed Time : " << elapsed.count() << " us" << std::endl;
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(time_end - start);
+    std::cout << "Elapsed Time : " << elapsed.count() << "ms" << std::endl;
 
-    std::cout << mCultureGroupstest.size() << std::endl;
+    //std::cout << mCultureGroupstest.size() << std::endl;
 
-    for (int i = 0; i < mCulturestest.size(); ++i) {
-        std::cout << mCultureData->mDataTokens[mCulturestest[i].mGroupID].getOriginName() << "\t\t:\t\t" << mCultureData->mDataTokens[mCulturestest[i].mNameID].getOriginName() << '\n';
-    }
-    std::cout << std::endl;
+    //for (int i = 0; i < mCulturestest.size(); ++i) {
+    //    std::cout << mCultureData->mDataTokens[mCulturestest[i].mGroupID].getOriginName() << "\t\t:\t\t" << mCultureData->mDataTokens[mCulturestest[i].mNameID].getOriginName() << '\n';
+    //}
+    //std::cout << std::endl;
 
 }
 
@@ -232,32 +240,6 @@ void CultRelContainer::initHelperCulture(DM::FileData<CultRelContainer>& fileDat
             break;
         }
         case '{': {
-            //++ptr;
-            //while (*ptr != '}') {
-            //    switch (*ptr) {
-            //    case'#': {
-            //        const char* commentEnd = (const char*)memchr(ptr, '\n', end - ptr);
-            //        ptr = commentEnd ? commentEnd : end;
-            //    }
-            //    case '\n':
-            //    case '\t':
-            //    case ' ':
-            //        break;
-            //    default: {
-            //        /*keyStart = ptr;
-            //        ptr += strcspn(ptr, "\n \t#=");
-            //        Eu4::Continent& continent = GeoPolData.mContinents.back();
-            //        uint16_t value;
-            //        std::from_chars(keyStart, ptr, value);
-            //        continent.mGeoPolIDs.push_back(value);
-            //        keyStart = nullptr;*/
-            //        uint16_t* value = nullptr;
-            //       
-
-            //    }
-            //    ++ptr;
-            //}
-            //CultRelContainer::parserSkipBracket(ptr, end);
             ++ptr;
             while (*ptr != '}') {
                 while (ptr < end && (*ptr < 'a' || *ptr > 'z')) ++ptr;
@@ -334,6 +316,18 @@ void CultRelContainer::initHelperCulture(DM::FileData<CultRelContainer>& fileDat
 }
 
 void CultRelContainer::resetCulture(CultRelContainer& cultRelContainer)
+{
+}
+
+void CultRelContainer::initDataReligion(FilePathHandler*& filePathHandler)
+{
+}
+
+void CultRelContainer::initHelperReligion(DM::FileData<CultRelContainer>& fileData, CultRelContainer& cultRelContainer)
+{
+}
+
+void CultRelContainer::resetReligion(CultRelContainer& cultRelContainer)
 {
 }
 

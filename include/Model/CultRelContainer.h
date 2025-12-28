@@ -97,7 +97,7 @@ public:
     //std::unordered_map<std::string, uint16_t> mContinentNameToIndex;
     //uint16_t mContinentDataID;
     //DM::FileData<Eu4::GeoPolData>* mContinentsData = nullptr;
-
+    const std::vector<std::string_view> getAllCultures() const;
 
 
     std::unordered_map<std::string, sCulture> mCultures;
@@ -105,15 +105,25 @@ public:
     std::unordered_map<std::string, sReligion> mReligions;
     std::unordered_map<std::string, sReligionGroup> mReligionGroups;
 private:
+    //might need a map to string to value but unsure at the moment
     DM::FileData<CultRelContainer>* mCultureData = nullptr;
     DM::FileData<CultRelContainer>* mReligionData = nullptr;
     std::vector<Eu4::Culture> mCulturestest;
     std::vector<Eu4::CultureGroup> mCultureGroupstest;
+    std::vector<Eu4::Culture> mReligionstest;
+    std::vector<Eu4::CultureGroup> mReligionGroupstest;
 
+
+    static void parserSkipBracket(const char*& ptr, const char* end);
+    
     void initDataCulture(FilePathHandler*& filePathHandler);
     static void initHelperCulture(DM::FileData<CultRelContainer>& fileData, CultRelContainer& cultRelContainer);
     static void resetCulture(CultRelContainer& cultRelContainer);
-    static void parserSkipBracket(const char*& ptr, const char* end);
+
+    void initDataReligion(FilePathHandler*& filePathHandler);
+    static void initHelperReligion(DM::FileData<CultRelContainer>& fileData, CultRelContainer& cultRelContainer);
+    static void resetReligion(CultRelContainer& cultRelContainer);
+
 
     void loadReligionDataHelper(const std::string& religionName, const Node& node, const Eu4MainParser& parser);
     

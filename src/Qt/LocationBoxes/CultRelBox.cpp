@@ -77,6 +77,17 @@ void CultRelBox::initializeData(const std::unordered_map<std::string, sCulture>&
 	}
 }
 
+void CultRelBox::initializeData2(const std::vector<std::string_view>& allCultures)
+{
+	cultCBox->clear();
+	relCBox->clear();
+	cultCBox->addItem("");
+	relCBox->addItem("");
+	for (const auto& culture : allCultures) {
+		cultCBox->addItem(QString::fromUtf8(culture.data(), culture.size()));
+	}
+}
+
 void CultRelBox::loadProvInfo(Eu4::Province& province) {
 	if (province.mCultureID2 != UINT16_MAX) {
 		int index = cultCBox->findText(province.mFileData->mDataTokens[province.mCultureID2].getCurrentName().c_str());

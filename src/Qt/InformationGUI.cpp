@@ -21,8 +21,8 @@ void InformationGUI::loadWidgets()
 	QObject::connect(this, &InformationGUI::signalLoadInfo,
 		provinceTab->findChild<DevBox*>(), &DevBox::loadDevInfo);
 	
-	QObject::connect(this, &InformationGUI::signalInitCultRelInfo,
-		provinceTab->findChild<CultRelBox*>(), &CultRelBox::initializeData);
+	QObject::connect(this, &InformationGUI::signalInitCultRelInfo2,
+		provinceTab->findChild<CultRelBox*>(), &CultRelBox::initializeData2);
 	
 	QObject::connect(this, &InformationGUI::signalLoadInfo,
 		provinceTab->findChild<CultRelBox*>(), &CultRelBox::loadProvInfo);
@@ -67,32 +67,7 @@ void InformationGUI::loadWidgets()
 	macroLayout->addWidget(new QPushButton("Tool 1"));
 	this->addTab(macroTab, "MacroTools");
 
-	// BufferedChanges tab
-	//QWidget* bufferTab = new QWidget;
-	//QVBoxLayout* bufferLayout = new QVBoxLayout(bufferTab);
-	//
-	//bufferLayout->addWidget([this] {
-	//	QPushButton* l = new QPushButton("Cancel Changes");
-	//	connect(l, &QPushButton::clicked, this, [this]() {
-	//			for (auto fileData : activeChanges) {
-	//				fileData->clearActiveChangedData();
-	//			}
-	//			activeChanges.clear();
-	//		});
-	//	return l;
-	//	}());
-
-	//bufferLayout->addWidget([this] {
-	//	QPushButton* l = new QPushButton("Save Changes");
-	//	connect(l, &QPushButton::clicked, this, [this]() {
-	//			for (auto fileData : activeChanges) {
-	//				fileData->writeIntoFile();
-	//				fileData->resetData();
-	//				//fileData->resetDataAfterSave<Eu4::GeoPolData>([](Eu4::Province& prov) {}, const_cast<Eu4::GeoPolData&>(mRefGeoPolCont));
-	//			}
-	//		});
-	//	return l;
-	//	}());
+	//Buffer Tab
 	BufferTab* bufferTab = new BufferTab(activeChanges);
 	this->addTab(bufferTab, "BufferedChanges");
 	
@@ -140,7 +115,8 @@ void InformationGUI::loadProvInfo(Eu4::Province& province) const
 
 void InformationGUI::initialiseWidgetsInfo()
 {
-	signalInitCultRelInfo(mRefCultRelCont.mCultures,mRefCultRelCont.mReligions);
+	//signalInitCultRelInfo(mRefCultRelCont.mCultures,mRefCultRelCont.mReligions);
+	signalInitCultRelInfo2(mRefCultRelCont.getAllCultures());
 	signalInitOwnership(mRefCountryContainer.tagToName);
 }
 

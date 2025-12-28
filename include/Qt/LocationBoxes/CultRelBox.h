@@ -9,6 +9,7 @@
 #include <QtCore\qstring.h>
 #include <QtCore\qoverload.h>
 #include <cstdint>
+#include <string_view>
 #include "CultRelContainer.h"
 #include "Eu4GeoPolUnits.h"
 
@@ -24,6 +25,7 @@ public:
 public slots:
     void initializeData(const std::unordered_map<std::string, sCulture>& cultureData,
         const std::unordered_map<std::string, sReligion>& religionData);
+    void initializeData2(const std::vector<std::string_view>& allCultures);
     void loadProvInfo(Eu4::Province& province);
 protected:
 
