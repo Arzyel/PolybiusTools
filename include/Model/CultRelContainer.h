@@ -58,17 +58,9 @@ public:
     CultRelContainer();
     ~CultRelContainer();
     
-
     void initData(FilePathHandler*& filePathHandler);
-    
-    //std::vector<Eu4::Continent> mContinents;
-    //std::unordered_map<std::string, uint16_t> mContinentNameToIndex;
-    //uint16_t mContinentDataID;
-    //DM::FileData<Eu4::GeoPolData>* mContinentsData = nullptr;
     const std::vector<std::string_view> getAllCultures() const;
     const std::vector<std::string_view> getAllReligions() const;
-
-
 
 private:
     //might need a map to string to value but unsure at the moment

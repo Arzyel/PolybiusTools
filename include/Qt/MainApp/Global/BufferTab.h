@@ -46,7 +46,6 @@ private:
     void createSingleBufferWidget(QGroupBox* group, QVBoxLayout* groupLayout);
     // Claude ai solution for performance
     CachedWidget createWidgetForFileData(DM::iFileDataBase* fileData);
-    void updateCachedWidgetSmart(DM::iFileDataBase* fileData, CachedWidget& cached);
     void populateTable(DM::iFileDataBase* fileData, CachedWidget& cached);
     void updateWidgetSmartly(DM::iFileDataBase* fileData, CachedWidget& cached);
     void updateChangedCells(DM::iFileDataBase* fileData, CachedWidget& cached,

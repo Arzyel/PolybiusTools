@@ -212,9 +212,6 @@
     <ClInclude Include="include\Qt\LocationBoxes\BuildingsBox.h">
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </ClInclude>
-    <ClInclude Include="include\Qt\LocationBoxes\CoresBox.h">
-      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
-    </ClInclude>
     <ClInclude Include="include\Qt\LocationBoxes\ProvOthersBox.h">
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </ClInclude>
@@ -339,6 +336,9 @@
     </QtMoc>
     <QtMoc Include="include\Qt\MainApp\Global\BufferTab.h">
       <Filter>Fichiers d%27en-tête\Qt\MainApp\Global</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\LocationBoxes\CoresBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

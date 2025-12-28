@@ -1,4 +1,5 @@
 #include "OwnershipBox.h"
+#include "CoresBox.h"
 
 OwnershipBox::OwnershipBox(const QString& title, QWidget* parent) 
 	:QGroupBox(title, parent)

@@ -37,6 +37,7 @@ namespace Eu4 {
 		uint16_t mBaseTax = UINT16_MAX;
 		uint16_t mBaseProduction = UINT16_MAX;
 		uint16_t mBaseManpower = UINT16_MAX;
+		uint16_t mAddAutonomy = UINT16_MAX;
 		std::vector<uint16_t> mTrigMod;
 		std::vector<uint16_t> mDiscoveredBy;
 		std::vector<uint16_t> mLatentTradeGood;

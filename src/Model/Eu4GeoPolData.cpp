@@ -296,6 +296,9 @@ void Eu4::GeoPolData::initHelperProvince(DM::FileData<Eu4::Province>& fileData, 
 			break;
 		}
 		case '#': {
+			if (*(ptr + 2) == '1' && *(ptr + 3) == '9' && *(ptr + 4) == '0') {
+				auto test = 0;
+			}
 			const char* commentEnd = (const char*)memchr(ptr, '\n', end - ptr);
 			ptr = commentEnd ? commentEnd : end;
 			break;
@@ -309,6 +312,11 @@ void Eu4::GeoPolData::initHelperProvince(DM::FileData<Eu4::Province>& fileData, 
 				if (*(ptr + 7) == 'e') {
 					ptr += 8;
 					value = &(prov.mCoresID2.emplace_back(0));
+				}
+				//add_local_autonomy
+				else if (*(ptr + 17) == 'y') {
+					ptr += 18;
+					value = &(prov.mAddAutonomy);
 				}
 				// add_province_triggered_modifier
 				// TODO probable bugs and capture the actual data

@@ -15,6 +15,7 @@
 #include "TradeBox.h"
 #include "FlowLayout.h"
 #include "OwnershipBox.h"
+#include "CoresBox.h"
 
 class LocInfoBoxes : public QGroupBox {
     Q_OBJECT

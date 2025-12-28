@@ -18,7 +18,7 @@
 #include "OwnershipBox.h"
 #include "FileManager.h"
 #include "BufferTab.h"
-
+#include "CoresBox.h"
 
 class InformationGUI : public QTabWidget {
 	Q_OBJECT

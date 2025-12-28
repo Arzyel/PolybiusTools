@@ -25,23 +25,19 @@ LocInfoBoxes::LocInfoBoxes(const QString& title, QWidget* parent)
 	ownershipBox->setMinimumWidth(minBoxWidth);
 	ownershipBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
+	CoresBox* coresBox = new CoresBox("Cores");
+	coresBox->setMinimumWidth(350);
+	coresBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	flowLayout->addWidget(devBox);
 	flowLayout->addWidget(cultRelBox);
 	flowLayout->addWidget(ownershipBox);
+	flowLayout->addWidget(coresBox);
 
 }
 
 void LocInfoBoxes::loadWidgets()
 {
-	//QHBoxLayout* locInfoBoxLayout = new QHBoxLayout(this);
-	//
-	//DevBox* devBox = new DevBox("Developpment");
-	//CultRelBox* cultRelBox = new CultRelBox("Culture and Religion");
-	//locInfoBoxLayout->addWidget(devBox);
-	//locInfoBoxLayout->addWidget(cultRelBox);
-
-	
 }
 
 void LocInfoBoxes::resizeEvent(QResizeEvent* event)
@@ -56,20 +52,4 @@ void LocInfoBoxes::resizeEvent(QResizeEvent* event)
 
 	if (columns == currentColumns)
 		return;
-	// Clear the layout first
-	//for (QWidget* w : innerBoxes)
-	//	gridLayout->removeWidget(w);
-
-	//currentColumns = columns;
-
-	//// Reposition boxes
-	//for (int i = 0; i < innerBoxes.size(); ++i) {
-	//	int row = i / columns;
-	//	int col = i % columns;
-	//	gridLayout->addWidget(innerBoxes[i], row, col);
-	//}
-
-	//// Force layout update immediately
-	//gridLayout->update();
-	//gridLayout->activate();
 }

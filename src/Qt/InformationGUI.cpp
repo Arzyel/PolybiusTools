@@ -33,6 +33,13 @@ void InformationGUI::loadWidgets()
 	QObject::connect(this, &InformationGUI::signalLoadInfo,
 		provinceTab->findChild<OwnershipBox*>(), &OwnershipBox::loadProvInfo);
 
+	QObject::connect(this, &InformationGUI::signalInitOwnership,
+		provinceTab->findChild<CoresBox*>(), &CoresBox::initializeData);
+	QObject::connect(this, &InformationGUI::signalLoadInfo,
+		provinceTab->findChild<CoresBox*>(), &CoresBox::loadProvInfo);
+
+
+
 
 	auto updater = [this](uint16_t Eu4::Province::* memberPtr, const std::string& newData) {
 		updateProvinceField(memberPtr, newData);
@@ -41,6 +48,7 @@ void InformationGUI::loadWidgets()
 	provinceTab->findChild<CultRelBox*>()->makeConnections(updater);
 	provinceTab->findChild<OwnershipBox*>()->makeConnections(updater);
 	provinceTab->findChild<DevBox*>()->makeConnections(updater);
+	provinceTab->findChild<CoresBox*>()->makeConnections(updater);
 
 
 	// Geography Tab

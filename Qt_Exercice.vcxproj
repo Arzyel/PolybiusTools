@@ -226,7 +226,7 @@
     <QtMoc Include="include\Qt\InformationGUI.h" />
     <ClInclude Include="include\Qt\InstantMenuStyle.h" />
     <ClInclude Include="include\Qt\LocationBoxes\BuildingsBox.h" />
-    <ClInclude Include="include\Qt\LocationBoxes\CoresBox.h" />
+    <QtMoc Include="include\Qt\LocationBoxes\CoresBox.h" />
     <QtMoc Include="include\Qt\LocationBoxes\CultRelBox.h" />
     <QtMoc Include="include\Qt\LocationBoxes\DevBox.h" />
     <QtMoc Include="include\Qt\LocationBoxes\LocInfoBoxes.h" />
