@@ -11,11 +11,35 @@
 #include <cstdint>
 #include <functional>
 #include <filesystem>
+#include <string_view>
+#include "FileManager.h"
+#include "filenfolder_CONST.h"
+#include "FilePathHandler.h"
+
 #include "Eu4MainParser.h"
 
 
 namespace fs = std::filesystem;
+namespace Eu4 {
+    class Culture {
+    public:
+        uint16_t mNameID;
+        uint16_t mGroupID;
+    };
 
+    class CultureGroup {
+        // for names either a data token per name which could be costlier than using one data token and having the value being one string
+        // it the class it would store the vector of string which would rebuild the complete string afterward
+        // for now dont care and simply skip it only need nameID and mCulturesID
+    public:
+        uint16_t mNameID;
+        uint16_t mGFXID;
+        uint16_t mMaleNamesID;
+        uint16_t mFemaleNamesID;
+        uint16_t mDynastyNamesID;
+        std::vector<uint16_t> mCulturesID;
+    };
+}
 struct sCulture {
     uint32_t packedRGB;
     char primaryTag[4] = {};
@@ -62,17 +86,35 @@ struct sReligionGroup {
 class CultRelContainer {
 public:
     CultRelContainer();
-    ~CultRelContainer() = default;
+    ~CultRelContainer();
     
     void loadCultureData(const Node& node, const Eu4MainParser& parser);
     void loadCultureData(const std::vector<fs::path>& filePaths);
     void loadReligionData(const std::string& religionFilePath);
+    void initData(FilePathHandler*& filePathHandler);
+    
+    //std::vector<Eu4::Continent> mContinents;
+    //std::unordered_map<std::string, uint16_t> mContinentNameToIndex;
+    //uint16_t mContinentDataID;
+    //DM::FileData<Eu4::GeoPolData>* mContinentsData = nullptr;
+
+
 
     std::unordered_map<std::string, sCulture> mCultures;
     std::unordered_map<std::string, sCultureGroup> mCultureGroups;
     std::unordered_map<std::string, sReligion> mReligions;
     std::unordered_map<std::string, sReligionGroup> mReligionGroups;
 private:
+    DM::FileData<CultRelContainer>* mCultureData = nullptr;
+    DM::FileData<CultRelContainer>* mReligionData = nullptr;
+    std::vector<Eu4::Culture> mCulturestest;
+    std::vector<Eu4::CultureGroup> mCultureGroupstest;
+
+    void initDataCulture(FilePathHandler*& filePathHandler);
+    static void initHelperCulture(DM::FileData<CultRelContainer>& fileData, CultRelContainer& cultRelContainer);
+    static void resetCulture(CultRelContainer& cultRelContainer);
+    static void parserSkipBracket(const char*& ptr, const char* end);
+
     void loadReligionDataHelper(const std::string& religionName, const Node& node, const Eu4MainParser& parser);
     
     // Helper functions
