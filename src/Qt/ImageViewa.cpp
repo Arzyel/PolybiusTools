@@ -263,7 +263,9 @@ void ImageView::createSelectionOverlay(QRgb rgb, bool add){
         overlayImage.fill(Qt::transparent);
     }
     // 2. Prepare solid overlay color
-    QRgb overlayRgb = qRgb(overlayColor.red(), overlayColor.green(), overlayColor.blue()) | 0xFF000000; // alpha 255
+    //QRgb overlayRgb = qRgb(overlayColor.red(), overlayColor.green(), overlayColor.blue()) | 0xFF000000; // alpha 255
+    QRgb overlayRgb = qRgba(overlayColor.red(), overlayColor.green(), overlayColor.blue(), overlayColor.alpha());
+    
 
     // 3. Get pixels for the selected color
     const QVector<PixelPos>& pixels = colorMap.value(rgb);
@@ -347,13 +349,19 @@ void ImageView::mousePressEvent(QMouseEvent* event) {
 
         Eu4::Province& prov = mRefGeoPolCont.getProvinceData(UID);
         if (prov.mFileData != nullptr) {
-            mRefInfoGUI.addActiveSelection(prov);
+            overlayColor = Qt::white;
+
+            if (mRefInfoGUI.delInSelection(prov)) {
+                overlayColor = Qt::transparent;
+            }
+            else {
+                mRefInfoGUI.addActiveSelection(prov);
+            }
             
             // hack to clear the widget
             auto provin = Eu4::Province();
             mRefInfoGUI.loadProvInfo(provin);
 
-            overlayColor = Qt::white;
             createSelectionOverlay(clickedRgb, true);
         }
     }

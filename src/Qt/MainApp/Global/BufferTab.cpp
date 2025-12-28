@@ -28,7 +28,11 @@ BufferTab::BufferTab(std::unordered_set<DM::iFileDataBase*>& setAChanges, QWidge
 		return mList;
 		}(), 8);
 
+	connect(mList->verticalScrollBar(), &QScrollBar::valueChanged,
+		this, &BufferTab::onScroll);
 
+	// Install event filter for viewport resize events
+	mList->viewport()->installEventFilter(this);
 
 	bufferMainLayout->addWidget([this] {
 		QWidget* container = new QWidget(this);
@@ -75,7 +79,7 @@ void BufferTab::updateBufferWidgets()
 
 	mList->setUpdatesEnabled(false);
 
-	// Remove widgets no longer in activeChanges
+	// Step 1: Remove widgets no longer in activeChanges
 	for (auto it = mWidgetCache.begin(); it != mWidgetCache.end(); ) {
 		if (activeChanges.find(it->first) == activeChanges.end()) {
 			delete it->second.item;
@@ -86,21 +90,37 @@ void BufferTab::updateBufferWidgets()
 		}
 	}
 
-	// Update or create widgets
+	// Step 2: Create/update placeholder items for all active changes
 	for (auto fileData : activeChanges) {
 		auto it = mWidgetCache.find(fileData);
-		if (it != mWidgetCache.end()) {
-			// Only update if data actually changed
-			updateCachedWidgetSmart(fileData, it->second);
+
+		if (it == mWidgetCache.end()) {
+			// Create new placeholder
+			QListWidgetItem* item = new QListWidgetItem(mList);
+			item->setSizeHint(QSize(0, 250));
+			item->setData(Qt::UserRole, QVariant::fromValue(fileData));
+
+			CachedWidget cached;
+			cached.item = item;
+			cached.fileData = fileData;
+			cached.isCreated = false;
+
+			mWidgetCache[fileData] = cached;
 		}
 		else {
-			mWidgetCache[fileData] = createWidgetForFileData(fileData);
+			// Update existing widget if it's created
+			if (it->second.isCreated) {
+				updateWidgetSmartly(fileData, it->second);
+			}
 		}
 	}
 
 	mList->setUpdatesEnabled(true);
 
-	qDebug() << "Total update time:" << timer.elapsed() << "ms";
+	qDebug() << "updateBufferWidgets took:" << timer.elapsed() << "ms";
+
+	// Step 3: Create widgets for visible items
+	QTimer::singleShot(0, this, &BufferTab::updateVisibleWidgets);
 
 	/*for (auto fileData : activeChanges) {
 		QListWidgetItem* item = new QListWidgetItem(mList);
@@ -161,6 +181,11 @@ void BufferTab::updateBufferWidgets()
 		mList->setItemWidget(item, group);
 	}*/
 	
+}
+
+void BufferTab::onScroll()
+{
+	updateVisibleWidgets();
 }
 
 void BufferTab::createSingleBufferWidget(QGroupBox* group, QVBoxLayout* groupLayout)
@@ -228,60 +253,272 @@ CachedWidget BufferTab::createWidgetForFileData(DM::iFileDataBase* fileData)
 	return cached;
 }
 
-void BufferTab::updateCachedWidgetSmart(DM::iFileDataBase* fileData, CachedWidget& cached)
+
+
+void BufferTab::populateTable(DM::iFileDataBase* fileData, CachedWidget& cached)
 {
+	QTableWidget* table = cached.table;
+
+	table->setUpdatesEnabled(false);
+	table->setRowCount(0);
+	table->setRowCount(fileData->mActiveChanges.size());
+	cached.indexToRow.clear();
+	cached.cachedValues.clear();
+
+	int row = 0;
+	for (uint16_t indexChanges : fileData->mActiveChanges) {
+		DM::DataToken& token = fileData->mDataTokens[indexChanges];
+
+		std::string originName = token.getOriginName();
+		std::string currentName = token.getCurrentName();
+
+		QTableWidgetItem* fieldItem = new QTableWidgetItem(
+			QString::fromUtf8(token.mKey.data(), static_cast<int>(token.mKey.size()))
+		);
+		QTableWidgetItem* originItem = new QTableWidgetItem(
+			QString::fromStdString(originName)
+		);
+		QTableWidgetItem* currentItem = new QTableWidgetItem(
+			QString::fromStdString(currentName)
+		);
+
+		fieldItem->setFlags(fieldItem->flags() & ~Qt::ItemIsEditable);
+		originItem->setFlags(originItem->flags() & ~Qt::ItemIsEditable);
+		currentItem->setFlags(currentItem->flags() & ~Qt::ItemIsEditable);
+
+		table->setItem(row, 0, fieldItem);
+		table->setItem(row, 1, originItem);
+		table->setItem(row, 2, currentItem);
+
+		cached.indexToRow[indexChanges] = row;
+		cached.cachedValues[indexChanges] = { originName, currentName };
+		row++;
+	}
+
+	table->setUpdatesEnabled(true);
+}
+
+
+
+void BufferTab::updateWidgetSmartly(DM::iFileDataBase* fileData, CachedWidget& cached)
+{
+	// Build current indices set
 	std::unordered_set<uint16_t> currentIndices(
 		fileData->mActiveChanges.begin(),
 		fileData->mActiveChanges.end()
 	);
 
-	if (currentIndices == cached.cachedIndices) {
-		return;  // No changes needed
+	std::unordered_set<uint16_t> cachedIndices;
+	for (const auto& [idx, row] : cached.indexToRow) {
+		cachedIndices.insert(idx);
 	}
 
+	// Check for structural changes (additions/removals)
+	bool structuralChange = false;
+
+	// Check if any indices were added or removed
+	if (currentIndices.size() != cachedIndices.size()) {
+		structuralChange = true;
+	}
+	else {
+		for (uint16_t idx : currentIndices) {
+			if (cachedIndices.find(idx) == cachedIndices.end()) {
+				structuralChange = true;
+				break;
+			}
+		}
+	}
+
+	if (structuralChange) {
+		// Rows added/removed, need full rebuild
+		cached.table->setUpdatesEnabled(false);
+		populateTable(fileData, cached);
+		cached.table->setUpdatesEnabled(true);
+	}
+	else {
+		// Same rows, update only changed cells
+		updateChangedCells(fileData, cached, currentIndices);
+	}
+}
+
+void BufferTab::updateChangedCells(DM::iFileDataBase* fileData, CachedWidget& cached, const std::unordered_set<uint16_t>& currentIndices)
+{
 	cached.table->setUpdatesEnabled(false);
-	populateTable(fileData, cached);
+
+	for (uint16_t idx : currentIndices) {
+		DM::DataToken& token = fileData->mDataTokens[idx];
+		std::string originName = token.getOriginName();
+		std::string currentName = token.getCurrentName();
+
+		auto cachedIt = cached.cachedValues.find(idx);
+
+		// Check if values changed
+		bool originChanged = (cachedIt == cached.cachedValues.end() ||
+			cachedIt->second.first != originName);
+		bool currentChanged = (cachedIt == cached.cachedValues.end() ||
+			cachedIt->second.second != currentName);
+
+		if (originChanged || currentChanged) {
+			int row = cached.indexToRow[idx];
+
+			// Update only the changed cells
+			if (originChanged) {
+				QTableWidgetItem* originItem = cached.table->item(row, 1);
+				if (originItem) {
+					originItem->setText(QString::fromStdString(originName));
+				}
+			}
+
+			if (currentChanged) {
+				QTableWidgetItem* currentItem = cached.table->item(row, 2);
+				if (currentItem) {
+					currentItem->setText(QString::fromStdString(currentName));
+				}
+			}
+
+			// Update cached values
+			cached.cachedValues[idx] = { originName, currentName };
+		}
+	}
+
 	cached.table->setUpdatesEnabled(true);
 }
 
-void BufferTab::populateTable(DM::iFileDataBase* fileData, CachedWidget& cached)
+void BufferTab::createWidgetForItem(DM::iFileDataBase* fileData, CachedWidget& cached)
 {
-	{
-		QTableWidget* table = cached.table;
+	if (cached.isCreated) return;
 
-		// Clear and resize
-		table->setRowCount(0);
-		table->setRowCount(fileData->mActiveChanges.size());
-		cached.cachedIndices.clear();
+	auto [ptr, len] = fileData->getFileName();
+	QGroupBox* group = new QGroupBox(QString::fromUtf8(ptr, len));
+	group->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
-		int row = 0;
-		for (uint16_t indexChanges : fileData->mActiveChanges) {
-			DM::DataToken& token = fileData->mDataTokens[indexChanges];
+	QVBoxLayout* groupLayout = new QVBoxLayout(group);
+	groupLayout->setContentsMargins(4, 4, 4, 4);
+	groupLayout->setSpacing(2);
 
-			// Use QTableWidgetItem instead of custom widgets - MUCH faster
-			QTableWidgetItem* fieldItem = new QTableWidgetItem(
-				QString::fromUtf8(token.mKey.data(), static_cast<int>(token.mKey.size()))
-			);
-			QTableWidgetItem* originItem = new QTableWidgetItem(
-				QString::fromStdString(token.getOriginName())
-			);
-			QTableWidgetItem* currentItem = new QTableWidgetItem(
-				QString::fromStdString(token.getCurrentName())
-			);
+	// Table
+	QTableWidget* table = new QTableWidget(group);
+	table->setColumnCount(3);
+	table->setHorizontalHeaderLabels({ "Field", "Original Value", "Modified Value" });
+	table->horizontalHeader()->setStretchLastSection(true);
+	table->verticalHeader()->setVisible(false);
+	table->setSelectionMode(QAbstractItemView::NoSelection);
+	table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+	table->verticalHeader()->setDefaultSectionSize(24);
+	table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-			// Set items as non-editable
-			fieldItem->setFlags(fieldItem->flags() & ~Qt::ItemIsEditable);
-			originItem->setFlags(originItem->flags() & ~Qt::ItemIsEditable);
-			currentItem->setFlags(currentItem->flags() & ~Qt::ItemIsEditable);
+	groupLayout->addWidget(table);
 
-			table->setItem(row, 0, fieldItem);
-			table->setItem(row, 1, originItem);
-			table->setItem(row, 2, currentItem);
+	// Footer
+	QWidget* footer = new QWidget(group);
+	QHBoxLayout* footerLayout = new QHBoxLayout(footer);
+	footerLayout->setContentsMargins(2, 2, 2, 2);
 
-			cached.cachedIndices.insert(indexChanges);
-			row++;
+	QPushButton* cancelBtn = new QPushButton("Cancel");
+	connect(cancelBtn, &QPushButton::clicked, this, [this, fileData]() {
+		fileData->clearActiveChangedData();
+		activeChanges.erase(fileData);
+		updateBufferWidgets();
+		});
+	footerLayout->addWidget(cancelBtn);
+
+	QPushButton* saveBtn = new QPushButton("Save");
+	connect(saveBtn, &QPushButton::clicked, this, [this, fileData]() {
+		fileData->writeIntoFile();
+		fileData->resetData();
+		activeChanges.erase(fileData);
+		updateBufferWidgets();
+		});
+	footerLayout->addWidget(saveBtn);
+	groupLayout->addWidget(footer);
+
+	// Set the widget to the list item
+	mList->setItemWidget(cached.item, group);
+
+	// Update cached references
+	cached.group = group;
+	cached.table = table;
+	cached.isCreated = true;
+
+	// Populate the table
+	populateTable(fileData, cached);
+}
+
+void BufferTab::destroyWidget(CachedWidget& cached)
+{
+	if (!cached.isCreated) return;
+
+	// Remove widget from list item (but keep the item itself)
+	mList->setItemWidget(cached.item, nullptr);
+
+	// Delete the widget
+	delete cached.group;
+
+	// Clear references
+	cached.group = nullptr;
+	cached.table = nullptr;
+	cached.isCreated = false;
+	cached.indexToRow.clear();
+	cached.cachedValues.clear();
+}
+
+void BufferTab::updateVisibleWidgets()
+{
+	QElapsedTimer timer;
+	timer.start();
+
+	QRect viewportRect = mList->viewport()->rect();
+	int viewportTop = viewportRect.top();
+	int viewportBottom = viewportRect.bottom();
+
+	int created = 0;
+	int destroyed = 0;
+
+	for (int i = 0; i < mList->count(); ++i) {
+		QListWidgetItem* item = mList->item(i);
+		QRect itemRect = mList->visualItemRect(item);
+
+		DM::iFileDataBase* fileData = item->data(Qt::UserRole).value<DM::iFileDataBase*>();
+		auto it = mWidgetCache.find(fileData);
+
+		if (it == mWidgetCache.end()) continue;
+
+		int itemTop = itemRect.top();
+		int itemBottom = itemRect.bottom();
+
+		// Check if item should be visible (with preload buffer)
+		bool shouldBeVisible = (itemBottom >= viewportTop - 500 &&
+			itemTop <= viewportBottom + 500);
+
+		// Check if item is far from viewport (for cleanup)
+		bool isFarAway = (itemBottom < viewportTop - 2000 ||
+			itemTop > viewportBottom + 2000);
+
+		if (shouldBeVisible && !it->second.isCreated) {
+			// Create widget
+			createWidgetForItem(fileData, it->second);
+			created++;
+		}
+		else if (isFarAway && it->second.isCreated) {
+			// Destroy widget to save memory
+			destroyWidget(it->second);
+			destroyed++;
 		}
 	}
+
+	if (created > 0 || destroyed > 0) {
+		qDebug() << "Lazy loading: created" << created << "destroyed" << destroyed
+			<< "took" << timer.elapsed() << "ms";
+	}
+}
+
+bool BufferTab::eventFilter(QObject* obj, QEvent* event)
+{
+	if (obj == mList->viewport() && event->type() == QEvent::Resize) {
+		QTimer::singleShot(0, this, &BufferTab::updateVisibleWidgets);
+	}
+	return QWidget::eventFilter(obj, event);
 }
 
 
