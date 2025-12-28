@@ -25,7 +25,7 @@ public:
 public slots:
     void initializeData(const std::unordered_map<std::string, sCulture>& cultureData,
         const std::unordered_map<std::string, sReligion>& religionData);
-    void initializeData2(const std::vector<std::string_view>& allCultures);
+    void initializeData2(const std::vector<std::string_view>& allCultures, const std::vector<std::string_view>& allReligions);
     void loadProvInfo(Eu4::Province& province);
 protected:
 

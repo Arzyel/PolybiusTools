@@ -39,6 +39,17 @@ namespace Eu4 {
         uint16_t mDynastyNamesID;
         std::vector<uint16_t> mCulturesID;
     };
+
+    class Religion {
+    public:
+        uint16_t mNameID;
+        uint16_t mGroupID;
+    };
+
+    class ReligionGroup {
+    public:
+        uint16_t mNameID;
+    };
 }
 struct sCulture {
     uint32_t packedRGB;
@@ -98,6 +109,7 @@ public:
     //uint16_t mContinentDataID;
     //DM::FileData<Eu4::GeoPolData>* mContinentsData = nullptr;
     const std::vector<std::string_view> getAllCultures() const;
+    const std::vector<std::string_view> getAllReligions() const;
 
 
     std::unordered_map<std::string, sCulture> mCultures;
@@ -110,8 +122,8 @@ private:
     DM::FileData<CultRelContainer>* mReligionData = nullptr;
     std::vector<Eu4::Culture> mCulturestest;
     std::vector<Eu4::CultureGroup> mCultureGroupstest;
-    std::vector<Eu4::Culture> mReligionstest;
-    std::vector<Eu4::CultureGroup> mReligionGroupstest;
+    std::vector<Eu4::Religion> mReligionstest;
+    std::vector<Eu4::ReligionGroup> mReligionGroupstest;
 
 
     static void parserSkipBracket(const char*& ptr, const char* end);

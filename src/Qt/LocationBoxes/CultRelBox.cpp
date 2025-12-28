@@ -77,7 +77,7 @@ void CultRelBox::initializeData(const std::unordered_map<std::string, sCulture>&
 	}
 }
 
-void CultRelBox::initializeData2(const std::vector<std::string_view>& allCultures)
+void CultRelBox::initializeData2(const std::vector<std::string_view>& allCultures, const std::vector<std::string_view>& allReligions)
 {
 	cultCBox->clear();
 	relCBox->clear();
@@ -85,6 +85,9 @@ void CultRelBox::initializeData2(const std::vector<std::string_view>& allCulture
 	relCBox->addItem("");
 	for (const auto& culture : allCultures) {
 		cultCBox->addItem(QString::fromUtf8(culture.data(), culture.size()));
+	}
+	for (const auto& religion : allReligions) {
+		relCBox->addItem(QString::fromUtf8(religion.data(), religion.size()));
 	}
 }
 

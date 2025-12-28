@@ -116,7 +116,7 @@ void InformationGUI::loadProvInfo(Eu4::Province& province) const
 void InformationGUI::initialiseWidgetsInfo()
 {
 	//signalInitCultRelInfo(mRefCultRelCont.mCultures,mRefCultRelCont.mReligions);
-	signalInitCultRelInfo2(mRefCultRelCont.getAllCultures());
+	signalInitCultRelInfo2(mRefCultRelCont.getAllCultures(), mRefCultRelCont.getAllReligions());
 	signalInitOwnership(mRefCountryContainer.tagToName);
 }
 
