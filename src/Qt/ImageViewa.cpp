@@ -23,14 +23,19 @@ ImageView::ImageView(const QString& imagePath, Eu4::GeoPolData& geoPolContainers
     fitInView(pixmapItem->boundingRect(), Qt::KeepAspectRatio);
     scaleFactor = 1.0;
 
-    //precomputeColorMapOMP();
     precomputeColorMap();
     precomputeOverlays();
-    
-
-
     createAllOverlays();
     setActiveOverlay(0);
+    Eu4::Province& prov = mRefGeoPolCont.getProvinceData(1);
+
+    mRefInfoGUI.changeCurrentProv(prov);
+    mRefInfoGUI.loadProvInfo(prov);
+    overlayColor = Qt::white;
+    uint8_t r = static_cast<uint8_t>(((prov.mRGB & 0xFF0000) >> 16));
+    uint8_t g = static_cast<uint8_t>(((prov.mRGB & 0x00FF00) >> 8));
+    uint8_t b = static_cast<uint8_t>((prov.mRGB & 0x0000FF));
+    createSelectionOverlay(qRgb(r,g,b));
 }
 
 ImageView::~ImageView()
@@ -183,6 +188,9 @@ QVector<QRgb> ImageView::generateSparseColorsSea(int numColors)
 }
 void ImageView::createAllOverlays()
 {
+    qDebug() << "Precomputing all overlays image...";
+    auto start = std::chrono::high_resolution_clock::now();
+
     std::vector<QVector<QRgb>> colorRuleSet;
     //for (int size : mRefGeoPolCont.getNumberPerType()) {
     //    colorRuleSet.emplace_back(generateSparseColors(size));
@@ -205,6 +213,8 @@ void ImageView::createAllOverlays()
     overlaySuperRegions.fill(Qt::transparent);
     QImage overlayContinents(size, QImage::Format_ARGB32);
     overlayContinents.fill(Qt::transparent);
+    //QImage overlayCountries(size, QImage::Format_ARGB32);
+    //overlayCountries.fill(Qt::transparent);
 
     for (auto& prov : mRefGeoPolCont.getAllProvinces()) {
         uint8_t r = static_cast<uint8_t>(((prov.mRGB & 0xFF0000) >> 16));
@@ -226,10 +236,15 @@ void ImageView::createAllOverlays()
         }
 
     }
-    mapModeOverlays.append(std::move(overlayAreas));
-    mapModeOverlays.append(std::move(overlayRegions));
-    mapModeOverlays.append(std::move(overlaySuperRegions));
-    mapModeOverlays.append(std::move(overlayContinents));
+    mapModeOverlays.emplace_back(std::move(overlayAreas));
+    mapModeOverlays.emplace_back(std::move(overlayRegions));
+    mapModeOverlays.emplace_back(std::move(overlaySuperRegions));
+    mapModeOverlays.emplace_back(std::move(overlayContinents));
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    qDebug() << "Color map ready. Unique colors:" << colorMap.size()
+        << "Elapsed time:" << elapsed.count() << "ms";
 }
 void ImageView::changeView(uint8_t type)
 {
@@ -305,9 +320,7 @@ void ImageView::mousePressEvent(QMouseEvent* event) {
 
             mRefInfoGUI.changeCurrentProv(prov);
             mRefInfoGUI.loadProvInfo(prov);
-            
-
-            overlayColor = Qt::white;  // change if you want a different overlay
+            overlayColor = Qt::white;
             createSelectionOverlay(clickedRgb);
         }
 

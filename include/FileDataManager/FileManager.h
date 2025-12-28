@@ -4,10 +4,12 @@
 #include <functional>
 #include <fstream>
 #include <string>
+#include <string_view>
 #include <vector>
 #include <cstdint>
 #include <unordered_set>
 #include <unordered_map>
+#include <utility>
 #include "FilePathHandler.h"
 
 namespace DM {
@@ -28,7 +30,7 @@ namespace DM {
         bool erase = false;
 		std::string mPrefix = "";
 		std::string mSuffix = "";
-
+		std::string_view mKey;
     };
 
 
@@ -59,6 +61,12 @@ namespace DM {
 			mDataTokens[index].erase = false;
 			mActiveChanges.insert(index);
 		};
+		inline void updateDataToken(int index, const std::string& newData, const std::string_view key) {
+			mDataTokens[index].mNewData = newData;
+			mDataTokens[index].erase = false;
+			mDataTokens[index].mKey = key;
+			mActiveChanges.insert(index);
+		};
 		inline uint16_t createNewDataToken(const std::string& newData, const std::string& newKey)
 		{
 			// IMPORTANT MIGHT ACTUALLY CREATE DANGLING POINTER MIGHT NEED TO INSTEAD HAVE A VECTOR OF DataToken* or over reserve at init by an approx amount
@@ -84,6 +92,22 @@ namespace DM {
 			mDataTokens.clear();
 			mActiveChanges.clear();
 			mKeyToErase.clear();
+		};
+
+		inline std::pair<const char*, int> getFileName() {
+			const char* ptrStart = mExportPath.data();
+			const char* ptrEnd = ptrStart + mExportPath.size();
+			const char* current = (ptrEnd != ptrStart) ? ptrEnd - 1 : ptrEnd;
+			while (current > ptrStart) {
+				if (*current == '/' || *current == '\\') {
+					++current;
+					break;
+				}
+				--current;
+			}
+			int len = ptrEnd - current;
+
+			return {current, len};
 		};
 	};
 

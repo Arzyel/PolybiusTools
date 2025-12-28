@@ -195,6 +195,9 @@
     <ClCompile Include="src\FileDataManager\FileManager.cpp">
       <Filter>Fichiers sources\FileDataManager</Filter>
     </ClCompile>
+    <ClCompile Include="src\Qt\MainApp\Global\BufferTab.cpp">
+      <Filter>Fichiers sources\Qt\MainApp\Global</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Qt\InstantMenuStyle.h">
@@ -333,6 +336,9 @@
     </QtMoc>
     <QtMoc Include="include\Qt\ImageViewa.h">
       <Filter>Fichiers d%27en-tête\Qt</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\MainApp\Global\BufferTab.h">
+      <Filter>Fichiers d%27en-tête\Qt\MainApp\Global</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

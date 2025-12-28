@@ -17,6 +17,7 @@
 #include "CountryContainer.h"
 #include "OwnershipBox.h"
 #include "FileManager.h"
+#include "BufferTab.h"
 
 class InformationGUI : public QTabWidget {
 	Q_OBJECT

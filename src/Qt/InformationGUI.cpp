@@ -68,37 +68,38 @@ void InformationGUI::loadWidgets()
 	this->addTab(macroTab, "MacroTools");
 
 	// BufferedChanges tab
-	QWidget* bufferTab = new QWidget;
-	QVBoxLayout* bufferLayout = new QVBoxLayout(bufferTab);
-	
-	bufferLayout->addWidget([this] {
-		QPushButton* l = new QPushButton("Cancel Changes");
-		connect(l, &QPushButton::clicked, this, [this]() {
-				for (auto fileData : activeChanges) {
-					fileData->clearActiveChangedData();
-				}
-				activeChanges.clear();
-			});
-		return l;
-		}());
+	//QWidget* bufferTab = new QWidget;
+	//QVBoxLayout* bufferLayout = new QVBoxLayout(bufferTab);
+	//
+	//bufferLayout->addWidget([this] {
+	//	QPushButton* l = new QPushButton("Cancel Changes");
+	//	connect(l, &QPushButton::clicked, this, [this]() {
+	//			for (auto fileData : activeChanges) {
+	//				fileData->clearActiveChangedData();
+	//			}
+	//			activeChanges.clear();
+	//		});
+	//	return l;
+	//	}());
 
-	bufferLayout->addWidget([this] {
-		QPushButton* l = new QPushButton("Save Changes");
-		connect(l, &QPushButton::clicked, this, [this]() {
-				for (auto fileData : activeChanges) {
-					fileData->writeIntoFile();
-					fileData->resetData();
-					//fileData->resetDataAfterSave<Eu4::GeoPolData>([](Eu4::Province& prov) {}, const_cast<Eu4::GeoPolData&>(mRefGeoPolCont));
-				}
-			});
-		return l;
-		}());
+	//bufferLayout->addWidget([this] {
+	//	QPushButton* l = new QPushButton("Save Changes");
+	//	connect(l, &QPushButton::clicked, this, [this]() {
+	//			for (auto fileData : activeChanges) {
+	//				fileData->writeIntoFile();
+	//				fileData->resetData();
+	//				//fileData->resetDataAfterSave<Eu4::GeoPolData>([](Eu4::Province& prov) {}, const_cast<Eu4::GeoPolData&>(mRefGeoPolCont));
+	//			}
+	//		});
+	//	return l;
+	//	}());
+	BufferTab* bufferTab = new BufferTab(activeChanges);
 	this->addTab(bufferTab, "BufferedChanges");
 	
 
 
 	connect(this, &QTabWidget::currentChanged, this, 
-		[this](int index) {
+		[this, bufferTab](int index) {
 			switch (index) {
 			case 0: {
 				loadProvInfo(*currentProv);
@@ -117,6 +118,7 @@ void InformationGUI::loadWidgets()
 				break;
 			}
 			case 5: {
+				bufferTab->updateBufferWidgets();
 				break;
 			}
 			}

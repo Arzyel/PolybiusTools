@@ -63,10 +63,6 @@ void CultRelBox::makeConnections(std::function<void(uint16_t Eu4::Province::*, c
 }
 
 
-
-
-
-
 void CultRelBox::initializeData(const std::unordered_map<std::string, sCulture>& cultureData, const std::unordered_map<std::string, sReligion>& religionData)
 {
 	cultCBox->clear();

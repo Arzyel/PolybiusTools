@@ -181,7 +181,8 @@ inline void Eu4::Province::resetData()
 inline void Eu4::Province::updateField(uint16_t Eu4::Province::* memberPtr, const std::string& newData)
 {
 	if ((this->*memberPtr) != UINT16_MAX) {
-		this->mFileData->updateDataToken(this->*memberPtr, newData);
+		this->mFileData->updateDataToken(this->*memberPtr, newData, Eu4::FieldMap_U16.at(memberPtr));
+		//this->mFileData->updateDataToken(this->*memberPtr, newData);
 		return;
 	}
 	// TODO modify method to take the string of the key too

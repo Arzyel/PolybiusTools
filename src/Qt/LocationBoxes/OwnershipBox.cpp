@@ -46,8 +46,9 @@ void OwnershipBox::loadWidget() {
 void OwnershipBox::initializeData(const std::unordered_map<std::string, std::string>& data) {
 	ownerBox->clear();
 	controllerBox->clear();
+	ownerBox->addItem("");
+	controllerBox->addItem("");
 	for (const auto& [key, data] : data) {
-
 		std::string tag_name = key + " ; " + data;
 		ownerBox->addItem(QString::fromStdString(tag_name));
 		controllerBox->addItem(QString::fromStdString(tag_name));
@@ -76,13 +77,13 @@ void OwnershipBox::makeConnections(std::function<void(uint16_t Eu4::Province::*,
 		[this, callable](int index) {
 			QString text = ownerBox->itemText(index);
 			QByteArray data = text.toUtf8();
-			callable(&Eu4::Province::mOwnerID2, std::string(data.constData(), data.size()));
+			callable(&Eu4::Province::mOwnerID2, std::string(data.constData(), 3));
 		});
 	connect(controllerBox, &QComboBox::activated,
 		this,
 		[this, callable](int index) {
 			QString text = controllerBox->itemText(index);
 			QByteArray data = text.toUtf8();
-			callable(&Eu4::Province::mControllerID2, std::string(data.constData(), data.size()));
+			callable(&Eu4::Province::mControllerID2, std::string(data.constData(), 3));
 		});
 }
