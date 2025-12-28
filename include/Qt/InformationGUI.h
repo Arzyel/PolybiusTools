@@ -31,6 +31,7 @@ public:
 	void updateProvinceField(uint16_t Eu4::Province::* memberPtr, const std::string& newData);
 	void addActiveSelection(Eu4::Province& prov) const;
 	void clearActiveSelection() const;
+	bool delInSelection(Eu4::Province& prov) const;
 signals:
 	void signalLoadInfo(Eu4::Province& province) const;
 	void signalInitCultRelInfo(const std::unordered_map<std::string, sCulture>& cultureData,

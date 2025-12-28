@@ -179,4 +179,9 @@ void InformationGUI::clearActiveSelection() const
 	mSelectedProv.clear();
 }
 
+bool InformationGUI::delInSelection(Eu4::Province& prov) const
+{
+	return mSelectedProv.erase(&prov);
+}
+
 
