@@ -16,6 +16,7 @@ BufferTab::BufferTab(std::unordered_set<DM::iFileDataBase*>& setAChanges, QWidge
 		mList->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 		mList->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		mList->setSelectionMode(QAbstractItemView::NoSelection);
+		mList->verticalScrollBar()->setSingleStep(2);
 		mList->setStyleSheet(
 			"QListWidget::item { background: transparent; }"
 			"QListWidget::item:hover { background: transparent; }"
@@ -86,6 +87,7 @@ void BufferTab::updateBufferWidgets()
 
 		QListWidget* list = new QListWidget(group);
 		list->setSelectionMode(QAbstractItemView::NoSelection);
+		list->verticalScrollBar()->setSingleStep(2);
 		groupLayout->addWidget(list);
 
 		QWidget* footer = new QWidget(group);

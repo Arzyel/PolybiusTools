@@ -29,7 +29,8 @@ ImageView::ImageView(const QString& imagePath, Eu4::GeoPolData& geoPolContainers
     setActiveOverlay(0);
     Eu4::Province& prov = mRefGeoPolCont.getProvinceData(1);
 
-    mRefInfoGUI.changeCurrentProv(prov);
+    //mRefInfoGUI.changeCurrentProv(prov);
+    mRefInfoGUI.addActiveSelection(prov);
     mRefInfoGUI.loadProvInfo(prov);
     overlayColor = Qt::white;
     uint8_t r = static_cast<uint8_t>(((prov.mRGB & 0xFF0000) >> 16));
@@ -250,17 +251,17 @@ void ImageView::changeView(uint8_t type)
 {
     setActiveOverlay(type);
 }
-void ImageView::createSelectionOverlay(QRgb rgb) {
+void ImageView::createSelectionOverlay(QRgb rgb, bool add){
     if (!pixmapItem) return;
 
     const QSize size = pixmapItem->pixmap().size();
     const int width = size.width();
     const int height = size.height();
-
-    // 1. Create transparent overlay
-    overlayImage = QImage(size, QImage::Format_ARGB32);
-    overlayImage.fill(Qt::transparent);
-
+    if (!add) {
+        // 1. Create transparent overlay
+        overlayImage = QImage(size, QImage::Format_ARGB32);
+        overlayImage.fill(Qt::transparent);
+    }
     // 2. Prepare solid overlay color
     QRgb overlayRgb = qRgb(overlayColor.red(), overlayColor.green(), overlayColor.blue()) | 0xFF000000; // alpha 255
 
@@ -301,6 +302,7 @@ void ImageView::mouseMoveEvent(QMouseEvent* event) {
 
 void ImageView::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
+        mRefInfoGUI.clearActiveSelection();
         QPointF scenePos = mapToScene(event->pos());
         QPointF pixmapPos = pixmapItem->mapFromScene(scenePos);
 
@@ -318,20 +320,44 @@ void ImageView::mousePressEvent(QMouseEvent* event) {
                 << "\nProvince ID : " << UID
                 <<"Province Name : " << prov.mName;
 
-            mRefInfoGUI.changeCurrentProv(prov);
+            mRefInfoGUI.addActiveSelection(prov);
+            //mRefInfoGUI.changeCurrentProv(prov);
             mRefInfoGUI.loadProvInfo(prov);
             overlayColor = Qt::white;
             createSelectionOverlay(clickedRgb);
         }
-
-        viewport()->update(); // redraw overlay
     }
     else if (event->button() == Qt::MiddleButton) {
         dragging = true;
         lastPos = event->pos();
         setCursor(Qt::ClosedHandCursor);
     }
+    else if (event->button() == Qt::RightButton) {
+        QPointF scenePos = mapToScene(event->pos());
+        QPointF pixmapPos = pixmapItem->mapFromScene(scenePos);
 
+        int x = qBound(0, int(std::floor(pixmapPos.x())), pixmapItem->pixmap().width() - 1);
+        int y = qBound(0, int(std::floor(pixmapPos.y())), pixmapItem->pixmap().height() - 1);
+
+        QImage img = pixmapItem->pixmap().toImage().convertToFormat(QImage::Format_RGB888);
+        const uchar* p = img.constBits() + y * img.bytesPerLine() + x * 3;
+        QRgb clickedRgb = qRgb(p[0], p[1], p[2]);
+
+        auto UID = mRefGeoPolCont.getIDFromColor((p[0] << 16) | (p[1] << 8) | p[2]);
+
+        Eu4::Province& prov = mRefGeoPolCont.getProvinceData(UID);
+        if (prov.mFileData != nullptr) {
+            mRefInfoGUI.addActiveSelection(prov);
+            
+            // hack to clear the widget
+            auto provin = Eu4::Province();
+            mRefInfoGUI.loadProvInfo(provin);
+
+            overlayColor = Qt::white;
+            createSelectionOverlay(clickedRgb, true);
+        }
+    }
+    viewport()->update(); // redraw overlay
     QGraphicsView::mousePressEvent(event);
 }
 

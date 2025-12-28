@@ -19,6 +19,7 @@
 #include "FileManager.h"
 #include "BufferTab.h"
 
+
 class InformationGUI : public QTabWidget {
 	Q_OBJECT
 public:
@@ -28,6 +29,8 @@ public:
 	void initialiseWidgetsInfo();
 	void changeCurrentProv(Eu4::Province& prov) const;
 	void updateProvinceField(uint16_t Eu4::Province::* memberPtr, const std::string& newData);
+	void addActiveSelection(Eu4::Province& prov) const;
+	void clearActiveSelection() const;
 signals:
 	void signalLoadInfo(Eu4::Province& province) const;
 	void signalInitCultRelInfo(const std::unordered_map<std::string, sCulture>& cultureData,
@@ -41,6 +44,7 @@ private:
 	const CultRelContainer& mRefCultRelCont;
 	const CountryContainer& mRefCountryContainer;
 	mutable Eu4::Province* currentProv = nullptr;
+	mutable std::unordered_set<Eu4::Province*> mSelectedProv;
 	std::unordered_set<DM::iFileDataBase*> activeChanges;
 };
 

@@ -75,7 +75,6 @@ namespace Eu4 {
 		DM::FileData<Eu4::GeoPolData>* mSuperRegionsData = nullptr;
 		DM::FileData<Eu4::GeoPolData>* mContinentsData = nullptr;
 
-
 		void initDataProvinces(FilePathHandler*& filePathHandler);
 		void initMapInfo(FilePathHandler*& filePathHandler);
 		void initDataAreas(FilePathHandler*& filePathHandler);

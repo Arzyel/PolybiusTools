@@ -102,7 +102,13 @@ void InformationGUI::loadWidgets()
 		[this, bufferTab](int index) {
 			switch (index) {
 			case 0: {
-				loadProvInfo(*currentProv);
+				if (mSelectedProv.size() == 1) {
+					loadProvInfo(**(mSelectedProv.begin()));
+				}
+				else {
+					Eu4::Province prov = Eu4::Province();
+					loadProvInfo(prov);
+				}
 				break;
 			}
 			case 1: {
@@ -145,12 +151,32 @@ void InformationGUI::changeCurrentProv(Eu4::Province& prov) const
 
 void InformationGUI::updateProvinceField(uint16_t Eu4::Province::* memberPtr, const std::string& newData)
 {
-	currentProv->updateField(memberPtr, newData);
+
+	for(Eu4::Province* prov : mSelectedProv){
+		prov->updateField(memberPtr, newData);
+		activeChanges.insert(prov->mFileData);
+	
+		if (newData.empty() || newData[0] == '0') {
+			prov->scheduleDelete(memberPtr);
+		}
+		
+	}
+	/*currentProv->updateField(memberPtr, newData);
 	activeChanges.insert(currentProv->mFileData);
 	
 	if (newData.empty() || newData[0] == '0') {
 		currentProv->scheduleDelete(memberPtr);
-	}
+	}*/
+}
+
+void InformationGUI::addActiveSelection(Eu4::Province& prov) const
+{
+	mSelectedProv.insert(&prov);
+}
+
+void InformationGUI::clearActiveSelection() const
+{
+	mSelectedProv.clear();
 }
 
 

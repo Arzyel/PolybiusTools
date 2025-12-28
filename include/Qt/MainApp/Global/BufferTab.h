@@ -9,6 +9,7 @@
 #include <QtWidgets/qscrollarea.h>
 #include <QtWidgets/qlistwidget.h>
 #include <QtWidgets/qcombobox.h>
+#include <QtWidgets/qscrollbar.h>
 #include "FileManager.h"
 
 

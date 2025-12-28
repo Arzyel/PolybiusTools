@@ -38,7 +38,7 @@ protected:
     void drawForeground(QPainter* painter, const QRectF& rect) override;
     void precomputeOverlays();
     void setActiveOverlay(const int& index);
-    void createSelectionOverlay(QRgb rgb);
+    void createSelectionOverlay(QRgb rgb, bool add = false);
     QVector<PixelPos> getBorderPixels(const QVector<PixelPos>& pixels, int width, int height);
 private:
     void precomputeColorMap();
