@@ -7,7 +7,13 @@ Eu4::TGContainer::~TGContainer()
 
 const std::vector<std::string_view> Eu4::TGContainer::getAllTradeGoods() const
 {
-	return std::vector<std::string_view>();
+    std::vector<std::string_view> tradeGoods;
+    tradeGoods.reserve(mTradeGoods.size());
+    for (const auto& tradeGood : mTradeGoods) {
+        auto& token = mTGData->mDataTokens[tradeGood.mNameID];
+        tradeGoods.emplace_back(token.mPtrStart, token.mLength);
+    }
+    return tradeGoods;
 }
 
 void Eu4::TGContainer::initData(FilePathHandler*& filePathHandler)
@@ -126,7 +132,8 @@ void Eu4::TGContainer::initHelperTradeGood(DM::FileData<TGContainer>& fileData, 
                 break;
                     
                 default:
-                    throw new std::runtime_error(std::string("failed parsing at position " + (end - ptr)));
+                    std::string error_msg = std::string("failed parsing at position " + (end - ptr));
+                    throw new std::runtime_error(error_msg);
                     break;
                 }
 

@@ -3,8 +3,9 @@
 
 
 
-InformationGUI::InformationGUI(const Eu4::GeoPolData& refGeoPolCont, const CultRelContainer&  refCultRel, const CountryContainer& countryContainer, QWidget* parent)
-	:QTabWidget(parent), mRefGeoPolCont(refGeoPolCont), mRefCultRelCont(refCultRel), mRefCountryContainer(countryContainer)
+InformationGUI::InformationGUI(const Eu4::GeoPolData& refGeoPolCont, const CultRelContainer&  refCultRel, const CountryContainer& countryContainer,
+	const Eu4::TGContainer& tgContainer, QWidget* parent)
+	:QTabWidget(parent), mRefGeoPolCont(refGeoPolCont), mRefCultRelCont(refCultRel), mRefCountryContainer(countryContainer), mRefTGContainer(tgContainer)
 {
 
 }
@@ -133,8 +134,7 @@ void InformationGUI::initialiseWidgetsInfo()
 {
 	signalInitCultRelInfo(mRefCultRelCont.getAllCultures(), mRefCultRelCont.getAllReligions());
 	signalInitOwnership(mRefCountryContainer.tagToName);
-	const std::vector<std::string_view> test = { "coal","gold","silver" };
-	signalInitTradeGood(test);
+	signalInitTradeGood(mRefTGContainer.getAllTradeGoods());
 }
 
 void InformationGUI::changeCurrentProv(Eu4::Province& prov) const

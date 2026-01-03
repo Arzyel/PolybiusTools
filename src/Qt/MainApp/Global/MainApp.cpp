@@ -13,7 +13,7 @@ MainApp::MainApp(const QApplication& app, FilePathHandler*& filePathHandler,QWid
     // when remaking the class and methods adjust with specific GameData right now they all work with Eu4::Data
     auto data = dynamic_cast<Eu4::Data*>(gameData);
 
-    InformationGUI* rightMainArea = new InformationGUI(data->mGeoPolData, data->mCultRelData, data->mCountryData);
+    InformationGUI* rightMainArea = new InformationGUI(data->mGeoPolData, data->mCultRelData, data->mCountryData, data->mTGData);
     rightMainArea->loadWidgets();
     rightMainArea->initialiseWidgetsInfo();
 

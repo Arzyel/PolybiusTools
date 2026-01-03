@@ -20,11 +20,17 @@
 #include "BufferTab.h"
 #include "CoresBox.h"
 #include "TradeBox.h"
+#include "TGContainer.h"
 
 class InformationGUI : public QTabWidget {
 	Q_OBJECT
 public:
-	InformationGUI(const Eu4::GeoPolData& refGeoPolCont, const CultRelContainer& refCultRel, const CountryContainer& countryContainer, QWidget* parent = nullptr);
+	InformationGUI(const Eu4::GeoPolData& refGeoPolCont, 
+		const CultRelContainer& refCultRel, 
+		const CountryContainer& countryContainer,
+		const Eu4::TGContainer& tgContainer,
+		QWidget* parent = nullptr);
+
 	void loadWidgets();
 	void loadProvInfo (Eu4::Province& province) const;
 	void initialiseWidgetsInfo();
@@ -45,6 +51,7 @@ private:
 	const Eu4::GeoPolData& mRefGeoPolCont;
 	const CultRelContainer& mRefCultRelCont;
 	const CountryContainer& mRefCountryContainer;
+	const Eu4::TGContainer& mRefTGContainer;
 	mutable Eu4::Province* currentProv = nullptr;
 	mutable std::unordered_set<Eu4::Province*> mSelectedProv;
 	std::unordered_set<DM::iFileDataBase*> activeChanges;
