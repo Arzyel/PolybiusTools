@@ -35,7 +35,13 @@ void TradeBox::loadWidget()
 
 void TradeBox::makeConnections(std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable)
 {
-
+	connect(mTGBox, &QComboBox::activated,
+		this,
+		[this, callable](int index) {
+			QString text = mTGBox->itemText(index);
+			QByteArray data = text.toUtf8();
+			callable(&Eu4::Province::mTradeGood, std::string(data.constData(), data.size()));
+		});
 }
 
 void TradeBox::initializeData(const std::vector<std::string_view>& tradeGoods)
