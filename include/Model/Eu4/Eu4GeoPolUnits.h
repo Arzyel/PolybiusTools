@@ -208,6 +208,11 @@ inline void Eu4::Province::updateField(uint16_t Eu4::Province::* memberPtr, cons
 	}
 	else {
 		if ((this->*memberPtr) != UINT16_MAX) {
+			if (newData.empty()) {
+				this->mFileData->scheduleDelete((this->*memberPtr));
+				return;
+			}
+
 			this->mFileData->updateDataToken(this->*memberPtr, newData, Eu4::FieldMap_U16.at(memberPtr));
 			return;
 		}

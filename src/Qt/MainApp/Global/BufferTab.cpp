@@ -316,6 +316,7 @@ void BufferTab::updateChangedCells(DM::iFileDataBase* fileData, CachedWidget& ca
 				}
 			}
 
+			cached.table->item(row, 3)->setText((token.erase) ? "true" : "false");
 			// Update cached values
 			cached.cachedValues[idx] = { originName, currentName };
 		}

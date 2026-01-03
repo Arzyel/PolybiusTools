@@ -10,6 +10,10 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <utility>
+#include <type_traits>
+#include <charconv>
+#include <stdexcept>
+#include <system_error>
 #include "FilePathHandler.h"
 
 namespace DM {
@@ -31,6 +35,11 @@ namespace DM {
 		std::string mPrefix = "";
 		std::string mSuffix = "";
 		std::string_view mKey;
+
+		template<typename T, typename = std::enable_if<std::is_arithmetic_v<T>>>
+		T getOriginAsType();
+		template<typename T, typename = std::enable_if<std::is_arithmetic_v<T>>>
+		T getCurrentAsType();
     };
 
 
@@ -63,12 +72,14 @@ namespace DM {
 			mDataTokens[index].mNewData = newData;
 			mDataTokens[index].erase = false;
 			mActiveChanges.insert(index);
+			mKeyToErase.erase(index);
 		};
 		inline void updateDataToken(int index, const std::string& newData, const std::string_view key) {
 			mDataTokens[index].mNewData = newData;
 			mDataTokens[index].erase = false;
 			mDataTokens[index].mKey = key;
 			mActiveChanges.insert(index);
+			mKeyToErase.erase(index);
 		};
 		inline uint16_t createNewDataToken(const std::string& newData, const std::string& newKey)
 		{
@@ -138,6 +149,7 @@ namespace DM {
 		void(*resetTargetData)(Target& target) = nullptr;
 
     };
+
 }
 
 
@@ -188,5 +200,35 @@ void DM::FileData<Target>::resetData()
 	mCallinitDataTokens(*this, *callableTarget);
 }
 
+template<typename T, typename>
+inline T DM::DataToken::getOriginAsType()
+{
+	T value;
+	auto res = std::from_chars(mPtrStart, mPtrStart + mLength, value);
+	if (res.ec != std::errc()) {
+		throw std::runtime_error(
+			std::string("Failed to parse token as type ") + typeid(T).name()
+		);
+	}
 
+	return value;
+}
+template<typename T, typename>
+inline T DM::DataToken::getCurrentAsType()
+{
+	T value;
+	if (!mNewData.empty()) {
+		auto res = std::from_chars(mPtrStart, mPtrStart + mLength, value);
+		if (res.ec != std::errc()) {
+			throw std::runtime_error(
+				std::string("Failed to parse token as type ") + typeid(T).name()
+			);
+		}
+
+		return value;
+	}
+
+	std::from_chars(mPtrStart, mPtrStart + mLength, value);
+	return value;
+}
 #endif // FILE_MANAGER_H
