@@ -27,6 +27,9 @@ namespace Eu4 {
         uint16_t mModifierID;
         uint16_t mProvinceModID;
         uint16_t mChanceID;
+        uint16_t mIsLatentID;
+        uint16_t mIsValuableID;
+        uint16_t mRNWChanceID;
 
     protected:
 
@@ -41,6 +44,7 @@ namespace Eu4 {
 
         void initData(FilePathHandler*& filePathHandler);
         const std::vector<std::string_view> getAllTradeGoods() const;
+        static void parserSkipUntilValueStd(const char*& ptr, std::vector<DM::DataToken>& dataTokens);
 
     protected:
 

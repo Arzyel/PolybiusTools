@@ -7,6 +7,7 @@
 #include "Eu4GeoPolData.h"
 #include "FilePathHandler.h"
 #include "FileManager.h"
+#include "TGContainer.h"
 
 namespace Eu4 {
     class Data final : public GameData {
@@ -16,6 +17,7 @@ namespace Eu4 {
         CountryContainer mCountryData;
         CultRelContainer mCultRelData;
         Eu4::GeoPolData mGeoPolData;
+        Eu4::TGContainer mTGData;
         //Eu4::GeoPolData mGeoPolTest;
     protected:
 
