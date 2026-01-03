@@ -5,12 +5,6 @@ BufferTab::BufferTab(std::unordered_set<DM::iFileDataBase*>& setAChanges, QWidge
 {
 	QVBoxLayout* bufferMainLayout = new QVBoxLayout(this);
 
-	//bufferMainLayout->addWidget([this] {
-	//	QLabel* tabName = new QLabel;
-	//	tabName->setText("Active Changes");
-	//	return tabName;
-	//	}(),1);
-
 	bufferMainLayout->addWidget([this] {
 		mList = new QListWidget(this);
 		mList->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
@@ -64,7 +58,6 @@ BufferTab::BufferTab(std::unordered_set<DM::iFileDataBase*>& setAChanges, QWidge
 
 		return container;
 		}(), 1);
-
 }
 
 void BufferTab::loadWidgets()
@@ -148,9 +141,9 @@ CachedWidget BufferTab::createWidgetForFileData(DM::iFileDataBase* fileData)
 
 	// Use QTableWidget instead of QListWidget with custom widgets
 	QTableWidget* table = new QTableWidget(group);
-	table->setColumnCount(3);
-	table->setHorizontalHeaderLabels({ "Field", "Original Value", "Modified Value" });
-	table->horizontalHeader()->setStretchLastSection(true);
+	table->setColumnCount(4);
+	table->setHorizontalHeaderLabels({ "Field", "Original Value", "Modified Value", "Scheduled to be Deleted"});
+	//table->horizontalHeader()->setStretchLastSection(true);
 	table->verticalHeader()->setVisible(false);
 	table->setSelectionMode(QAbstractItemView::NoSelection);
 	table->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -159,6 +152,8 @@ CachedWidget BufferTab::createWidgetForFileData(DM::iFileDataBase* fileData)
 	table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 	table->verticalHeader()->setDefaultSectionSize(24);  // Fixed row height
 	table->setShowGrid(true);  // or false, depending on your preference
+
+	table->setColumnWidth(3, 24);
 
 	groupLayout->addWidget(table);
 
@@ -200,7 +195,7 @@ void BufferTab::populateTable(DM::iFileDataBase* fileData, CachedWidget& cached)
 	QTableWidget* table = cached.table;
 
 	table->setUpdatesEnabled(false);
-	table->setRowCount(0);
+	//table->setRowCount(0);
 	table->setRowCount(fileData->mActiveChanges.size());
 	cached.indexToRow.clear();
 	cached.cachedValues.clear();
@@ -221,14 +216,19 @@ void BufferTab::populateTable(DM::iFileDataBase* fileData, CachedWidget& cached)
 		QTableWidgetItem* currentItem = new QTableWidgetItem(
 			QString::fromStdString(currentName)
 		);
+		QTableWidgetItem* isToBeDel = new QTableWidgetItem(
+			(token.erase) ? "true" : "false"
+		);
 
 		fieldItem->setFlags(fieldItem->flags() & ~Qt::ItemIsEditable);
 		originItem->setFlags(originItem->flags() & ~Qt::ItemIsEditable);
 		currentItem->setFlags(currentItem->flags() & ~Qt::ItemIsEditable);
+		isToBeDel->setFlags(isToBeDel->flags() & ~Qt::ItemIsEditable);
 
 		table->setItem(row, 0, fieldItem);
 		table->setItem(row, 1, originItem);
 		table->setItem(row, 2, currentItem);
+		table->setItem(row, 3, isToBeDel);
 
 		cached.indexToRow[indexChanges] = row;
 		cached.cachedValues[indexChanges] = { originName, currentName };
@@ -338,8 +338,8 @@ void BufferTab::createWidgetForItem(DM::iFileDataBase* fileData, CachedWidget& c
 
 	// Table
 	QTableWidget* table = new QTableWidget(group);
-	table->setColumnCount(3);
-	table->setHorizontalHeaderLabels({ "Field", "Original Value", "Modified Value" });
+	table->setColumnCount(4);
+	table->setHorizontalHeaderLabels({ "Field", "Original Value", "Modified Value", "Scheduled to be Deleted" });
 	table->horizontalHeader()->setStretchLastSection(true);
 	table->verticalHeader()->setVisible(false);
 	table->setSelectionMode(QAbstractItemView::NoSelection);

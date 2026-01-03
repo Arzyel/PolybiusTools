@@ -52,8 +52,11 @@ namespace DM {
 		inline void clearActiveChangedData() {
 			for (const uint16_t index : mActiveChanges) {
 				mDataTokens[index].mNewData.clear();
+				mDataTokens[index].erase = false;
 			}
+			mKeyToErase.clear();
 			mActiveChanges.clear();
+			
 		};
 
 		inline void updateDataToken(int index, const std::string& newData) {
@@ -79,6 +82,7 @@ namespace DM {
 			else {
 				mDataTokens.emplace_back(DM::DataToken(mBuffer.data(), newData));
 			}
+			mDataTokens.back().mKey = newKey;
 			uint16_t id = mDataTokens.size() - 1;
 			mActiveChanges.insert(id);
 			return id;
@@ -86,6 +90,7 @@ namespace DM {
 		inline void scheduleDelete(int index) {
 			mKeyToErase.emplace(index, DataToken());
 			mDataTokens[index].erase = true;
+			mActiveChanges.insert(index);
 		};
 
 		inline void clearAllTokens() {

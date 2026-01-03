@@ -19,6 +19,7 @@
 #include "FileManager.h"
 #include "BufferTab.h"
 #include "CoresBox.h"
+#include "TradeBox.h"
 
 class InformationGUI : public QTabWidget {
 	Q_OBJECT
@@ -36,6 +37,7 @@ signals:
 	void signalLoadInfo(Eu4::Province& province) const;
 	void signalInitCultRelInfo(const std::vector<std::string_view>& allCultures, const std::vector<std::string_view>& allReligions) const;
 	void signalInitOwnership(const std::unordered_map<std::string, std::string>& data) const;
+	void signalInitTradeGood(const std::vector<std::string_view>& tradeGoods) const;
 
 protected:
 

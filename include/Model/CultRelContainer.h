@@ -9,6 +9,8 @@
 #include <vector>
 #include <string>
 #include <cstdint>
+#include <sstream>
+#include <algorithm>
 #include <functional>
 #include <filesystem>
 #include <string_view>

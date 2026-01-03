@@ -28,11 +28,16 @@ LocInfoBoxes::LocInfoBoxes(const QString& title, QWidget* parent)
 	CoresBox* coresBox = new CoresBox("Cores");
 	coresBox->setMinimumWidth(350);
 	coresBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	
+	TradeBox* tradeBox = new TradeBox("Trade");
+	tradeBox->setMinimumWidth(minBoxWidth);
+	tradeBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	flowLayout->addWidget(devBox);
 	flowLayout->addWidget(cultRelBox);
 	flowLayout->addWidget(ownershipBox);
 	flowLayout->addWidget(coresBox);
+	flowLayout->addWidget(tradeBox);
 
 }
 

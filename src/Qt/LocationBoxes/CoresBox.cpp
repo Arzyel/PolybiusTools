@@ -37,34 +37,28 @@ void CoresBox::loadWidget()
 	box->setMinimumWidth(0);
 	footerLayout->addWidget(box);
 
-	QPushButton* addBtn = new QPushButton("Add Core");
-	connect(addBtn, &QPushButton::clicked, this, [this]() {
-
-		if (table->findItems(box->itemText(box->currentIndex()).left(3), Qt::MatchExactly).size() == 0) {
-			addRow(box->itemText(box->currentIndex()).left(3));
-		}
-
-		});
+	addBtn = new QPushButton("Add Core");
 	footerLayout->addWidget(addBtn);
 }
 
 void CoresBox::initializeData(const std::unordered_map<std::string, std::string>& data) {
 	box->clear();
-	box->addItem("");
 	for (const auto& [key, data] : data) {
 		std::string tag_name = key + " ; " + data;
 		box->addItem(QString::fromStdString(tag_name));
 	}
-
 }
 
 void CoresBox::loadProvInfo(Eu4::Province& province) {
-	// add logic to load all cores into the tab widget
 	table->setUpdatesEnabled(false);
 	table->setRowCount(0);
-
 	for (const auto& coreID : province.mCoresID2) {
-		addRow(QString::fromUtf8(province.mFileData->mDataTokens[coreID].mPtrStart, province.mFileData->mDataTokens[coreID].mLength));
+		//hack to not create the row when empty probably should raise an exception when it receives a wrong tag
+		const QString tag = QString::fromStdString(province.mFileData->mDataTokens[coreID].getCurrentName());
+
+		if (!province.mFileData->mDataTokens.at(coreID).erase && tag.size() == 3) {
+			addRow(tag);
+		}
 	}
 	table->setUpdatesEnabled(true);
 }
@@ -82,21 +76,25 @@ void CoresBox::addRow(const QString& tag)
 	connect(del, &QPushButton::clicked, this, [this, del]() {
 		int row = table->indexAt(del->pos()).row();
 		if (row < 0) return;
-		table->removeRow(row);
+		QTableWidgetItem* item = table->item(row, 1);
+		if (item) {
+			callable(reinterpret_cast<uint16_t Eu4::Province::*>(&Eu4::Province::mCoresID2), item->text().toStdString());
+			table->removeRow(row);
+		}
 		});
 	table->setCellWidget(row, 2, del);
-
 }
 
 void CoresBox::makeConnections(std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable)
 {
-	//adapat when addubg a core on button push so it adds into the qtab and sends the correct data to the callable
-	/*connect(ownerBox, &QComboBox::activated,
-		this,
-		[this, callable](int index) {
-			QString text = ownerBox->itemText(index);
+	this->callable = callable;
+	connect(addBtn, &QPushButton::clicked, this, [this, callable]() {
+		if (table->findItems(box->itemText(box->currentIndex()).left(3), Qt::MatchExactly).size() == 0) {
+			QString text = box->itemText(box->currentIndex()).left(3);
 			QByteArray data = text.toUtf8();
-			callable(&Eu4::Province::mOwnerID2, std::string(data.constData(), 3));
-		});*/
-	
+			addRow(text);
+			callable(reinterpret_cast<uint16_t Eu4::Province::*>(&Eu4::Province::mCoresID2) , std::string(data.constData(), 3));
+		}
+
+		});
 }

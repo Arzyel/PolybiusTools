@@ -198,6 +198,9 @@
     <ClCompile Include="src\Qt\MainApp\Global\BufferTab.cpp">
       <Filter>Fichiers sources\Qt\MainApp\Global</Filter>
     </ClCompile>
+    <ClCompile Include="src\Model\Eu4\TGContainer.cpp">
+      <Filter>Fichiers sources\Model\Eu4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Qt\InstantMenuStyle.h">
@@ -216,9 +219,6 @@
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </ClInclude>
     <ClInclude Include="include\Qt\LocationBoxes\TechInfoBox.h">
-      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Qt\LocationBoxes\TradeBox.h">
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </ClInclude>
     <ClInclude Include="include\Qt\Util\QtUtils.h">
@@ -296,6 +296,9 @@
     <ClInclude Include="include\FileDataManager\FileManager.h">
       <Filter>Fichiers d%27en-tête\FileDataManager</Filter>
     </ClInclude>
+    <ClInclude Include="include\Model\Eu4\TGContainer.h">
+      <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -338,6 +341,9 @@
       <Filter>Fichiers d%27en-tête\Qt\MainApp\Global</Filter>
     </QtMoc>
     <QtMoc Include="include\Qt\LocationBoxes\CoresBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\LocationBoxes\TradeBox.h">
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </QtMoc>
   </ItemGroup>

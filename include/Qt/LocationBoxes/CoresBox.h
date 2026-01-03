@@ -31,7 +31,8 @@ protected:
 private:
     QComboBox* box = nullptr;
     QTableWidget* table = nullptr;
-
+    QPushButton* addBtn = nullptr;
+    std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable;
     void addRow(const QString& tag);
 };
 

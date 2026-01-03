@@ -51,6 +51,8 @@ namespace Eu4 {
 		bool isWasteland = false;
 		/*std::string mFilePath;*/
 
+
+
 		Province() = default;
 		Province(const Province&) = default;
 		Province& operator=(const Province&) = default;
@@ -67,7 +69,7 @@ namespace Eu4 {
 
 
 		void updateField(uint16_t Eu4::Province::* memberPtr, const std::string& newData);
-
+		void coresReset();
 		inline void scheduleDelete(uint16_t Eu4::Province::* memberPtr) {
 			this->mFileData->scheduleDelete(this->*memberPtr);
 		};
@@ -149,7 +151,9 @@ namespace Eu4 {
 		{ &Eu4::Province::mNativeHostile,   NATIVE_HOSTILENESS_CHAR },
 		{ &Eu4::Province::mBaseTax,         BASE_TAX_CHAR},
 		{ &Eu4::Province::mBaseProduction,  BASE_PRODUCTION_CHAR },
-		{ &Eu4::Province::mBaseManpower,    BASE_MANPOWER_CHAR }
+		{ &Eu4::Province::mBaseManpower,    BASE_MANPOWER_CHAR },
+		{ reinterpret_cast<uint16_t Eu4::Province::*>(&Eu4::Province::mCoresID2),    ADD_CORE_CHAR }
+		
 	};
 
 }
@@ -181,16 +185,52 @@ inline void Eu4::Province::resetData()
 }
 inline void Eu4::Province::updateField(uint16_t Eu4::Province::* memberPtr, const std::string& newData)
 {
-	if ((this->*memberPtr) != UINT16_MAX) {
-		this->mFileData->updateDataToken(this->*memberPtr, newData, Eu4::FieldMap_U16.at(memberPtr));
-		//this->mFileData->updateDataToken(this->*memberPtr, newData);
-		return;
+	if (memberPtr == reinterpret_cast<uint16_t Eu4::Province::*>(&Eu4::Province::mCoresID2)) {
+		std::vector<std::string> allTags;
+		for (auto coreID : mCoresID2) {
+			allTags.emplace_back(mFileData->mDataTokens[coreID].getCurrentName());
+		}
+		int index = 0;
+		bool matchFound = false;
+		for (const auto& tag : allTags) {
+			if (newData == tag) {
+				mFileData->scheduleDelete(mCoresID2[index]);
+				//mCoresID2.erase(mCoresID2.begin() + index);
+				matchFound = true;
+				break;
+			}
+			++index;
+		}
+		if (!matchFound) {
+			mCoresID2.emplace_back(this->mFileData->createNewDataToken(newData, Eu4::FieldMap_U16.at(memberPtr)));
+		}
+
 	}
-	// TODO modify method to take the string of the key too
-	(this->*memberPtr) = this->mFileData->createNewDataToken(newData, Eu4::FieldMap_U16.at(memberPtr));
+	else {
+		if ((this->*memberPtr) != UINT16_MAX) {
+			this->mFileData->updateDataToken(this->*memberPtr, newData, Eu4::FieldMap_U16.at(memberPtr));
+			return;
+		}
+		// TODO modify method to take the string of the key too
+		(this->*memberPtr) = this->mFileData->createNewDataToken(newData, Eu4::FieldMap_U16.at(memberPtr));
+	}
 }
 
+inline void Eu4::Province::coresReset()
+{
+	//std::vector<uint16_t> deleteIndexes;
+	//for (int i = 0; i < mCoresID2.size(); ++i) {
+	//	if (this->mFileData->mActiveChanges.contains(mCoresID2[i])) {
+	//		deleteIndexes.emplace_back(i);
+	//	}
+	//	
+	//}
 
+	//for (const auto index : deleteIndexes) {
+
+	//}
+
+}
 
 
 

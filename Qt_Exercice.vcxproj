@@ -180,6 +180,7 @@
     <ClCompile Include="src\Model\Eu4GeoPolData.cpp" />
     <ClCompile Include="src\Model\Eu4\Data.cpp" />
     <ClCompile Include="src\Model\Eu4\Eu4GeoPolUnits.cpp" />
+    <ClCompile Include="src\Model\Eu4\TGContainer.cpp" />
     <ClCompile Include="src\Qt\ImageViewa.cpp" />
     <ClCompile Include="src\Qt\InformationGUI.cpp" />
     <ClCompile Include="src\Qt\LocationBoxes\BuildingsBox.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="include\Model\Eu4GeoPolData.h" />
     <ClInclude Include="include\Model\Eu4\Data.h" />
     <ClInclude Include="include\Model\Eu4\Eu4GeoPolUnits.h" />
+    <ClInclude Include="include\Model\Eu4\TGContainer.h" />
     <ClInclude Include="include\Model\GameData.h" />
     <ClInclude Include="include\Model\GeoPolUnit.h" />
     <QtMoc Include="include\Qt\ImageViewa.h" />
@@ -234,7 +236,7 @@
     <QtMoc Include="include\Qt\LocationBoxes\LocMainWidget.h" />
     <ClInclude Include="include\Qt\LocationBoxes\ProvOthersBox.h" />
     <ClInclude Include="include\Qt\LocationBoxes\TechInfoBox.h" />
-    <ClInclude Include="include\Qt\LocationBoxes\TradeBox.h" />
+    <QtMoc Include="include\Qt\LocationBoxes\TradeBox.h" />
     <QtMoc Include="include\Qt\Startup\StartupDialog.h" />
     <QtMoc Include="include\Qt\Startup\StartupGameBox.h" />
     <QtMoc Include="include\Qt\MainApp\Global\MainApp.h" />

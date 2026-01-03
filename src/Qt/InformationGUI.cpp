@@ -38,7 +38,10 @@ void InformationGUI::loadWidgets()
 	QObject::connect(this, &InformationGUI::signalLoadInfo,
 		provinceTab->findChild<CoresBox*>(), &CoresBox::loadProvInfo);
 
-
+	QObject::connect(this, &InformationGUI::signalInitTradeGood,
+		provinceTab->findChild<TradeBox*>(), &TradeBox::initializeData);
+	QObject::connect(this, &InformationGUI::signalLoadInfo,
+		provinceTab->findChild<TradeBox*>(), &TradeBox::loadProvInfo);
 
 
 	auto updater = [this](uint16_t Eu4::Province::* memberPtr, const std::string& newData) {
@@ -49,6 +52,7 @@ void InformationGUI::loadWidgets()
 	provinceTab->findChild<OwnershipBox*>()->makeConnections(updater);
 	provinceTab->findChild<DevBox*>()->makeConnections(updater);
 	provinceTab->findChild<CoresBox*>()->makeConnections(updater);
+	provinceTab->findChild<TradeBox*>()->makeConnections(updater);
 
 
 	// Geography Tab
@@ -79,6 +83,10 @@ void InformationGUI::loadWidgets()
 	BufferTab* bufferTab = new BufferTab(activeChanges);
 	this->addTab(bufferTab, "BufferedChanges");
 	
+	this->setTabEnabled(1,false);
+	this->setTabEnabled(2,false);
+	this->setTabEnabled(3,false);
+	this->setTabEnabled(4,false);
 
 
 	connect(this, &QTabWidget::currentChanged, this, 
@@ -125,6 +133,8 @@ void InformationGUI::initialiseWidgetsInfo()
 {
 	signalInitCultRelInfo(mRefCultRelCont.getAllCultures(), mRefCultRelCont.getAllReligions());
 	signalInitOwnership(mRefCountryContainer.tagToName);
+	const std::vector<std::string_view> test = { "coal","gold","silver" };
+	signalInitTradeGood(test);
 }
 
 void InformationGUI::changeCurrentProv(Eu4::Province& prov) const
