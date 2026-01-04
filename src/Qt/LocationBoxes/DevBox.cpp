@@ -26,10 +26,6 @@ void DevBox::loadWidgets() {
 	QVBoxLayout* rightPartLayout = new QVBoxLayout(rightPart);
 
 
-
-
-
-
 	//Tax widgets
 	QWidget* taxWidget = new QWidget(leftPart);
 	QHBoxLayout* taxWidgetLayout = new QHBoxLayout(taxWidget);
