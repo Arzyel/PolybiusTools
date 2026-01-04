@@ -11,7 +11,7 @@
 - [] Basic Documentation
 
 ## 0.2
-- [] Country Widget in widget tab : retrieve Data and display it
+- [] Country Widget in widget tab : retrieve Data(Update parsing logic and storage) and display it. 
 - [] Country Overlay
 - [] Occupied Overlay
 - [] WASD map control ?
@@ -20,7 +20,8 @@
 - [] Add Trade Node Overlay
 - [] Update Country Widget to display ideas : retrieve, contain, display
 - [] Update Country Widget with modifying ideas : save data
-## 0.3 
+## 0.3
+- [] Add configuration file for Developpment Box random buttons ranges
 - [] Integrate basic support for localization : retrieve, contain, display logic update, save
 - [] Add support to create a new country : display, contain, save
 - [] Create Culture Overlay

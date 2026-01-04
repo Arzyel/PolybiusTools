@@ -1,8 +1,9 @@
 ﻿#include "CountryContainer.h"
 
-void CountryContainer::initializeData()
+void CountryContainer::initializeData(FilePathHandler*& filePathHandler)
 {
-    std::ifstream file(R"(E:\Games\Steam\steamapps\common\Europa Universalis IV\common\country_tags\00_countries.txt)");
+    const std::string& path = filePathHandler->getPathsFromFolderKey(relative_path::eu4::common::COUNTRY_TAGS_).at(0).string();
+    std::ifstream file(path);
     if (!file.is_open())
         return;
 

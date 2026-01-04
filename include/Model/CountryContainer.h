@@ -9,12 +9,13 @@
 #include <filesystem>
 #include <iostream>
 #include "SimpleParser.h"
+#include "FilePathHandler.h"
 
 class CountryContainer {
 public:
     CountryContainer() = default;
     ~CountryContainer() = default;
-    void initializeData();
+    void initializeData(FilePathHandler*& filePathHandler);
     std::unordered_map<std::string, std::string> tagToName;
 protected:
 

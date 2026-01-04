@@ -27,7 +27,7 @@ MainApp::MainApp(const QApplication& app, FilePathHandler*& filePathHandler,QWid
     setCentralWidget(centralWidget);
     setWindowTitle("Polybius ModTools");
     setMinimumSize(600, 400);
-    resize(1600, 800);
+    resize(1920, 1080);
     show();
 }
 
