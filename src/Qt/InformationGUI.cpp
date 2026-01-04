@@ -154,12 +154,6 @@ void InformationGUI::updateProvinceField(uint16_t Eu4::Province::* memberPtr, co
 		}
 		
 	}
-	/*currentProv->updateField(memberPtr, newData);
-	activeChanges.insert(currentProv->mFileData);
-	
-	if (newData.empty() || newData[0] == '0') {
-		currentProv->scheduleDelete(memberPtr);
-	}*/
 }
 
 void InformationGUI::addActiveSelection(Eu4::Province& prov) const

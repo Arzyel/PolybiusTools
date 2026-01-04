@@ -2,8 +2,6 @@
 #ifndef TECH_INFO_H
 #define TECH_INFO_H
 
-
-
 class TechInfo {
 public:
     TechInfo() = default;

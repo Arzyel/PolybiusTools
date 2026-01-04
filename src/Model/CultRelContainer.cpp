@@ -57,14 +57,6 @@ void CultRelContainer::initDataCulture(FilePathHandler*& filePathHandler)
     auto time_end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(time_end - start);
     std::cout << "Elapsed Time : " << elapsed.count() << "ms" << std::endl;
-
-    //std::cout << mCultureGroupstest.size() << std::endl;
-
-    //for (int i = 0; i < mCulturestest.size(); ++i) {
-    //    std::cout << mCultureData->mDataTokens[mCulturestest[i].mGroupID].getOriginName() << "\t\t:\t\t" << mCultureData->mDataTokens[mCulturestest[i].mNameID].getOriginName() << '\n';
-    //}
-    //std::cout << std::endl;
-
 }
 
 void CultRelContainer::initHelperCulture(DM::FileData<CultRelContainer>& fileData, CultRelContainer& cultRelContainer)

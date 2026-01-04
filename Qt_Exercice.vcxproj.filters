@@ -138,18 +138,6 @@
     <ClCompile Include="src\Model\CultRelContainer.cpp">
       <Filter>Fichiers sources\Model</Filter>
     </ClCompile>
-    <ClCompile Include="src\FileParsers\FileParser.cpp">
-      <Filter>Fichiers sources\FileParsers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\FileParsers\Eu4\Eu4CultureParser.cpp">
-      <Filter>Fichiers sources\FileParsers\Eu4</Filter>
-    </ClCompile>
-    <ClCompile Include="src\FileParsers\Eu4\Eu4MainParser.cpp">
-      <Filter>Fichiers sources\FileParsers\Eu4</Filter>
-    </ClCompile>
-    <ClCompile Include="src\FileParsers\Eu4\Eu4ReligionParser.cpp">
-      <Filter>Fichiers sources\FileParsers\Eu4</Filter>
-    </ClCompile>
     <ClCompile Include="src\Qt\LocationBoxes\LocMainWidget.cpp">
       <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
     </ClCompile>
@@ -226,18 +214,6 @@
     </ClInclude>
     <ClInclude Include="FlowLayout.h">
       <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileParsers\FileParser.h">
-      <Filter>Fichiers d%27en-tête\FileParsers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileParsers\Eu4\Eu4CultureParser.h">
-      <Filter>Fichiers d%27en-tête\FileParsers\Eu4</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileParsers\Eu4\Eu4MainParser.h">
-      <Filter>Fichiers d%27en-tête\FileParsers\Eu4</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileParsers\Eu4\Eu4ReligionParser.h">
-      <Filter>Fichiers d%27en-tête\FileParsers\Eu4</Filter>
     </ClInclude>
     <ClInclude Include="include\CONSTANTS\KEYS.h">
       <Filter>Fichiers d%27en-tête\CONSTANTS</Filter>

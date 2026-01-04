@@ -2,8 +2,6 @@
 #ifndef SGP_UNIT_MAIN_WIDGET_H
 #define SGP_UNIT_MAIN_WIDGET_H
 
-
-
 class SGPUnitMainWidget {
 public:
     SGPUnitMainWidget() = default;

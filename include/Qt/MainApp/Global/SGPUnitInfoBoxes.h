@@ -2,8 +2,6 @@
 #ifndef SGP_UNIT_INFO_BOXES_H
 #define SGP_UNIT_INFO_BOXES_H
 
-
-
 class SGPUnitInfoBoxes {
 public:
     SGPUnitInfoBoxes() = default;

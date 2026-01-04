@@ -19,9 +19,6 @@
 
 struct PixelPos { uint16_t x, y; };
 
-
-
-
 class ImageView : public QGraphicsView {
     Q_OBJECT
 public:
@@ -41,14 +38,6 @@ protected:
     void createSelectionOverlay(QRgb rgb, bool add = false);
     QVector<PixelPos> getBorderPixels(const QVector<PixelPos>& pixels, int width, int height);
 private:
-    void precomputeColorMap();
-    void precomputeColorMapOMP();
-    void createOverlayForColor(QRgb rgb);
-    QVector<QRgb> generateSparseColorsLand(int numColors);
-    QVector<QRgb> generateSparseColorsSea(int numColors);
-    void createAllOverlays();
-
-
     QImage overlayImage;
     QHash<QRgb, QVector<PixelPos>> colorMap;
     QVector<QPoint> borderPixels;
@@ -66,6 +55,13 @@ private:
     QVector<QColor> mapModeColors;
     Eu4::GeoPolData& mRefGeoPolCont;
     const InformationGUI& mRefInfoGUI;
+
+    void precomputeColorMap();
+    void precomputeColorMapOMP();
+    void createOverlayForColor(QRgb rgb);
+    QVector<QRgb> generateSparseColorsLand(int numColors);
+    QVector<QRgb> generateSparseColorsSea(int numColors);
+    void createAllOverlays();
 
 public slots:
     void changeView(uint8_t type);

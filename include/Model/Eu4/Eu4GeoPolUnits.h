@@ -18,7 +18,7 @@ namespace Eu4 {
 	class Province : public SGeoPolUnit {
 	public:
 		DM::FileData<Eu4::Province>* mFileData = nullptr;
-		uint16_t mOwnerID2 = UINT16_MAX;
+		uint16_t mOwnerID = UINT16_MAX;
 		uint16_t mControllerID2 = UINT16_MAX;
 		std::vector<uint16_t> mCoresID2;
 		uint16_t mCapital2 = UINT16_MAX;
@@ -49,9 +49,6 @@ namespace Eu4 {
 		uint8_t mContinentID = 0;
 		bool isWater = false;
 		bool isWasteland = false;
-		/*std::string mFilePath;*/
-
-
 
 		Province() = default;
 		Province(const Province&) = default;
@@ -69,7 +66,6 @@ namespace Eu4 {
 
 
 		void updateField(uint16_t Eu4::Province::* memberPtr, const std::string& newData);
-		void coresReset();
 		inline void scheduleDelete(uint16_t Eu4::Province::* memberPtr) {
 			this->mFileData->scheduleDelete(this->*memberPtr);
 		};
@@ -134,7 +130,7 @@ namespace Eu4 {
 	static const std::unordered_map<uint16_t Eu4::Province::*, std::string,
 	MemberPtrHash,
 	MemberPtrEq> FieldMap_U16 = {
-		{ &Eu4::Province::mOwnerID2,        OWNER_CHAR },
+		{ &Eu4::Province::mOwnerID,        OWNER_CHAR },
 		{ &Eu4::Province::mControllerID2,   CONTROLLER_CHAR },
 		{ &Eu4::Province::mCapital2,        CAPITAL_CHAR },
 		{ &Eu4::Province::mCultureID2,      CULTURE_CHAR },
@@ -160,7 +156,7 @@ namespace Eu4 {
 
 inline void Eu4::Province::resetData()
 {
-	mOwnerID2 = UINT16_MAX;
+	mOwnerID = UINT16_MAX;
 	mControllerID2 = UINT16_MAX;
 	mCoresID2.clear();
 	mCapital2 = UINT16_MAX;
@@ -195,7 +191,6 @@ inline void Eu4::Province::updateField(uint16_t Eu4::Province::* memberPtr, cons
 		for (const auto& tag : allTags) {
 			if (newData == tag) {
 				mFileData->scheduleDelete(mCoresID2[index]);
-				//mCoresID2.erase(mCoresID2.begin() + index);
 				matchFound = true;
 				break;
 			}
@@ -221,21 +216,7 @@ inline void Eu4::Province::updateField(uint16_t Eu4::Province::* memberPtr, cons
 	}
 }
 
-inline void Eu4::Province::coresReset()
-{
-	//std::vector<uint16_t> deleteIndexes;
-	//for (int i = 0; i < mCoresID2.size(); ++i) {
-	//	if (this->mFileData->mActiveChanges.contains(mCoresID2[i])) {
-	//		deleteIndexes.emplace_back(i);
-	//	}
-	//	
-	//}
 
-	//for (const auto index : deleteIndexes) {
-
-	//}
-
-}
 
 
 

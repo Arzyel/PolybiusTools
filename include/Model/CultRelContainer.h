@@ -18,10 +18,6 @@
 #include "filenfolder_CONST.h"
 #include "FilePathHandler.h"
 
-#include "Eu4MainParser.h"
-
-
-namespace fs = std::filesystem;
 namespace Eu4 {
     class Culture {
     public:

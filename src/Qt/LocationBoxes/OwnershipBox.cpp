@@ -16,7 +16,6 @@ void OwnershipBox::loadWidget() {
 	QWidget* rightPart = new QWidget(this);
 	QVBoxLayout* rightPartLayout = new QVBoxLayout(rightPart);
 
-
 	QWidget* ownerContainer = new QWidget(leftPart);
 	QHBoxLayout* ownerContainerLayout = new QHBoxLayout(ownerContainer);
 	QLabel* ownerLabel = new QLabel("Owner : ", ownerContainer);
@@ -25,7 +24,6 @@ void OwnershipBox::loadWidget() {
 	ownerBox->setMinimumWidth(0);
 	ownerContainerLayout->addWidget(ownerLabel);
 	ownerContainerLayout->addWidget(ownerBox);
-
 
 	QWidget* controllerContainer = new QWidget(leftPart);
 	QHBoxLayout* controllerContainerLayout = new QHBoxLayout(controllerContainer);
@@ -59,8 +57,8 @@ void OwnershipBox::initializeData(const std::unordered_map<std::string, std::str
 
 void OwnershipBox::loadProvInfo(Eu4::Province& province) {
 	int index = -1;
-	if (province.mOwnerID2 != UINT16_MAX) {
-		index = ownerBox->findText(province.mFileData->mDataTokens[province.mOwnerID2].getCurrentName().c_str(), Qt::MatchStartsWith);
+	if (province.mOwnerID != UINT16_MAX) {
+		index = ownerBox->findText(province.mFileData->mDataTokens[province.mOwnerID].getCurrentName().c_str(), Qt::MatchStartsWith);
 	}
 	ownerBox->setCurrentIndex(index);
 
@@ -78,7 +76,7 @@ void OwnershipBox::makeConnections(std::function<void(uint16_t Eu4::Province::*,
 		[this, callable](int index) {
 			QString text = ownerBox->itemText(index);
 			QByteArray data = text.toUtf8();
-			callable(&Eu4::Province::mOwnerID2, std::string(data.constData(), 3));
+			callable(&Eu4::Province::mOwnerID, std::string(data.constData(), 3));
 		});
 	connect(controllerBox, &QComboBox::activated,
 		this,

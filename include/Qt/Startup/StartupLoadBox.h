@@ -1,9 +1,6 @@
-﻿
-#pragma once
+﻿#pragma once
 #ifndef STARTUP_LOAD_BOX_H
 #define STARTUP_LOAD_BOX_H
-
-
 
 class StartupLoadBox {
 public:

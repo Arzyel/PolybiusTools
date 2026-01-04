@@ -169,10 +169,6 @@
   <ItemGroup>
     <ClCompile Include="FlowLayout.cpp" />
     <ClCompile Include="src\FileDataManager\FileManager.cpp" />
-    <ClCompile Include="src\FileParsers\Eu4\Eu4CultureParser.cpp" />
-    <ClCompile Include="src\FileParsers\Eu4\Eu4MainParser.cpp" />
-    <ClCompile Include="src\FileParsers\Eu4\Eu4ReligionParser.cpp" />
-    <ClCompile Include="src\FileParsers\FileParser.cpp" />
     <ClCompile Include="src\FileParsers\FilePathHandler.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Model\CountryContainer.cpp" />
@@ -210,11 +206,7 @@
     <ClInclude Include="include\CONSTANTS\filenfolder_CONST.h" />
     <ClInclude Include="include\CONSTANTS\KEYS.h" />
     <ClInclude Include="include\FileDataManager\FileManager.h" />
-    <ClInclude Include="include\FileParsers\Eu4\Eu4CultureParser.h" />
-    <ClInclude Include="include\FileParsers\Eu4\Eu4MainParser.h" />
     <ClInclude Include="include\FileParsers\Eu4\Eu4Parser.h" />
-    <ClInclude Include="include\FileParsers\Eu4\Eu4ReligionParser.h" />
-    <ClInclude Include="include\FileParsers\FileParser.h" />
     <ClInclude Include="include\FileParsers\FilePathHandler.h" />
     <ClInclude Include="include\Model\CountryContainer.h" />
     <ClInclude Include="include\Model\CultRelContainer.h" />

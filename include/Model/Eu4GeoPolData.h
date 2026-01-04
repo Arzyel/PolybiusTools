@@ -92,9 +92,6 @@ namespace Eu4 {
 		static void resetContinents(Eu4::GeoPolData& data);		
 	};
 
-
-
 }
-
 
 #endif // !EU4_GEO_POL_DATA_H

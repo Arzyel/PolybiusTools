@@ -157,7 +157,6 @@ public:
         return paths;
     };
 
-//change it back to private when testing done
     void addFilesFromFolder(const fs::path& folderPath, const char* folderKey);
     void addPath(const fs::path& path, const char* folderKey);
     void removePath(const fs::path& path);

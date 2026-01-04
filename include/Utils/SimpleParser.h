@@ -1,16 +1,12 @@
 #pragma once
 #ifndef SIMPLE_PARSER_H
 #define SIMPLE_PARSER_H
-
-
-
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <unordered_map>
 #include <algorithm>
 #include <cctype>
-
 #include <vector>
 #include <regex>
 #include <filesystem>

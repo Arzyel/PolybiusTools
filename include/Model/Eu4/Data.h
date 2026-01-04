@@ -18,7 +18,6 @@ namespace Eu4 {
         CultRelContainer mCultRelData;
         Eu4::GeoPolData mGeoPolData;
         Eu4::TGContainer mTGData;
-        //Eu4::GeoPolData mGeoPolTest;
     protected:
 
     private:

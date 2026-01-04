@@ -1,8 +1,6 @@
 #include <QtWidgets\qapplication.h>
 #include <QtWidgets\qstylefactory.h>
 #include <QtWidgets\qdialog.h>
-
-
 #include <InstantMenuStyle.h>
 #include "StartupDialog.h"
 #include "FilePathHandler.h"
@@ -30,6 +28,4 @@ int main(int argc, char* argv[]) {
 
     delete filePathHandler;
     return app.exec();
-
-   
 }

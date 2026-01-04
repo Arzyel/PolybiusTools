@@ -5,11 +5,6 @@
 LocInfoBoxes::LocInfoBoxes(const QString& title, QWidget* parent)
 	:QGroupBox(title, parent)
 {
-	//gridLayout = new QGridLayout(this);
-	//gridLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
-	//gridLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-	//this->setLayout(gridLayout);
-
 	FlowLayout* flowLayout = new FlowLayout(this, 20, 10, 10);
 
 	DevBox* devBox = new DevBox("Developpment");

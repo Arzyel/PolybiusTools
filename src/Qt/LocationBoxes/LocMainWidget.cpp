@@ -46,8 +46,6 @@ void LocMainWidget::loadWidgets()
 
 	QGroupBox* provinceInfoBox = new LocInfoBoxes("Province Information");
 
-
-
 	provinceLayout->addWidget(provinceBox, 1);
 	provinceLayout->addWidget(provinceInfoBox, 9);
 }

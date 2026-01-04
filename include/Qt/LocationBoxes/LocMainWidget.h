@@ -15,7 +15,6 @@ class LocMainWidget : public QWidget {
 public:
 	LocMainWidget(QWidget* parent = nullptr);
 	void loadWidgets();
-
 public slots:
 	void loadProvInfo(Eu4::Province& province);
 protected:

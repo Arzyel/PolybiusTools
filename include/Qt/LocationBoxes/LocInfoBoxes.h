@@ -5,8 +5,6 @@
 #include <QtCore\qstring.h>
 #include <QtWidgets\qboxlayout.h>
 #include <QtGui\qevent.h>
-
-
 #include "BuildingsBox.h"
 #include "CoresBox.h"
 #include "CultRelBox.h"

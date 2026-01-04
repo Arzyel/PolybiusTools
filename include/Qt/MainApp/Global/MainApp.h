@@ -25,9 +25,6 @@ public:
 protected:
 
 private:
-    //Eu4GeoPolData geoPolContainers;
-    //CountryContainer countryContainer;
-    //CultRelContainer cultRelContainer;
     GameData* gameData = nullptr;
 
     void LoadWidgets();

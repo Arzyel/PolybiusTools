@@ -17,15 +17,13 @@ MainApp::MainApp(const QApplication& app, FilePathHandler*& filePathHandler,QWid
     rightMainArea->loadWidgets();
     rightMainArea->initialiseWidgetsInfo();
 
-    // Main layout
     QWidget* centralWidget = new QWidget;
     QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
     ImageView* imageView = new ImageView(PROVINCE_MAP_FILE, data->mGeoPolData, *rightMainArea);
-    mainLayout->addWidget(imageView, 2);      // left: ImageView
-    mainLayout->addWidget(rightMainArea, 1);  // right: Tabs
+    mainLayout->addWidget(imageView, 2);
+    mainLayout->addWidget(rightMainArea, 1);
     connect(menuBar, &TopMenuBar::changeView, imageView, &ImageView::changeView);
 
-    // Attach to QMainWindow
     setCentralWidget(centralWidget);
     setWindowTitle("Polybius ModTools");
     setMinimumSize(600, 400);

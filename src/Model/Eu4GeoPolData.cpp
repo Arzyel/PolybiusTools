@@ -440,7 +440,7 @@ void Eu4::GeoPolData::initHelperProvince(DM::FileData<Eu4::Province>& fileData, 
 				/* owner */
 				if (*(ptr + 4) == 'r') {
 					ptr += 5;
-					value = &(prov.mOwnerID2);
+					value = &(prov.mOwnerID);
 				}
 				break;
 			}

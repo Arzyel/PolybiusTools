@@ -32,19 +32,16 @@ void StartupDialog::setupUI(FilePathHandler*& filePathHandler) {
 
 	setLayout(mainLayout);
 
-	// Create button layout
 	QHBoxLayout* buttonLayout = new QHBoxLayout();
 	QPushButton* continueButton = new QPushButton("Continue");
 	QPushButton* cancelButton = new QPushButton("Cancel");
 
-	buttonLayout->addStretch(); // Push buttons to the right
+	buttonLayout->addStretch();
 	buttonLayout->addWidget(continueButton);
 	buttonLayout->addWidget(cancelButton);
 
-	// Add button layout to main layout
 	mainLayout->addLayout(buttonLayout);
 
-	// Store buttons for connections if needed
 	mContinueButton = continueButton;
 	mCancelButton = cancelButton;
 	mContinueButton->setEnabled(false);

@@ -21,8 +21,6 @@ public:
     DevBox(const QString& title, QWidget* parent = nullptr);
     void loadWidgets();
     void makeConnections(std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable);
-
-
 public slots:
     void loadDevInfo(Eu4::Province& province);
 protected:
