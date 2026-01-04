@@ -6,8 +6,6 @@
 #include <QtWidgets\qlabel.h>
 #include <QtWidgets\qpushbutton.h>
 #include <QtWidgets\qtabwidget.h>
-
-
 #include "FilePathHandler.h"
 #include "StartupGameBox.h"
 #include "StartupLoadBox.h"

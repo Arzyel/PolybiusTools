@@ -8,7 +8,8 @@
 #include <QtWidgets\qlabel.h>
 #include <QtWidgets\qpushbutton.h>
 #include <random>
-#include "Location.h"
+#include <functional>
+#include "Eu4GeoPolUnits.h"
 
 
 //TODO refactor random out of the class
@@ -19,11 +20,10 @@ public:
     ~DevBox();
     DevBox(const QString& title, QWidget* parent = nullptr);
     void loadWidgets();
-
+    void makeConnections(std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable);
 public slots:
-    void loadDevInfo(const Location& location);
+    void loadDevInfo(Eu4::Province& province);
 protected:
-
 private:
     QSpinBox* taxSpinBox;
     QSpinBox* prodSpinBox;

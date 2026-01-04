@@ -6,8 +6,8 @@
 #include <QtWidgets\qgroupbox.h>
 #include <QtWidgets\qpushbutton.h>
 #include <QtWidgets\qlabel.h>
-#include "GeoPolContainers.h"
-#include "Location.h"
+#include "Eu4GeoPolData.h"
+#include "Eu4GeoPolUnits.h"
 #include "LocInfoBoxes.h"
 
 class LocMainWidget : public QWidget {
@@ -15,9 +15,8 @@ class LocMainWidget : public QWidget {
 public:
 	LocMainWidget(QWidget* parent = nullptr);
 	void loadWidgets();
-
 public slots:
-	void loadProvInfo(const Location& location);
+	void loadProvInfo(Eu4::Province& province);
 protected:
 private:
 };

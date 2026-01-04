@@ -2,9 +2,10 @@
 
 
 // ----------------------- CONSTRUCTOR -----------------------
-ImageView::ImageView(const QString& imagePath, const GeoPolContainers& geoPolContainers, const InformationGUI& informationGUI, QWidget* parent)
-    : QGraphicsView(parent), mRefGeoPolCont(geoPolContainers), mRefInfoGUI(informationGUI)
+ImageView::ImageView(const QString& imagePath, Eu4::GeoPolData& geoPolContainers, const InformationGUI& informationGUI, QWidget* parent)
+    : QGraphicsView(parent), mRefInfoGUI(informationGUI), mRefGeoPolCont(geoPolContainers)
 {
+    
     QPixmap pix(imagePath);
     if (pix.isNull()) {
         qDebug() << "Failed to load image!";
@@ -22,10 +23,20 @@ ImageView::ImageView(const QString& imagePath, const GeoPolContainers& geoPolCon
     fitInView(pixmapItem->boundingRect(), Qt::KeepAspectRatio);
     scaleFactor = 1.0;
 
-    //precomputeColorMapOMP();
     precomputeColorMap();
-    precomputeOverlays({ qRgb(202,46,173), qRgb(74,48,32), qRgb(148,133,60)}, Qt::black);
+    precomputeOverlays();
+    createAllOverlays();
     setActiveOverlay(0);
+    Eu4::Province& prov = mRefGeoPolCont.getProvinceData(1);
+
+    //mRefInfoGUI.changeCurrentProv(prov);
+    mRefInfoGUI.addActiveSelection(prov);
+    mRefInfoGUI.loadProvInfo(prov);
+    overlayColor = Qt::white;
+    uint8_t r = static_cast<uint8_t>(((prov.mRGB & 0xFF0000) >> 16));
+    uint8_t g = static_cast<uint8_t>(((prov.mRGB & 0x00FF00) >> 8));
+    uint8_t b = static_cast<uint8_t>((prov.mRGB & 0x0000FF));
+    createSelectionOverlay(qRgb(r,g,b));
 }
 
 ImageView::~ImageView()
@@ -131,19 +142,130 @@ void ImageView::createOverlayForColor(QRgb rgb) {
         overlayImage.setPixel(pos.x, pos.y, overlayRgb | 0xFF000000); // alpha 255
     }
 }
-void ImageView::createSelectionOverlay(QRgb rgb) {
+QVector<QRgb> ImageView::generateSparseColorsLand(int numColors)
+{
+    QVector<QRgb> colors;
+    //colors.reserve(numColors);
+    int n = numColors;
+    colors.reserve(n);
+
+    int min_val = 128; // pastel minimum
+    int max_val = 255; // pastel maximum
+    int range = max_val - min_val + 1;
+    // We'll step red and green with larger increments to maximize contrast
+    int R_step = 61; // choose numbers that don't evenly divide 127
+    int G_step = 37;
+
+    for (int i = 0; colors.size() < n; ++i) {
+        int R = min_val + (i * R_step) % range;
+        int G = min_val + (i * G_step) % range;
+        int B = 50; // no blue
+        colors.push_back(qRgb(R,G,B));
+    }
+  
+    return colors;
+}
+QVector<QRgb> ImageView::generateSparseColorsSea(int numColors)
+{
+    int n = numColors; // number of blue colors
+    QVector<QRgb> colors;
+    colors.reserve(n);
+
+    int min_val = 128;
+    int max_val = 255;
+    int range = max_val - min_val + 1;
+
+    int B_step = 61; // prime step for blue
+    int R_step = 17; // small offset for red
+    int G_step = 13; // small offset for green
+
+    for (int i = 0; i < n; ++i) {
+        int B = min_val + (i * B_step) % range;
+        int R = min_val + (i * R_step) % (range / 2); // smaller offset to keep blue dominant
+        int G = min_val + (i * G_step) % (range / 2);
+        colors.push_back(qRgb( 0, 0, B ));
+    }
+    return colors;
+}
+void ImageView::createAllOverlays()
+{
+    qDebug() << "Precomputing all overlays image...";
+    auto start = std::chrono::high_resolution_clock::now();
+
+    std::vector<QVector<QRgb>> colorRuleSet;
+    //for (int size : mRefGeoPolCont.getNumberPerType()) {
+    //    colorRuleSet.emplace_back(generateSparseColors(size));
+    //}
+
+    colorRuleSet.emplace_back(generateSparseColorsLand(mRefGeoPolCont.getNbAreas()));
+    colorRuleSet.emplace_back(generateSparseColorsSea(mRefGeoPolCont.getNbAreas()));
+    QVector<QRgb> wastelandRule;
+    for (int i = 0; i < mRefGeoPolCont.getNbAreas(); ++i) {
+        wastelandRule.push_back(qRgb(255, 255, 255));
+    }
+    colorRuleSet.emplace_back(wastelandRule);
+
+    const QSize size = pixmapItem->pixmap().size();
+    QImage overlayAreas(size, QImage::Format_ARGB32);
+    overlayAreas.fill(Qt::transparent);
+    QImage overlayRegions(size, QImage::Format_ARGB32);
+    overlayRegions.fill(Qt::transparent);
+    QImage overlaySuperRegions(size, QImage::Format_ARGB32);
+    overlaySuperRegions.fill(Qt::transparent);
+    QImage overlayContinents(size, QImage::Format_ARGB32);
+    overlayContinents.fill(Qt::transparent);
+    //QImage overlayCountries(size, QImage::Format_ARGB32);
+    //overlayCountries.fill(Qt::transparent);
+
+    for (auto& prov : mRefGeoPolCont.getAllProvinces()) {
+        uint8_t r = static_cast<uint8_t>(((prov.mRGB & 0xFF0000) >> 16));
+        uint8_t g = static_cast<uint8_t>(((prov.mRGB & 0x00FF00) >> 8));
+        uint8_t b = static_cast<uint8_t>((prov.mRGB & 0x0000FF));
+        const QVector<PixelPos>& pixels = colorMap.value(qRgb(r, g, b));
+        int type = 0;
+        if (prov.isWater) {
+            type = 1;
+        }
+        else if (prov.mBaseTax == UINT16_MAX && prov.mBaseManpower == UINT16_MAX && prov.mBaseProduction == UINT16_MAX) {
+            type = 2;
+        }
+        for (const PixelPos& pos : pixels) {
+            overlayAreas.setPixel(pos.x, pos.y, colorRuleSet.at(type).at(prov.mAreaID) | 0xFF000000);
+            overlayRegions.setPixel(pos.x, pos.y, colorRuleSet.at(type).at(prov.mRegionID) | 0xFF000000);
+            overlaySuperRegions.setPixel(pos.x, pos.y, colorRuleSet.at(type).at(prov.mSuperRegionID) | 0xFF000000);
+            overlayContinents.setPixel(pos.x, pos.y, colorRuleSet.at(type).at(prov.mContinentID) | 0xFF000000);
+        }
+
+    }
+    mapModeOverlays.emplace_back(std::move(overlayAreas));
+    mapModeOverlays.emplace_back(std::move(overlayRegions));
+    mapModeOverlays.emplace_back(std::move(overlaySuperRegions));
+    mapModeOverlays.emplace_back(std::move(overlayContinents));
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    qDebug() << "Color map ready. Unique colors:" << colorMap.size()
+        << "Elapsed time:" << elapsed.count() << "ms";
+}
+void ImageView::changeView(uint8_t type)
+{
+    setActiveOverlay(type);
+}
+void ImageView::createSelectionOverlay(QRgb rgb, bool add){
     if (!pixmapItem) return;
 
     const QSize size = pixmapItem->pixmap().size();
     const int width = size.width();
     const int height = size.height();
-
-    // 1. Create transparent overlay
-    overlayImage = QImage(size, QImage::Format_ARGB32);
-    overlayImage.fill(Qt::transparent);
-
+    if (!add) {
+        // 1. Create transparent overlay
+        overlayImage = QImage(size, QImage::Format_ARGB32);
+        overlayImage.fill(Qt::transparent);
+    }
     // 2. Prepare solid overlay color
-    QRgb overlayRgb = qRgb(overlayColor.red(), overlayColor.green(), overlayColor.blue()) | 0xFF000000; // alpha 255
+    //QRgb overlayRgb = qRgb(overlayColor.red(), overlayColor.green(), overlayColor.blue()) | 0xFF000000; // alpha 255
+    QRgb overlayRgb = qRgba(overlayColor.red(), overlayColor.green(), overlayColor.blue(), overlayColor.alpha());
+    
 
     // 3. Get pixels for the selected color
     const QVector<PixelPos>& pixels = colorMap.value(rgb);
@@ -182,6 +304,7 @@ void ImageView::mouseMoveEvent(QMouseEvent* event) {
 
 void ImageView::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
+        mRefInfoGUI.clearActiveSelection();
         QPointF scenePos = mapToScene(event->pos());
         QPointF pixmapPos = pixmapItem->mapFromScene(scenePos);
 
@@ -193,24 +316,56 @@ void ImageView::mousePressEvent(QMouseEvent* event) {
         QRgb clickedRgb = qRgb(p[0], p[1], p[2]);
 
         auto UID = mRefGeoPolCont.getIDFromColor((p[0] << 16) | (p[1] << 8) | p[2]);
-        auto& loc = mRefGeoPolCont.getLocationData(UID);
-        qDebug() << "Clicked at pixel:" << x << y << "RGB:" << p[0] << p[1] << p[2] 
-            << "\nProvince ID : " << UID
-            <<"Province Name : " << loc.eu4ProvinceName;
+        Eu4::Province& prov = mRefGeoPolCont.getProvinceData(UID);
+        if (prov.mFileData != nullptr) {
+            qDebug() << "Clicked at pixel:" << x << y << "RGB:" << p[0] << p[1] << p[2] 
+                << "\nProvince ID : " << UID
+                <<"Province Name : " << prov.mName;
 
-        mRefInfoGUI.loadProvInfo(loc);
-
-        overlayColor = Qt::white;  // change if you want a different overlay
-        createSelectionOverlay(clickedRgb);
-
-        viewport()->update(); // redraw overlay
+            mRefInfoGUI.addActiveSelection(prov);
+            //mRefInfoGUI.changeCurrentProv(prov);
+            mRefInfoGUI.loadProvInfo(prov);
+            overlayColor = Qt::white;
+            createSelectionOverlay(clickedRgb);
+        }
     }
     else if (event->button() == Qt::MiddleButton) {
         dragging = true;
         lastPos = event->pos();
         setCursor(Qt::ClosedHandCursor);
     }
+    else if (event->button() == Qt::RightButton) {
+        QPointF scenePos = mapToScene(event->pos());
+        QPointF pixmapPos = pixmapItem->mapFromScene(scenePos);
 
+        int x = qBound(0, int(std::floor(pixmapPos.x())), pixmapItem->pixmap().width() - 1);
+        int y = qBound(0, int(std::floor(pixmapPos.y())), pixmapItem->pixmap().height() - 1);
+
+        QImage img = pixmapItem->pixmap().toImage().convertToFormat(QImage::Format_RGB888);
+        const uchar* p = img.constBits() + y * img.bytesPerLine() + x * 3;
+        QRgb clickedRgb = qRgb(p[0], p[1], p[2]);
+
+        auto UID = mRefGeoPolCont.getIDFromColor((p[0] << 16) | (p[1] << 8) | p[2]);
+
+        Eu4::Province& prov = mRefGeoPolCont.getProvinceData(UID);
+        if (prov.mFileData != nullptr) {
+            overlayColor = Qt::white;
+
+            if (mRefInfoGUI.delInSelection(prov)) {
+                overlayColor = Qt::transparent;
+            }
+            else {
+                mRefInfoGUI.addActiveSelection(prov);
+            }
+            
+            // hack to clear the widget
+            auto provin = Eu4::Province();
+            mRefInfoGUI.loadProvInfo(provin);
+
+            createSelectionOverlay(clickedRgb, true);
+        }
+    }
+    viewport()->update(); // redraw overlay
     QGraphicsView::mousePressEvent(event);
 }
 
@@ -227,8 +382,8 @@ void ImageView::mouseDoubleClickEvent(QMouseEvent* event) {
         QRgb clickedRgb = qRgb(p[0], p[1], p[2]);
 
         auto UID = mRefGeoPolCont.getIDFromColor((p[0] << 16) | (p[1] << 8) | p[2]);
-        auto& loc = mRefGeoPolCont.getLocationData(UID);
-        FileOpener::openTextFile(loc.filePath);
+        auto& prov = mRefGeoPolCont.getProvinceData(UID);
+        FileOpener::openTextFile(prov.mFilePath);
     }
 
     QGraphicsView::mouseDoubleClickEvent(event);
@@ -267,20 +422,13 @@ void ImageView::drawForeground(QPainter* painter, const QRectF&) {
 
 
 
-void ImageView::precomputeOverlays(const QVector<QRgb>& ruleRGBs, const QColor& overlayColor)
+void ImageView::precomputeOverlays()
 {
     const QSize size = pixmapItem->pixmap().size();
     QImage overlay(size, QImage::Format_ARGB32);
     overlay.fill(Qt::transparent);
 
     QRgb color = qRgb(overlayColor.red(), overlayColor.green(), overlayColor.blue());
-
-    for (QRgb rgb : ruleRGBs) {
-        const QVector<PixelPos>& pixels = colorMap.value(rgb);
-        for (const PixelPos& pos : pixels) {
-            overlay.setPixel(pos.x, pos.y, color | 0xFF000000);
-        }
-    }
 
     mapModeOverlays.append(std::move(overlay));
 }

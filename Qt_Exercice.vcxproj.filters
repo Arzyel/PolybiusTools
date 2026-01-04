@@ -58,6 +58,36 @@
     <Filter Include="Fichiers sources\Qt\Startup">
       <UniqueIdentifier>{e8175af8-a7ca-495d-8596-7ae1e4126dbf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Qt\MainApp">
+      <UniqueIdentifier>{765e30b6-31fa-491c-beae-c8752d236760}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Qt\MainApp\Global">
+      <UniqueIdentifier>{904d6d52-7d7d-49d2-88f4-bad38a504f59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Qt\MainApp\Eu4">
+      <UniqueIdentifier>{e219f11b-9806-443f-9289-68c7a6369778}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Qt\MainApp">
+      <UniqueIdentifier>{463ff68a-ca3d-428f-8b3f-8b0b979f09af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Qt\MainApp\Global">
+      <UniqueIdentifier>{9cebd36f-d196-4979-8123-65f3ab718880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Qt\MainApp\Eu4">
+      <UniqueIdentifier>{8454de05-edb2-428d-b92e-6f7f25f25e77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Model\Eu4">
+      <UniqueIdentifier>{08ed58d4-ac74-4758-9083-9f41534dfe7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Model\Eu4">
+      <UniqueIdentifier>{78489943-bbbf-4260-b2d3-77f85ed2af97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\FileDataManager">
+      <UniqueIdentifier>{ede59709-b839-4c36-8205-f4a9ff53f2b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\FileDataManager">
+      <UniqueIdentifier>{fe434e51-3ef1-4aeb-9f71-a28697717b4a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -69,10 +99,7 @@
     <ClCompile Include="src\Qt\TopMenuBar.cpp">
       <Filter>Fichiers sources\Qt</Filter>
     </ClCompile>
-    <ClCompile Include="src\Model\GeoPolContainers.cpp">
-      <Filter>Fichiers sources\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Model\Location.cpp">
+    <ClCompile Include="src\Model\Eu4GeoPolData.cpp">
       <Filter>Fichiers sources\Model</Filter>
     </ClCompile>
     <ClCompile Include="src\Qt\InformationGUI.cpp">
@@ -111,18 +138,6 @@
     <ClCompile Include="src\Model\CultRelContainer.cpp">
       <Filter>Fichiers sources\Model</Filter>
     </ClCompile>
-    <ClCompile Include="src\FileParsers\FileParser.cpp">
-      <Filter>Fichiers sources\FileParsers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\FileParsers\Eu4\Eu4CultureParser.cpp">
-      <Filter>Fichiers sources\FileParsers\Eu4</Filter>
-    </ClCompile>
-    <ClCompile Include="src\FileParsers\Eu4\Eu4MainParser.cpp">
-      <Filter>Fichiers sources\FileParsers\Eu4</Filter>
-    </ClCompile>
-    <ClCompile Include="src\FileParsers\Eu4\Eu4ReligionParser.cpp">
-      <Filter>Fichiers sources\FileParsers\Eu4</Filter>
-    </ClCompile>
     <ClCompile Include="src\Qt\LocationBoxes\LocMainWidget.cpp">
       <Filter>Fichiers sources\Qt\LocationBoxes</Filter>
     </ClCompile>
@@ -147,33 +162,45 @@
     <ClCompile Include="src\FileParsers\FilePathHandler.cpp">
       <Filter>Fichiers sources\FileParsers</Filter>
     </ClCompile>
+    <ClCompile Include="src\Qt\MainApp\Global\MainApp.cpp">
+      <Filter>Fichiers sources\Qt\MainApp\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\MainApp\Global\SGPUnitInfoBoxes.cpp">
+      <Filter>Fichiers sources\Qt\MainApp\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\MainApp\Global\SGPUnitMainWidget.cpp">
+      <Filter>Fichiers sources\Qt\MainApp\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\MainApp\Global\TechInfo.cpp">
+      <Filter>Fichiers sources\Qt\MainApp\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model\Eu4\Data.cpp">
+      <Filter>Fichiers sources\Model\Eu4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model\Eu4\Eu4GeoPolUnits.cpp">
+      <Filter>Fichiers sources\Model\Eu4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileDataManager\FileManager.cpp">
+      <Filter>Fichiers sources\FileDataManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Qt\MainApp\Global\BufferTab.cpp">
+      <Filter>Fichiers sources\Qt\MainApp\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model\Eu4\TGContainer.cpp">
+      <Filter>Fichiers sources\Model\Eu4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Qt\ImageViewa.h">
-      <Filter>Fichiers d%27en-tête\Qt</Filter>
-    </ClInclude>
     <ClInclude Include="include\Qt\InstantMenuStyle.h">
-      <Filter>Fichiers d%27en-tête\Qt</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Qt\TopMenuBar.h">
       <Filter>Fichiers d%27en-tête\Qt</Filter>
     </ClInclude>
     <ClInclude Include="include\CONSTANTS\filenfolder_CONST.h">
       <Filter>Fichiers d%27en-tête\CONSTANTS</Filter>
     </ClInclude>
-    <ClInclude Include="include\Model\Location.h">
-      <Filter>Fichiers d%27en-tête\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Model\GeoPolContainers.h">
-      <Filter>Fichiers d%27en-tête\Model</Filter>
-    </ClInclude>
     <ClInclude Include="include\Utils\SimpleParser.h">
       <Filter>Fichiers d%27en-tête\Utils</Filter>
     </ClInclude>
     <ClInclude Include="include\Qt\LocationBoxes\BuildingsBox.h">
-      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Qt\LocationBoxes\CoresBox.h">
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </ClInclude>
     <ClInclude Include="include\Qt\LocationBoxes\ProvOthersBox.h">
@@ -182,32 +209,11 @@
     <ClInclude Include="include\Qt\LocationBoxes\TechInfoBox.h">
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </ClInclude>
-    <ClInclude Include="include\Qt\LocationBoxes\TradeBox.h">
-      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
-    </ClInclude>
     <ClInclude Include="include\Qt\Util\QtUtils.h">
       <Filter>Fichiers d%27en-tête\Qt\Utils</Filter>
     </ClInclude>
     <ClInclude Include="FlowLayout.h">
       <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Model\CultRelContainer.h">
-      <Filter>Fichiers d%27en-tête\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileParsers\FileParser.h">
-      <Filter>Fichiers d%27en-tête\FileParsers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileParsers\Eu4\Eu4CultureParser.h">
-      <Filter>Fichiers d%27en-tête\FileParsers\Eu4</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileParsers\Eu4\Eu4MainParser.h">
-      <Filter>Fichiers d%27en-tête\FileParsers\Eu4</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileParsers\Eu4\Eu4ReligionParser.h">
-      <Filter>Fichiers d%27en-tête\FileParsers\Eu4</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Model\CountryContainer.h">
-      <Filter>Fichiers d%27en-tête\Model</Filter>
     </ClInclude>
     <ClInclude Include="include\CONSTANTS\KEYS.h">
       <Filter>Fichiers d%27en-tête\CONSTANTS</Filter>
@@ -232,6 +238,42 @@
     </ClInclude>
     <ClInclude Include="include\FileParsers\FilePathHandler.h">
       <Filter>Fichiers d%27en-tête\FileParsers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\MainApp\Global\SGPUnitInfoBoxes.h">
+      <Filter>Fichiers d%27en-tête\Qt\MainApp\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\MainApp\Global\SGPUnitMainWidget.h">
+      <Filter>Fichiers d%27en-tête\Qt\MainApp\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Qt\MainApp\Global\TechInfo.h">
+      <Filter>Fichiers d%27en-tête\Qt\MainApp\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\Eu4\Data.h">
+      <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\GameData.h">
+      <Filter>Fichiers d%27en-tête\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\Eu4GeoPolData.h">
+      <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\CountryContainer.h">
+      <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\CultRelContainer.h">
+      <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\GeoPolUnit.h">
+      <Filter>Fichiers d%27en-tête\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\Eu4\Eu4GeoPolUnits.h">
+      <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FileDataManager\FileManager.h">
+      <Filter>Fichiers d%27en-tête\FileDataManager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\Eu4\TGContainer.h">
+      <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -261,6 +303,24 @@
     </QtMoc>
     <QtMoc Include="include\Qt\Startup\StartupGameBox.h">
       <Filter>Fichiers d%27en-tête\Qt\Startup</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\MainApp\Global\MainApp.h">
+      <Filter>Fichiers d%27en-tête\Qt\MainApp\Global</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\TopMenuBar.h">
+      <Filter>Fichiers d%27en-tête\Qt</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\ImageViewa.h">
+      <Filter>Fichiers d%27en-tête\Qt</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\MainApp\Global\BufferTab.h">
+      <Filter>Fichiers d%27en-tête\Qt\MainApp\Global</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\LocationBoxes\CoresBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\LocationBoxes\TradeBox.h">
+      <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

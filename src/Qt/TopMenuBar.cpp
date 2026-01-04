@@ -2,25 +2,19 @@
 
 void TopMenuBar::setupMenus()
 {
-    // Create menus
     QMenu* fileMenu = this->addMenu("File");
     QMenu* viewMenu = this->addMenu("View/MapMode");
 
-    // Add actions to File menu
     QAction* newAction = fileMenu->addAction("New");
     QAction* openAction = fileMenu->addAction("Open");
     QAction* exitAction = fileMenu->addAction("Exit");
 
-
-
-    // Add actions to View Menu
     QAction* allProvinces = viewMenu->addAction("Provinces");
     QAction* allCountries = viewMenu->addAction("Countries");
     QAction* provView = viewMenu->addAction("Search Country");
     viewMenu->addSeparator();
 
     QMenu* geoSMenu = viewMenu->addMenu("Geography");
-
 
     QAction* allAreas = geoSMenu->addAction("All Areas");
     QAction* allRegions = geoSMenu->addAction("All Regions");
@@ -42,8 +36,22 @@ void TopMenuBar::setupMenus()
     QAction* searchCultureGroup = viewMenu->addAction("Search Culture-Group");
     viewMenu->addSeparator();
 
+    connect(allProvinces, &QAction::triggered, this, [this] {
+        emit changeView(0);
+        });
+    connect(allAreas, &QAction::triggered, this, [this] {
+        emit changeView(1);
+        });
+    connect(allRegions, &QAction::triggered, this, [this] {
+        emit changeView(2);
+        });
+    connect(allSuperRegions, &QAction::triggered, this, [this] {
+        emit changeView(3);
+        });
+    connect(allContinents, &QAction::triggered, this, [this] {
+        emit changeView(4);
+        });
 
-    // Connect action signals
     QObject::connect(exitAction, &QAction::triggered, &mApp, &QApplication::quit);
 
 }

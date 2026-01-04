@@ -140,9 +140,13 @@ class FilePathHandlerFactory;
 class FilePathHandler {
 public:
     ~FilePathHandler() = default;
+
+    std::string mGame;
+
     void initAllPaths();
     std::function<void()> mDirectoryValidator;
     fs::path getExportPath(const fs::path& filePath);
+    std::string getExportFromFullPath(const std::string& filePath);
     const std::vector<fs::path> getPathsFromFolderKey(const char* key) {
         std::vector<fs::path> paths;
                 
@@ -153,7 +157,6 @@ public:
         return paths;
     };
 
-//change it back to private when testing done
     void addFilesFromFolder(const fs::path& folderPath, const char* folderKey);
     void addPath(const fs::path& path, const char* folderKey);
     void removePath(const fs::path& path);
@@ -165,8 +168,8 @@ private:
     FilePathHandler& operator=(FilePathHandler&&) = default;
     
     FilePathHandler(const std::string& root, const std::string& rootExport,
-        std::vector<const char*> relativePaths)
-        :mRoot(root), mRootExport(rootExport), mRelativePaths(relativePaths.begin(), relativePaths.end())
+        std::vector<const char*> relativePaths, const std::string& game)
+        :mRoot(root), mRootExport(rootExport), mRelativePaths(relativePaths.begin(), relativePaths.end()), mGame(game)
     {
         mAbsolutePaths.reserve(NB_FILES);
     };
@@ -191,7 +194,7 @@ class FilePathHandlerFactory {
 public:
     static FilePathHandler* createFPH(const std::string& game, const std::string& root, const std::string& rootExport);
 private:
-    static FilePathHandler* create_eu4(const std::string& root, const std::string& rootExport);
+    static FilePathHandler* create_eu4(const std::string& game, const std::string& root, const std::string& rootExport);
     static FilePathHandler* create_hoi4(const std::string& root, const std::string& rootExport);
     static FilePathHandler* create_ck3(const std::string& root, const std::string& rootExport);
 

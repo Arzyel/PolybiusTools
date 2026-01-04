@@ -20,7 +20,6 @@ void CultRelBox::loadWidget() {
 	QHBoxLayout* cultContainerLayout = new QHBoxLayout(cultContainer);
 	QLabel* cultLabel = new QLabel("Culture  : ",cultContainer);
 	cultCBox = new QComboBox(cultContainer);
-	cultCBox->addItems({ "french", "english","englisher","englisherer""englishman", "german"});
 	cultCBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	cultCBox->setMinimumWidth(0);
 	cultContainerLayout->addWidget(cultLabel);
@@ -31,7 +30,6 @@ void CultRelBox::loadWidget() {
 	QHBoxLayout* relContainerLayout = new QHBoxLayout(relContainer);
 	QLabel* relLabel = new QLabel("Religion : ", relContainer);
 	relCBox = new QComboBox(relContainer);
-	relCBox->addItems({ "christian", "islam", "dharmic"});
 	relCBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	relCBox->setMinimumWidth(cultCBox->width());
 	relContainerLayout->addWidget(relLabel);
@@ -43,28 +41,57 @@ void CultRelBox::loadWidget() {
 
 	mainLayout->addWidget(leftPart,19);
 	mainLayout->addWidget(rightPart,1);
+
 }
 
-void CultRelBox::initializeData(const std::unordered_map<std::string, sCulture>& cultureData, const std::unordered_map<std::string, sReligion>& religionData)
+void CultRelBox::makeConnections(std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable)
+{
+	connect(cultCBox, &QComboBox::activated,
+		this,
+		[this, callable](int index) {
+			QString text = cultCBox->itemText(index);
+			QByteArray data = text.toUtf8();
+			callable(&Eu4::Province::mCultureID, std::string(data.constData(), data.size()));
+		});
+	connect(relCBox, &QComboBox::activated,
+		this,
+		[this, callable](int index) {
+			QString text = relCBox->itemText(index);
+			QByteArray data = text.toUtf8();
+			callable(&Eu4::Province::mReligionID2, std::string(data.constData(), data.size()));
+		});
+}
+
+
+
+
+void CultRelBox::initializeData(const std::vector<std::string_view>& allCultures, const std::vector<std::string_view>& allReligions)
 {
 	cultCBox->clear();
 	relCBox->clear();
-	for (const auto& [key, data] : cultureData) {
-		cultCBox->addItem(QString::fromStdString(key));
+	cultCBox->addItem("");
+	relCBox->addItem("");
+	for (const auto& culture : allCultures) {
+		cultCBox->addItem(QString::fromUtf8(culture.data(), culture.size()));
 	}
-	for (const auto& [key, data] : religionData) {
-		relCBox->addItem(QString::fromStdString(key));
+	for (const auto& religion : allReligions) {
+		relCBox->addItem(QString::fromUtf8(religion.data(), religion.size()));
 	}
 }
 
-void CultRelBox::loadProvInfo(const Location& location) {
-	int index = cultCBox->findText(location.eu4CultureID.c_str());
-	if (index != 1) {
+void CultRelBox::loadProvInfo(Eu4::Province& province) {
+	if (province.mCultureID != UINT16_MAX) {
+		int index = cultCBox->findText(province.mFileData->mDataTokens[province.mCultureID].getCurrentName().c_str());
 		cultCBox->setCurrentIndex(index);
 	}
-
-	int indexRel = relCBox->findText(location.eu4ReligionID.c_str());
-	if (indexRel != 1) {
+	else {
+		cultCBox->setCurrentIndex(-1);
+	}
+	if (province.mReligionID2 != UINT16_MAX) {
+		int indexRel = relCBox->findText(province.mFileData->mDataTokens[province.mReligionID2].getCurrentName().c_str());
 		relCBox->setCurrentIndex(indexRel);
+	}
+	else {
+		relCBox->setCurrentIndex(-1);
 	}
 }

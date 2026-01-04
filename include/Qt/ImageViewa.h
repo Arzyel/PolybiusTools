@@ -13,19 +13,18 @@
 #include <cmath>
 #include <chrono>
 #include <omp.h>
-#include "GeoPolContainers.h"
+#include "Eu4GeoPolData.h"
 #include "InformationGUI.h"
 #include "FileOpener.h"
 
 struct PixelPos { uint16_t x, y; };
 
-
-
-
 class ImageView : public QGraphicsView {
+    Q_OBJECT
 public:
-    ImageView(const QString& imagePath, const GeoPolContainers& geoPolContainers, const InformationGUI& informationGUI,QWidget* parent = nullptr);
+    ImageView(const QString& imagePath, Eu4::GeoPolData& geoPolContainers, const InformationGUI& informationGUI,QWidget* parent = nullptr);
     ~ImageView();
+    
 
 protected:
     void wheelEvent(QWheelEvent* event) override;
@@ -34,16 +33,11 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     void drawForeground(QPainter* painter, const QRectF& rect) override;
-    void precomputeOverlays(const QVector<QRgb>& ruleRGBs, const QColor& overlayColor);
+    void precomputeOverlays();
     void setActiveOverlay(const int& index);
-    void createSelectionOverlay(QRgb rgb);
+    void createSelectionOverlay(QRgb rgb, bool add = false);
     QVector<PixelPos> getBorderPixels(const QVector<PixelPos>& pixels, int width, int height);
 private:
-    void precomputeColorMap();
-    void precomputeColorMapOMP();
-    void createOverlayForColor(QRgb rgb);
-
-
     QImage overlayImage;
     QHash<QRgb, QVector<PixelPos>> colorMap;
     QVector<QPoint> borderPixels;
@@ -59,8 +53,18 @@ private:
     int activeMapModeOverlay = -1;
     QVector<QImage> mapModeOverlays;
     QVector<QColor> mapModeColors;
-    const GeoPolContainers& mRefGeoPolCont;
+    Eu4::GeoPolData& mRefGeoPolCont;
     const InformationGUI& mRefInfoGUI;
+
+    void precomputeColorMap();
+    void precomputeColorMapOMP();
+    void createOverlayForColor(QRgb rgb);
+    QVector<QRgb> generateSparseColorsLand(int numColors);
+    QVector<QRgb> generateSparseColorsSea(int numColors);
+    void createAllOverlays();
+
+public slots:
+    void changeView(uint8_t type);
 };
 
 #endif

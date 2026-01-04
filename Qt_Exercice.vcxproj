@@ -128,11 +128,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup;include\Qt\MainApp\Global;include\Qt\MainApp\Eu4;include\Model\Eu4;include\FileDataManager</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus
  %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,10 +152,12 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;E:\Workstation\Qt\6.9.2\msvc2022_64\include;include\Qt;include\CONSTANTS;include\Model;include\Utils;include\Qt\LocationBoxes;include\Qt\Util;include\FileParsers;include\FileParsers\Eu4;include\Qt\Startup;include\Qt\MainApp\Global;include\Qt\MainApp\Eu4;include\Model\Eu4;include\FileDataManager</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus
  %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Full</Optimization>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -164,16 +168,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FlowLayout.cpp" />
-    <ClCompile Include="src\FileParsers\Eu4\Eu4CultureParser.cpp" />
-    <ClCompile Include="src\FileParsers\Eu4\Eu4MainParser.cpp" />
-    <ClCompile Include="src\FileParsers\Eu4\Eu4ReligionParser.cpp" />
-    <ClCompile Include="src\FileParsers\FileParser.cpp" />
+    <ClCompile Include="src\FileDataManager\FileManager.cpp" />
     <ClCompile Include="src\FileParsers\FilePathHandler.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Model\CountryContainer.cpp" />
     <ClCompile Include="src\Model\CultRelContainer.cpp" />
-    <ClCompile Include="src\Model\GeoPolContainers.cpp" />
-    <ClCompile Include="src\Model\Location.cpp" />
+    <ClCompile Include="src\Model\Eu4GeoPolData.cpp" />
+    <ClCompile Include="src\Model\Eu4\Data.cpp" />
+    <ClCompile Include="src\Model\Eu4\Eu4GeoPolUnits.cpp" />
+    <ClCompile Include="src\Model\Eu4\TGContainer.cpp" />
     <ClCompile Include="src\Qt\ImageViewa.cpp" />
     <ClCompile Include="src\Qt\InformationGUI.cpp" />
     <ClCompile Include="src\Qt\LocationBoxes\BuildingsBox.cpp" />
@@ -186,6 +189,11 @@
     <ClCompile Include="src\Qt\LocationBoxes\ProvOthersBox.cpp" />
     <ClCompile Include="src\Qt\LocationBoxes\TechInfoBox.cpp" />
     <ClCompile Include="src\Qt\LocationBoxes\TradeBox.cpp" />
+    <ClCompile Include="src\Qt\MainApp\Global\BufferTab.cpp" />
+    <ClCompile Include="src\Qt\MainApp\Global\MainApp.cpp" />
+    <ClCompile Include="src\Qt\MainApp\Global\SGPUnitInfoBoxes.cpp" />
+    <ClCompile Include="src\Qt\MainApp\Global\SGPUnitMainWidget.cpp" />
+    <ClCompile Include="src\Qt\MainApp\Global\TechInfo.cpp" />
     <ClCompile Include="src\Qt\Startup\StartupDialog.cpp" />
     <ClCompile Include="src\Qt\Startup\StartupGameBox.cpp" />
     <ClCompile Include="src\Qt\Startup\StartupLoadBox.cpp" />
@@ -197,21 +205,22 @@
     <ClInclude Include="FlowLayout.h" />
     <ClInclude Include="include\CONSTANTS\filenfolder_CONST.h" />
     <ClInclude Include="include\CONSTANTS\KEYS.h" />
-    <ClInclude Include="include\FileParsers\Eu4\Eu4CultureParser.h" />
-    <ClInclude Include="include\FileParsers\Eu4\Eu4MainParser.h" />
+    <ClInclude Include="include\FileDataManager\FileManager.h" />
     <ClInclude Include="include\FileParsers\Eu4\Eu4Parser.h" />
-    <ClInclude Include="include\FileParsers\Eu4\Eu4ReligionParser.h" />
-    <ClInclude Include="include\FileParsers\FileParser.h" />
     <ClInclude Include="include\FileParsers\FilePathHandler.h" />
     <ClInclude Include="include\Model\CountryContainer.h" />
     <ClInclude Include="include\Model\CultRelContainer.h" />
-    <ClInclude Include="include\Model\GeoPolContainers.h" />
-    <ClInclude Include="include\Model\Location.h" />
-    <ClInclude Include="include\Qt\ImageViewa.h" />
+    <ClInclude Include="include\Model\Eu4GeoPolData.h" />
+    <ClInclude Include="include\Model\Eu4\Data.h" />
+    <ClInclude Include="include\Model\Eu4\Eu4GeoPolUnits.h" />
+    <ClInclude Include="include\Model\Eu4\TGContainer.h" />
+    <ClInclude Include="include\Model\GameData.h" />
+    <ClInclude Include="include\Model\GeoPolUnit.h" />
+    <QtMoc Include="include\Qt\ImageViewa.h" />
     <QtMoc Include="include\Qt\InformationGUI.h" />
     <ClInclude Include="include\Qt\InstantMenuStyle.h" />
     <ClInclude Include="include\Qt\LocationBoxes\BuildingsBox.h" />
-    <ClInclude Include="include\Qt\LocationBoxes\CoresBox.h" />
+    <QtMoc Include="include\Qt\LocationBoxes\CoresBox.h" />
     <QtMoc Include="include\Qt\LocationBoxes\CultRelBox.h" />
     <QtMoc Include="include\Qt\LocationBoxes\DevBox.h" />
     <QtMoc Include="include\Qt\LocationBoxes\LocInfoBoxes.h" />
@@ -219,13 +228,18 @@
     <QtMoc Include="include\Qt\LocationBoxes\LocMainWidget.h" />
     <ClInclude Include="include\Qt\LocationBoxes\ProvOthersBox.h" />
     <ClInclude Include="include\Qt\LocationBoxes\TechInfoBox.h" />
-    <ClInclude Include="include\Qt\LocationBoxes\TradeBox.h" />
+    <QtMoc Include="include\Qt\LocationBoxes\TradeBox.h" />
     <QtMoc Include="include\Qt\Startup\StartupDialog.h" />
     <QtMoc Include="include\Qt\Startup\StartupGameBox.h" />
+    <QtMoc Include="include\Qt\MainApp\Global\MainApp.h" />
+    <QtMoc Include="include\Qt\MainApp\Global\BufferTab.h" />
+    <ClInclude Include="include\Qt\MainApp\Global\SGPUnitInfoBoxes.h" />
+    <ClInclude Include="include\Qt\MainApp\Global\SGPUnitMainWidget.h" />
+    <ClInclude Include="include\Qt\MainApp\Global\TechInfo.h" />
     <ClInclude Include="include\Qt\Startup\StartupLoadBox.h" />
     <ClInclude Include="include\Qt\Startup\StartupModBox.h" />
     <ClInclude Include="include\Qt\Startup\StartupOptionBox.h" />
-    <ClInclude Include="include\Qt\TopMenuBar.h" />
+    <QtMoc Include="include\Qt\TopMenuBar.h" />
     <ClInclude Include="include\Qt\Util\QtUtils.h" />
     <ClInclude Include="include\Utils\FileOpener.h" />
     <ClInclude Include="include\Utils\MemoryMappingFile.h" />

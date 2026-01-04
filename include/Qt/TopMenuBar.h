@@ -5,13 +5,18 @@
 #include <QtWidgets\qmenu.h>
 #include <QtWidgets\qmenubar.h>
 #include <QtWidgets\qapplication.h>
-
+#include <cstdint>
 
 class TopMenuBar : public QMenuBar {
+	Q_OBJECT
 public:
 	explicit TopMenuBar(const QApplication& app, QWidget* parent = nullptr)
 		: QMenuBar(parent), mApp(app) {};
 	void setupMenus();
+
+signals:
+    void changeView(uint8_t type);
+
 protected:
 
 private:

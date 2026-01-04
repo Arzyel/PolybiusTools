@@ -1,4 +1,5 @@
 #include "OwnershipBox.h"
+#include "CoresBox.h"
 
 OwnershipBox::OwnershipBox(const QString& title, QWidget* parent) 
 	:QGroupBox(title, parent)
@@ -15,28 +16,24 @@ void OwnershipBox::loadWidget() {
 	QWidget* rightPart = new QWidget(this);
 	QVBoxLayout* rightPartLayout = new QVBoxLayout(rightPart);
 
-
 	QWidget* ownerContainer = new QWidget(leftPart);
 	QHBoxLayout* ownerContainerLayout = new QHBoxLayout(ownerContainer);
 	QLabel* ownerLabel = new QLabel("Owner : ", ownerContainer);
 	ownerBox = new QComboBox(ownerContainer);
-	ownerBox->addItems({ "french", "english","englisher","englisherer""englishman", "german" });
 	ownerBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	ownerBox->setMinimumWidth(0);
 	ownerContainerLayout->addWidget(ownerLabel);
 	ownerContainerLayout->addWidget(ownerBox);
 
-
 	QWidget* controllerContainer = new QWidget(leftPart);
 	QHBoxLayout* controllerContainerLayout = new QHBoxLayout(controllerContainer);
 	QLabel* controllerLabel = new QLabel("Controller : ", controllerContainer);
 	controllerBox = new QComboBox(controllerContainer);
-	controllerBox->addItems({ "christian", "islam", "dharmic" });
 	controllerBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	controllerBox->setMinimumWidth(controllerBox->width());
 	controllerContainerLayout->addWidget(controllerLabel);
 	controllerContainerLayout->addWidget(controllerBox);
-
+	controllerBox->setCurrentIndex(0);
 
 	leftPartLayout->addWidget(ownerContainer);
 	leftPartLayout->addWidget(controllerContainer);
@@ -48,8 +45,9 @@ void OwnershipBox::loadWidget() {
 void OwnershipBox::initializeData(const std::unordered_map<std::string, std::string>& data) {
 	ownerBox->clear();
 	controllerBox->clear();
+	ownerBox->addItem("");
+	controllerBox->addItem("");
 	for (const auto& [key, data] : data) {
-
 		std::string tag_name = key + " ; " + data;
 		ownerBox->addItem(QString::fromStdString(tag_name));
 		controllerBox->addItem(QString::fromStdString(tag_name));
@@ -57,14 +55,34 @@ void OwnershipBox::initializeData(const std::unordered_map<std::string, std::str
 
 }
 
-void OwnershipBox::loadProvInfo(const Location& location) {
-	int index = ownerBox->findText(location.eu4OwnerID.c_str(), Qt::MatchStartsWith);
-	if (index != 1) {
-		ownerBox->setCurrentIndex(index);
+void OwnershipBox::loadProvInfo(Eu4::Province& province) {
+	int index = -1;
+	if (province.mOwnerID != UINT16_MAX) {
+		index = ownerBox->findText(province.mFileData->mDataTokens[province.mOwnerID].getCurrentName().c_str(), Qt::MatchStartsWith);
 	}
+	ownerBox->setCurrentIndex(index);
 
-	int index2 = controllerBox->findText(location.eu4ControllerID.c_str(), Qt::MatchStartsWith);
-	if (index2 != 1) {
-		controllerBox->setCurrentIndex(index2);
+	int index2 = -1;
+	if (province.mControllerID != UINT16_MAX) {
+		index2 = ownerBox->findText(province.mFileData->mDataTokens[province.mControllerID].getCurrentName().c_str(), Qt::MatchStartsWith);
 	}
+	controllerBox->setCurrentIndex(index2);
+}
+
+void OwnershipBox::makeConnections(std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable)
+{
+	connect(ownerBox, &QComboBox::activated,
+		this,
+		[this, callable](int index) {
+			QString text = ownerBox->itemText(index);
+			QByteArray data = text.toUtf8();
+			callable(&Eu4::Province::mOwnerID, std::string(data.constData(), 3));
+		});
+	connect(controllerBox, &QComboBox::activated,
+		this,
+		[this, callable](int index) {
+			QString text = controllerBox->itemText(index);
+			QByteArray data = text.toUtf8();
+			callable(&Eu4::Province::mControllerID, std::string(data.constData(), 3));
+		});
 }

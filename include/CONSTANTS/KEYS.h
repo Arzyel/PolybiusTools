@@ -44,8 +44,11 @@ constexpr const char* NAME_CHAR = "name";
 constexpr const char* DURATION_CHAR = "duration";
 constexpr const char* ADD_PROVINCE_TRIGGERED_MODIFIER_CHAR = "add_province_triggered_modifier";
 constexpr const char* EXTRA_COST_CHAR = "extra_cost";
+constexpr const char* TRIBAL_OWNER_CHAR = "tribal_owner";
+constexpr const char* NATIVE_SIZE_CHAR = "native_size";
+constexpr const char* NATIVE_FEROCITY_CHAR = "native_ferocity";
+constexpr const char* NATIVE_HOSTILENESS_CHAR = "native_hostileness";
 
-//inside chat there is a convo with effects mapped to the nation effects , stopped at province effect in the modpage
 constexpr uint32_t OWNER_HASH = hash_const(OWNER_CHAR);
 constexpr uint32_t CONTROLLER_HASH = hash_const(CONTROLLER_CHAR);
 constexpr uint32_t ADD_CORE_HASH = hash_const(ADD_CORE_CHAR);
@@ -67,17 +70,8 @@ constexpr uint32_t FORT_15TH_HASH = hash_const(FORT_15TH_CHAR);
 constexpr uint32_t ADD_PROVINCE_TRIGGERED_MODIFIER_HASH = hash_const(ADD_PROVINCE_TRIGGERED_MODIFIER_CHAR);
 constexpr uint32_t EXTRA_COST_HASH = hash_const(EXTRA_COST_CHAR);
 
-// makes compilation crash
-//std::unordered_map<uint32_t, const char*> locationKeys = {
-//	{OWNER_HASH,OWNER_CHAR},
-//	{CONTROLLER_HASH,CONTROLLER_CHAR}
-//};
-
-
-
-
 constexpr std::array<const char*, 4> GAMES = {
-	"Europa Univeralis IV",
+	"Europa Universalis IV",
 	"Europa Universalis V",
 	"Hearts of Iron IV",
 	"Crusader Kings III"

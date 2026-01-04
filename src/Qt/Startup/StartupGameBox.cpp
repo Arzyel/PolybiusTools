@@ -76,7 +76,7 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
     getStartupPaths();
     connect(mGameType, QOverload<int>::of(&QComboBox::activated),
         this, &StartupGameBox::onGameTypeActivated);
-
+    emit mGameType->activated(0);
 
     connect(browseBtn, &QPushButton::clicked, this, [this]() {
         QString folder = QFileDialog::getExistingDirectory(this, "Select Folder");
@@ -98,6 +98,8 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
         gameFolders.nameIndex = mGameType->currentIndex();
         gameFolders.gameFolder = mGameFolderEdit->text().toStdString();
         gameFolders.exportFolder = mExportFolderEdit->text().toStdString();
+        delete filePathHandler;
+        filePathHandler = nullptr;
 
         try {
             mStatusErrors->setText("");
@@ -229,11 +231,4 @@ void StartupGameBox::onGameTypeActivated(int index)
 }
 
 
-GameFolders StartupGameBox::getGameFoldersData()
-{
-    GameFolders gameFolders;
 
-
-
-    return gameFolders;
-}
