@@ -19,10 +19,10 @@ namespace Eu4 {
 	public:
 		DM::FileData<Eu4::Province>* mFileData = nullptr;
 		uint16_t mOwnerID = UINT16_MAX;
-		uint16_t mControllerID2 = UINT16_MAX;
-		std::vector<uint16_t> mCoresID2;
-		uint16_t mCapital2 = UINT16_MAX;
-		uint16_t mCultureID2 = UINT16_MAX;
+		uint16_t mControllerID = UINT16_MAX;
+		std::vector<uint16_t> mCoresID;
+		uint16_t mCapital = UINT16_MAX;
+		uint16_t mCultureID = UINT16_MAX;
 		uint16_t mReligionID2 = UINT16_MAX;
 		uint16_t mCenterofTrade = UINT16_MAX;
 		uint16_t mExtraCost = UINT16_MAX;
@@ -42,7 +42,6 @@ namespace Eu4 {
 		std::vector<uint16_t> mDiscoveredBy;
 		std::vector<uint16_t> mLatentTradeGood;
 
-
 		uint16_t mAreaID;
 		uint16_t mRegionID;
 		uint8_t mSuperRegionID;
@@ -54,7 +53,6 @@ namespace Eu4 {
 		Province(const Province&) = default;
 		Province& operator=(const Province&) = default;
 		~Province();
-
 
 		void initFromFile(const std::string& filePath) override;
 		void initFromFile(const std::string& eu4UID, const uint32_t& rgbValue,
@@ -131,9 +129,9 @@ namespace Eu4 {
 	MemberPtrHash,
 	MemberPtrEq> FieldMap_U16 = {
 		{ &Eu4::Province::mOwnerID,        OWNER_CHAR },
-		{ &Eu4::Province::mControllerID2,   CONTROLLER_CHAR },
-		{ &Eu4::Province::mCapital2,        CAPITAL_CHAR },
-		{ &Eu4::Province::mCultureID2,      CULTURE_CHAR },
+		{ &Eu4::Province::mControllerID,   CONTROLLER_CHAR },
+		{ &Eu4::Province::mCapital,        CAPITAL_CHAR },
+		{ &Eu4::Province::mCultureID,      CULTURE_CHAR },
 		{ &Eu4::Province::mReligionID2,     RELIGION_CHAR },
 		{ &Eu4::Province::mCenterofTrade,   CENTER_OF_TRADE_CHAR },
 		{ &Eu4::Province::mExtraCost,       EXTRA_COST_CHAR },
@@ -148,7 +146,7 @@ namespace Eu4 {
 		{ &Eu4::Province::mBaseTax,         BASE_TAX_CHAR},
 		{ &Eu4::Province::mBaseProduction,  BASE_PRODUCTION_CHAR },
 		{ &Eu4::Province::mBaseManpower,    BASE_MANPOWER_CHAR },
-		{ reinterpret_cast<uint16_t Eu4::Province::*>(&Eu4::Province::mCoresID2),    ADD_CORE_CHAR }
+		{ reinterpret_cast<uint16_t Eu4::Province::*>(&Eu4::Province::mCoresID),    ADD_CORE_CHAR }
 		
 	};
 
@@ -157,10 +155,10 @@ namespace Eu4 {
 inline void Eu4::Province::resetData()
 {
 	mOwnerID = UINT16_MAX;
-	mControllerID2 = UINT16_MAX;
-	mCoresID2.clear();
-	mCapital2 = UINT16_MAX;
-	mCultureID2 = UINT16_MAX;
+	mControllerID = UINT16_MAX;
+	mCoresID.clear();
+	mCapital = UINT16_MAX;
+	mCultureID = UINT16_MAX;
 	mReligionID2 = UINT16_MAX;
 	mCenterofTrade = UINT16_MAX;
 	mExtraCost = UINT16_MAX;
@@ -181,23 +179,23 @@ inline void Eu4::Province::resetData()
 }
 inline void Eu4::Province::updateField(uint16_t Eu4::Province::* memberPtr, const std::string& newData)
 {
-	if (memberPtr == reinterpret_cast<uint16_t Eu4::Province::*>(&Eu4::Province::mCoresID2)) {
+	if (memberPtr == reinterpret_cast<uint16_t Eu4::Province::*>(&Eu4::Province::mCoresID)) {
 		std::vector<std::string> allTags;
-		for (auto coreID : mCoresID2) {
+		for (auto coreID : mCoresID) {
 			allTags.emplace_back(mFileData->mDataTokens[coreID].getCurrentName());
 		}
 		int index = 0;
 		bool matchFound = false;
 		for (const auto& tag : allTags) {
 			if (newData == tag) {
-				mFileData->scheduleDelete(mCoresID2[index]);
+				mFileData->scheduleDelete(mCoresID[index]);
 				matchFound = true;
 				break;
 			}
 			++index;
 		}
 		if (!matchFound) {
-			mCoresID2.emplace_back(this->mFileData->createNewDataToken(newData, Eu4::FieldMap_U16.at(memberPtr)));
+			mCoresID.emplace_back(this->mFileData->createNewDataToken(newData, Eu4::FieldMap_U16.at(memberPtr)));
 		}
 
 	}

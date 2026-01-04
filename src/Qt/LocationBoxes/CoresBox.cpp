@@ -52,7 +52,7 @@ void CoresBox::initializeData(const std::unordered_map<std::string, std::string>
 void CoresBox::loadProvInfo(Eu4::Province& province) {
 	table->setUpdatesEnabled(false);
 	table->setRowCount(0);
-	for (const auto& coreID : province.mCoresID2) {
+	for (const auto& coreID : province.mCoresID) {
 		//hack to not create the row when empty probably should raise an exception when it receives a wrong tag
 		const QString tag = QString::fromStdString(province.mFileData->mDataTokens[coreID].getCurrentName());
 
@@ -78,7 +78,7 @@ void CoresBox::addRow(const QString& tag)
 		if (row < 0) return;
 		QTableWidgetItem* item = table->item(row, 1);
 		if (item) {
-			callable(reinterpret_cast<uint16_t Eu4::Province::*>(&Eu4::Province::mCoresID2), item->text().toStdString());
+			callable(reinterpret_cast<uint16_t Eu4::Province::*>(&Eu4::Province::mCoresID), item->text().toStdString());
 			table->removeRow(row);
 		}
 		});
@@ -93,7 +93,7 @@ void CoresBox::makeConnections(std::function<void(uint16_t Eu4::Province::*, con
 			QString text = box->itemText(box->currentIndex()).left(3);
 			QByteArray data = text.toUtf8();
 			addRow(text);
-			callable(reinterpret_cast<uint16_t Eu4::Province::*>(&Eu4::Province::mCoresID2) , std::string(data.constData(), 3));
+			callable(reinterpret_cast<uint16_t Eu4::Province::*>(&Eu4::Province::mCoresID) , std::string(data.constData(), 3));
 		}
 
 		});

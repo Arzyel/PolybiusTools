@@ -63,8 +63,8 @@ void OwnershipBox::loadProvInfo(Eu4::Province& province) {
 	ownerBox->setCurrentIndex(index);
 
 	int index2 = -1;
-	if (province.mControllerID2 != UINT16_MAX) {
-		index2 = ownerBox->findText(province.mFileData->mDataTokens[province.mControllerID2].getCurrentName().c_str(), Qt::MatchStartsWith);
+	if (province.mControllerID != UINT16_MAX) {
+		index2 = ownerBox->findText(province.mFileData->mDataTokens[province.mControllerID].getCurrentName().c_str(), Qt::MatchStartsWith);
 	}
 	controllerBox->setCurrentIndex(index2);
 }
@@ -83,6 +83,6 @@ void OwnershipBox::makeConnections(std::function<void(uint16_t Eu4::Province::*,
 		[this, callable](int index) {
 			QString text = controllerBox->itemText(index);
 			QByteArray data = text.toUtf8();
-			callable(&Eu4::Province::mControllerID2, std::string(data.constData(), 3));
+			callable(&Eu4::Province::mControllerID, std::string(data.constData(), 3));
 		});
 }

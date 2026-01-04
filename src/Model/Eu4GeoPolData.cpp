@@ -311,7 +311,7 @@ void Eu4::GeoPolData::initHelperProvince(DM::FileData<Eu4::Province>& fileData, 
 				//add_core
 				if (*(ptr + 7) == 'e') {
 					ptr += 8;
-					value = &(prov.mCoresID2.emplace_back(0));
+					value = &(prov.mCoresID.emplace_back(0));
 				}
 				//add_local_autonomy
 				else if (*(ptr + 17) == 'y') {
@@ -348,18 +348,18 @@ void Eu4::GeoPolData::initHelperProvince(DM::FileData<Eu4::Province>& fileData, 
 				/* controller */
 				if (*(ptr + 9) == 'r') {
 					ptr += 10;
-					value = &(prov.mControllerID2);
+					value = &(prov.mControllerID);
 				}
 				/* capital */
 				else if (*(ptr + 6) == 'l') {
 					ptr += 7;
-					Eu4::GeoPolData::parserCaptureCapital(ptr, dataTokens, prov.mCapital2);
+					Eu4::GeoPolData::parserCaptureCapital(ptr, dataTokens, prov.mCapital);
 					goto skip_to;
 				}
 				/* culture */
 				else if (*(ptr + 6) == 'e') {
 					ptr += 7;
-					value = &(prov.mCultureID2);
+					value = &(prov.mCultureID);
 				}
 				/* center_of_trade */
 				else if (*(ptr + 14) == 'e') {

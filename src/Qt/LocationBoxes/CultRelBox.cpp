@@ -51,7 +51,7 @@ void CultRelBox::makeConnections(std::function<void(uint16_t Eu4::Province::*, c
 		[this, callable](int index) {
 			QString text = cultCBox->itemText(index);
 			QByteArray data = text.toUtf8();
-			callable(&Eu4::Province::mCultureID2, std::string(data.constData(), data.size()));
+			callable(&Eu4::Province::mCultureID, std::string(data.constData(), data.size()));
 		});
 	connect(relCBox, &QComboBox::activated,
 		this,
@@ -80,8 +80,8 @@ void CultRelBox::initializeData(const std::vector<std::string_view>& allCultures
 }
 
 void CultRelBox::loadProvInfo(Eu4::Province& province) {
-	if (province.mCultureID2 != UINT16_MAX) {
-		int index = cultCBox->findText(province.mFileData->mDataTokens[province.mCultureID2].getCurrentName().c_str());
+	if (province.mCultureID != UINT16_MAX) {
+		int index = cultCBox->findText(province.mFileData->mDataTokens[province.mCultureID].getCurrentName().c_str());
 		cultCBox->setCurrentIndex(index);
 	}
 	else {
