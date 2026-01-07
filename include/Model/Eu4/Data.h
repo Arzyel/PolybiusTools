@@ -12,6 +12,7 @@
 namespace Eu4 {
     class Data final : public GameData {
     public:
+        Data() = delete;
         Data(FilePathHandler*& filePathHandler);
         ~Data() = default;
         CountryContainer mCountryData;

@@ -23,8 +23,8 @@ void CultRelContainer::initData(FilePathHandler*& filePathHandler)
 const std::vector<std::string_view> CultRelContainer::getAllCultures() const
 {
     std::vector<std::string_view> cultures;
-    cultures.reserve(mCulturestest.size());
-    for (const auto& culture : mCulturestest) {
+    cultures.reserve(mCultures.size());
+    for (const auto& culture : mCultures) {
         auto& token = mCultureData->mDataTokens[culture.mNameID];
         cultures.emplace_back(token.mPtrStart, token.mLength);
     }
@@ -34,8 +34,8 @@ const std::vector<std::string_view> CultRelContainer::getAllCultures() const
 const std::vector<std::string_view> CultRelContainer::getAllReligions() const
 {
     std::vector<std::string_view> religions;
-    religions.reserve(mCulturestest.size());
-    for (const auto& religion : mReligionstest) {
+    religions.reserve(mCultures.size());
+    for (const auto& religion : mReligions) {
         auto& token = mReligionData->mDataTokens[religion.mNameID];
         religions.emplace_back(token.mPtrStart, token.mLength);
     }
@@ -109,13 +109,13 @@ void CultRelContainer::initHelperCulture(DM::FileData<CultRelContainer>& fileDat
                 else {
                     keyStart = ptr;
                     ptr += strcspn(ptr, "\n \t#=");
-                    cultRelContainer.mCulturestest.emplace_back(Eu4::Culture());
-                    Eu4::Culture& cult = cultRelContainer.mCulturestest.back();
+                    cultRelContainer.mCultures.emplace_back(Eu4::Culture());
+                    Eu4::Culture& cult = cultRelContainer.mCultures.back();
                     fileData.mDataTokens.emplace_back(DM::DataToken());
                     fileData.mDataTokens.back().mPtrStart = keyStart;
                     fileData.mDataTokens.back().mLength = ptr - keyStart;
                     cult.mNameID = fileData.mDataTokens.size() - 1;
-                    cult.mGroupID = cultRelContainer.mCultureGroupstest.back().mNameID;
+                    cult.mGroupID = cultRelContainer.mCultureGroups.back().mNameID;
                     keyStart = nullptr;
                     ptr += strcspn(ptr, "{");
                     CultRelContainer::parserSkipBracket(ptr, end);
@@ -135,8 +135,8 @@ void CultRelContainer::initHelperCulture(DM::FileData<CultRelContainer>& fileDat
             while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '=') {
                 ++ptr;
             }
-            cultRelContainer.mCultureGroupstest.emplace_back(Eu4::CultureGroup());
-            Eu4::CultureGroup& cultGroup = cultRelContainer.mCultureGroupstest.back();
+            cultRelContainer.mCultureGroups.emplace_back(Eu4::CultureGroup());
+            Eu4::CultureGroup& cultGroup = cultRelContainer.mCultureGroups.back();
             fileData.mDataTokens.emplace_back(DM::DataToken());
             fileData.mDataTokens.back().mPtrStart = keyStart;
             fileData.mDataTokens.back().mLength = ptr - keyStart;
@@ -170,8 +170,8 @@ void CultRelContainer::initDataReligion(FilePathHandler*& filePathHandler)
     auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(time_end - start);
     std::cout << "Elapsed Time : " << elapsed.count() << "ms" << std::endl;
 
-    //for (int i = 0; i < mReligionstest.size(); ++i) {
-    //    std::cout << mReligionData->mDataTokens[mReligionstest[i].mGroupID].getOriginName() << "\t\t:\t\t" << mReligionData->mDataTokens[mReligionstest[i].mNameID].getOriginName() << '\n';
+    //for (int i = 0; i < mReligions.size(); ++i) {
+    //    std::cout << mReligionData->mDataTokens[mReligions[i].mGroupID].getOriginName() << "\t\t:\t\t" << mReligionData->mDataTokens[mReligions[i].mNameID].getOriginName() << '\n';
     //}
     //std::cout << std::endl;
 }
@@ -287,13 +287,13 @@ void CultRelContainer::initHelperReligion(DM::FileData<CultRelContainer>& fileDa
                 if (!matched) {
                     keyStart = ptr;
                     ptr += strcspn(ptr, "\n \t#=");
-                    cultRelContainer.mReligionstest.emplace_back(Eu4::Religion());
-                    Eu4::Religion& rel = cultRelContainer.mReligionstest.back();
+                    cultRelContainer.mReligions.emplace_back(Eu4::Religion());
+                    Eu4::Religion& rel = cultRelContainer.mReligions.back();
                     fileData.mDataTokens.emplace_back(DM::DataToken());
                     fileData.mDataTokens.back().mPtrStart = keyStart;
                     fileData.mDataTokens.back().mLength = ptr - keyStart;
                     rel.mNameID = fileData.mDataTokens.size() - 1;
-                    rel.mGroupID = cultRelContainer.mReligionGroupstest.back().mNameID;
+                    rel.mGroupID = cultRelContainer.mReligionGroups.back().mNameID;
                     keyStart = nullptr;
                     ptr += strcspn(ptr, "{");
                     CultRelContainer::parserSkipBracket(ptr, end);
@@ -315,8 +315,8 @@ void CultRelContainer::initHelperReligion(DM::FileData<CultRelContainer>& fileDa
             while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '=') {
                 ++ptr;
             }
-            cultRelContainer.mReligionGroupstest.emplace_back(Eu4::ReligionGroup());
-            Eu4::ReligionGroup& relGroup = cultRelContainer.mReligionGroupstest.back();
+            cultRelContainer.mReligionGroups.emplace_back(Eu4::ReligionGroup());
+            Eu4::ReligionGroup& relGroup = cultRelContainer.mReligionGroups.back();
             fileData.mDataTokens.emplace_back(DM::DataToken());
             fileData.mDataTokens.back().mPtrStart = keyStart;
             fileData.mDataTokens.back().mLength = ptr - keyStart;

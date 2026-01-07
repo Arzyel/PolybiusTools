@@ -1,6 +1,6 @@
 ﻿#pragma once
-#ifndef TRADE_GOOD_H
-#define TRADE_GOOD_H
+#ifndef TG_CONTAINER_H
+#define TG_CONTAINER_H
 #include <unordered_map>
 #include <vector>
 #include <string>
@@ -12,9 +12,7 @@
 #include "filenfolder_CONST.h"
 #include "FilePathHandler.h"
 
-namespace fs = std::filesystem;
 namespace Eu4 {
-
     class TradeGood {
     public:
         TradeGood() = default;
@@ -64,4 +62,4 @@ namespace Eu4 {
 
 }
 
-#endif // TRADE_GOOD_H
+#endif // TG_CONTAINER_H

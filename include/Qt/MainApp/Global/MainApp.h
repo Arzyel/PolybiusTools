@@ -19,6 +19,7 @@
 class MainApp : public QMainWindow{
     Q_OBJECT
 public:
+    MainApp() = delete;
     MainApp(const QApplication& app, FilePathHandler*& filePathHandler,QWidget* parent = nullptr);
     ~MainApp();
 

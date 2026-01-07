@@ -209,7 +209,6 @@ inline void Eu4::Province::updateField(uint16_t Eu4::Province::* memberPtr, cons
 			this->mFileData->updateDataToken(this->*memberPtr, newData, Eu4::FieldMap_U16.at(memberPtr));
 			return;
 		}
-		// TODO modify method to take the string of the key too
 		(this->*memberPtr) = this->mFileData->createNewDataToken(newData, Eu4::FieldMap_U16.at(memberPtr));
 	}
 }
