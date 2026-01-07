@@ -101,7 +101,7 @@ For Eu4, each container stored in the GameData child class has these responsabil
         }
         ```
 
-        - Notice what we pass for the first parameter. Since the associated value for the trade data inside a province is at a specific variable we then use a member pointer to the corresponding variable that way any box kind of subscribes to only one update method centralizing the flow.
+        - Notice what we pass for the first parameter. Since the associated value for the trade data inside a province is at a specific variable we then use a member pointer to the corresponding variable that way any box kind of subscribes to only one update method centralizing the flow. For the second parameter pass a string of the new data.
 
     - ``void loadProvInfo(Eu4::Province& province);`` :
         - For this method simply use the reference to populate the widget with new data.
