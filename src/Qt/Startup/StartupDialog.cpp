@@ -27,6 +27,7 @@ void StartupDialog::setupUI(FilePathHandler*& filePathHandler) {
 
 	tabWidget->setTabEnabled(1, false);
 	tabWidget->setTabEnabled(2, false);
+	tabWidget->setTabEnabled(3, false);
 
 	mainLayout->addWidget(tabWidget);
 

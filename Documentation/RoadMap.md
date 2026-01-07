@@ -8,7 +8,7 @@
 - [x] Add Cores widget
 - [x] Add Trade Good widget : Currently only works with non latent trade goods
 - [x] General Bug fixing pass and cleanup
-- [] Basic Documentation
+- [x] Basic Documentation
 
 ## 0.2
 - [] Country Widget in widget tab : retrieve Data(Update parsing logic and storage) and display it. 
