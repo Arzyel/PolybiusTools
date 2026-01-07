@@ -30,6 +30,11 @@ See the [Building](#building) section below to compile from source.
 
 ---
 
+## Screenshots
+
+![main_view](Documentation/img/main_view.png)
+![Active change](Documentation/img/buffered_changes.png)
+
 ## Documentation
 
 - [User Manual](Documentation/UserManual.md) : manual explaining how to use the application.
