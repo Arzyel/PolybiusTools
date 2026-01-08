@@ -275,6 +275,9 @@
     <ClInclude Include="include\Model\Eu4\TGContainer.h">
       <Filter>Fichiers d%27en-tête\Model\Eu4</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -322,5 +325,21 @@
     <QtMoc Include="include\Qt\LocationBoxes\TradeBox.h">
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
     </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PolybiusTools.rc">
+      <Filter>Fichiers de ressources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="C:\Users\Emeri\OneDrive\Images\PolybiusToolsLogo.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="GFX\icon\PolybiusToolsLogo.ico">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="app.manifest" />
   </ItemGroup>
 </Project>

@@ -216,6 +216,7 @@
     <ClInclude Include="include\Model\Eu4\TGContainer.h" />
     <ClInclude Include="include\Model\GameData.h" />
     <ClInclude Include="include\Model\GeoPolUnit.h" />
+    <ClInclude Include="resource.h" />
     <QtMoc Include="include\Qt\ImageViewa.h" />
     <QtMoc Include="include\Qt\InformationGUI.h" />
     <ClInclude Include="include\Qt\InstantMenuStyle.h" />
@@ -247,6 +248,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PolybiusTools.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="C:\Users\Emeri\OneDrive\Images\PolybiusToolsLogo.png" />
+    <Image Include="GFX\icon\PolybiusToolsLogo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="app.manifest">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Manifest>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />
