@@ -18,7 +18,7 @@ An open-source modding tool for Paradox games with a primary focus on Europa Uni
 
 ### For Users
 
-1. Download the latest release ZIP from the [Releases](link-to-releases) page
+1. Download the latest release ZIP from the [Releases](https://github.com/Arzyel/PolybiusTools/releases) page
 2. Extract the Zip to your desired location.
 3. Run ``PolybiusTools.exe`
 
