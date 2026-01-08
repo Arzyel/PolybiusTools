@@ -37,8 +37,8 @@ See the [Building](#building) section below to compile from source.
 
 ## Documentation
 
-- [User Manual](Documentation/UserManual.md) : manual explaining how to use the application.
-- [User Programmer Manual](Documentation/ProgrammerUserManual.md) : manual explaining architecture and some basic implementation. Target audience is for developpers.
+- [User Manual](Documentation/UserManual.md) : File explaining how to use the application.
+- [Developper Manual](Documentation/ProgrammerUserManual.md) : File explaining architecture and some basic implementation. Target audience is for developpers.
 - [Current Known Bugs](Documentation/Bugs.md) : Known Bugs.
 - [Roadmap](Documentation/RoadMap.md) : Current RoadMap of feature and tasks planned.
 
