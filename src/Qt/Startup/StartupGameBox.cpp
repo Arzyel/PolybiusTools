@@ -11,65 +11,109 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     this->setLayout(mainLayout);
 
-    QHBoxLayout* gameTypeLayout = new QHBoxLayout;
-    QLabel* gameName = new QLabel("Game : ", this);
-    gameName->setMinimumWidth(100);
+    // ---- Form layout for labeled inputs ----
+    QFormLayout* form = new QFormLayout;
+    form->setLabelAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    form->setFormAlignment(Qt::AlignLeft | Qt::AlignTop);
+    form->setHorizontalSpacing(8);
+    form->setVerticalSpacing(6);
+
+    // Helper to wrap row layouts (Qt Designer parity)
+    auto makeRowWidget = [&](QHBoxLayout* rowLayout) {
+        QWidget* w = new QWidget(this);
+        rowLayout->setContentsMargins(0, 0, 0, 0);
+        rowLayout->setSpacing(6);
+        w->setLayout(rowLayout);
+        return w;
+        };
+
+    // ---- Game selection ----
     mGameType = new QComboBox(this);
-    mGameType->setMinimumWidth(0);
     mGameType->setMaximumWidth(200);
-    for (auto& game : GAMES) {
+
+    for (const auto& game : GAMES)
         mGameType->addItem(game);
-    }
-    
+
+    QLabel* gameName = new QLabel("Game :", this);
     gameName->setBuddy(mGameType);
-    gameTypeLayout->addWidget(gameName);
-    gameTypeLayout->addWidget(mGameType);
-    gameTypeLayout->setAlignment(Qt::AlignLeft);
 
+    form->addRow(gameName, mGameType);
 
-    QHBoxLayout* browseLayout = new QHBoxLayout;
-    QLabel* gameFolderLabel = new QLabel("Game Folder : ");
-    gameFolderLabel->setMinimumWidth(100);
-    mGameFolderEdit = new QLineEdit;
-    QPushButton* browseBtn = new QPushButton("Browse...");
+    // ---- Game folder ----
+    mGameFolderEdit = new QLineEdit(this);
+    QPushButton* browseBtn = new QPushButton("Browse...", this);
 
-    browseLayout->addWidget(gameFolderLabel);
-    browseLayout->addWidget(mGameFolderEdit);
-    browseLayout->addWidget(browseBtn);
+    QHBoxLayout* gameFolderRowLayout = new QHBoxLayout;
+    gameFolderRowLayout->addWidget(mGameFolderEdit);
+    gameFolderRowLayout->addWidget(browseBtn);
 
+    form->addRow("Game Folder :", makeRowWidget(gameFolderRowLayout));
 
-    QHBoxLayout* expBrowseLayout = new QHBoxLayout;
-    QLabel* exportFolderLabel = new QLabel("Export Folder : ");
-    exportFolderLabel->setMinimumWidth(100);
-    mExportFolderEdit = new QLineEdit;
-    QPushButton* expBrowseBtn = new QPushButton("Browse...");
+    // ---- Export folder ----
+    mExportFolderEdit = new QLineEdit(this);
+    QPushButton* expBrowseBtn = new QPushButton("Browse...", this);
 
-    expBrowseLayout->addWidget(exportFolderLabel);
-    expBrowseLayout->addWidget(mExportFolderEdit);
-    expBrowseLayout->addWidget(expBrowseBtn);
+    QHBoxLayout* exportFolderRowLayout = new QHBoxLayout;
+    exportFolderRowLayout->addWidget(mExportFolderEdit);
+    exportFolderRowLayout->addWidget(expBrowseBtn);
 
+    form->addRow("Export Folder :", makeRowWidget(exportFolderRowLayout));
 
+    // ---- Enable mod loading ----
+    QCheckBox* enableModFolderCheck = new QCheckBox(this);
+    form->addRow("Enable Loading Mods :", enableModFolderCheck);
 
+    // ---- Mod folder ----
+    mModFolderEdit = new QLineEdit(this);
+    QPushButton* modBrowseBtn = new QPushButton("Browse...", this);
+
+    QHBoxLayout* modFolderRowLayout = new QHBoxLayout;
+    modFolderRowLayout->addWidget(mModFolderEdit);
+    modFolderRowLayout->addWidget(modBrowseBtn);
+
+    QWidget* modFolderRowWidget = makeRowWidget(modFolderRowLayout);
+    form->addRow(".mod Folder :", modFolderRowWidget);
+
+    // Enable / disable only this row
+    connect(enableModFolderCheck, &QCheckBox::toggled,
+        modFolderRowWidget, &QWidget::setEnabled);
+
+    // ---- Mod folder description ----
+    QLabel* modFolderLabel = new QLabel(
+        "Note: the .mod folder is usually located at\n"
+        "C:\\Users\\user\\Documents\\Paradox Interactive\\Europa Universalis IV\\mod",
+        this
+    );
+    modFolderLabel->setWordWrap(true);
+
+    // Field-column only (no extra spacing)
+    form->addRow(QString(), modFolderLabel);
+
+    // ---- Add form to main layout ----
+    mainLayout->addLayout(form);
+
+    // ---- Bottom action / status row ----
     QHBoxLayout* testLayout = new QHBoxLayout;
-    QPushButton* checkBtn = new QPushButton("Check Paths");
-    checkBtn->setMinimumWidth(100);
-    checkBtn->setMaximumWidth(100);
+    testLayout->setSpacing(8);
+    testLayout->setContentsMargins(0, 0, 0, 0);
+
+    QPushButton* checkBtn = new QPushButton("Check Paths", this);
+    checkBtn->setFixedWidth(100);
+
+    mStatusIndicator = new QLabel(this);
+    mStatusIndicator->setFixedWidth(50);
+
     mStatusErrors = new QLabel(this);
     mStatusErrors->setWordWrap(true);
-    mStatusErrors->setMinimumWidth(500);
-    mStatusIndicator = new QLabel(this);
-    mStatusIndicator->setMaximumWidth(50);
-    mStatusIndicator->setMinimumWidth(50);
 
     testLayout->addWidget(checkBtn);
     testLayout->addWidget(mStatusIndicator);
     testLayout->addWidget(mStatusErrors);
-    testLayout->setAlignment(Qt::AlignLeft);
+    testLayout->addStretch();
 
-    mainLayout->addLayout(gameTypeLayout);
-    mainLayout->addLayout(browseLayout);
-    mainLayout->addLayout(expBrowseLayout);
     mainLayout->addLayout(testLayout);
+
+
 
 
 
@@ -91,9 +135,15 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
             mExportFolderEdit->setText(folder);
         }
         });
+    connect(modBrowseBtn, &QPushButton::clicked, this, [this]() {
+        QString folder = QFileDialog::getExistingDirectory(this, "Select Folder");
+        if (!folder.isEmpty()) {
+            mModFolderEdit->setText(folder);
+        }
+        });
 
 
-    connect(checkBtn, &QPushButton::clicked, this, [this, &filePathHandler] {
+    connect(checkBtn, &QPushButton::clicked, this, [this, &filePathHandler, enableModFolderCheck] {
         GameFolders gameFolders;
         gameFolders.nameIndex = mGameType->currentIndex();
         gameFolders.gameFolder = mGameFolderEdit->text().toStdString();
@@ -112,6 +162,11 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
             refContinueBtn->setEnabled(true);
             saveStartupPaths(gameFolders);
 
+
+            // Mod folder loading
+            if (enableModFolderCheck->isChecked()) {
+                std::cout << "box cehcked" << std::endl;
+            }
         }
         catch (const std::exception& e) {
             delete filePathHandler;
@@ -124,7 +179,6 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
         catch (...) {
             std::cerr << "FilePathHandlerFactory CRITICAL: Unknown exception" << std::endl;
         }
-
         });
 
 }

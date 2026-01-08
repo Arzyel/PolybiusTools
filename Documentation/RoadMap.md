@@ -13,10 +13,10 @@
 
 ## 0.2
 
+- [] Implement Widgets and data retrieval for one selected mod at a time
 - [] Country Widget in widget tab : retrieve Data(Update parsing logic and storage) and display it.
 - [] Country Overlay
 - [] Occupied Overlay
-- [] WASD map control ?
 - [] Add widget and logic to change a province area,region,super-region, continent
 - [] Add Trade Nodes : retrieve data, contain data, display, save
 - [] Add Trade Node Overlay
@@ -34,7 +34,6 @@
 
 ## 0.4
 
-- [] Implement Widgets and data retrieval for one selected mod at a time
 - [] Implement widgets and data retrieval for multiple selected mods
 - [] Add options for option tab startup
 - [] Create new province : display, contain, save
@@ -46,6 +45,7 @@
 
 ## 0.5 or 1.0 ?
 
+- [] WASD map control ?
 - [] Create and Edit Mission Trees
 - [] Create and Edit technologies
 - [] Create and Edit government reforms

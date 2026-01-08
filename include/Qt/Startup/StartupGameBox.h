@@ -9,6 +9,8 @@
 #include <QtWidgets\qpushbutton.h>
 #include <QtWidgets\qfiledialog.h>
 #include <QtWidgets\qlineedit.h>
+#include <QtWidgets/qformlayout.h>
+#include <QtWidgets/qcheckbox.h>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -35,6 +37,7 @@ private:
     QComboBox* mGameType;
     QLineEdit* mGameFolderEdit;
     QLineEdit* mExportFolderEdit;
+    QLineEdit* mModFolderEdit;
     QLabel* mStatusIndicator;
     QLabel* mStatusErrors;
     QPushButton*& refContinueBtn;
