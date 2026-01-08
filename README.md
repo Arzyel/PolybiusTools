@@ -25,7 +25,35 @@ An open-source modding tool for Paradox games with a primary focus on Europa Uni
 
 ### For Users
 
-**IMPORTANT NOTE** : currently windows defender is giving a false positive as it is doing file manipulation and I don't have the money to sign the executable so I'm waiting on microsoft to review the file. Here is VirusTotal image : ![Virus Detection](Documentation/img/VirusTotal.png)
+####**IMPORTANT ** : Windows Defender False Positive
+
+**VirusTotal Verification**
+- SHA-256 : 7cd894b5fd837829104e34a43a57ea3819ca0dd1ca64d1f8402aeea24ed70348
+- Detection Rate : 1/71 only windows defender
+- Status : Submitted to Microsoft for whitelisting
+
+You can verify independantly by searching the SHA-256 on [VirusTotal.com](https://www.virustoal.com). Results show 70 out of 71 antivirus engines repoting this file as clean.
+
+![Virus Detection](Documentation/img/VirusTotal.png)
+
+**Why It's Flagged:**
+The app scans and modifies files in user-selected directories (standard behavior for modding tools), which triggers Windows Defender's heuristic detection. However:
+- ✅ Open source - audit the code yourself
+- ✅ Only accesses folders YOU choose via file picker
+- ✅ No system directory access
+- ✅ No admin privileges required
+
+**If Windows Defender blocks it:**
+1. Click "More info" → "Run anyway", OR
+2. Add an exception:
+   - Open Windows Security
+   - Virus & threat protection → Manage settings
+   - Exclusions → Add or remove exclusions
+   - Add an exclusion → Select `PolybiusTools.exe`
+
+---
+
+#### Installation Steps
 
 1. Download the latest release ZIP from the [Releases](https://github.com/Arzyel/PolybiusTools/releases) page
 2. Extract the Zip to your desired location.
