@@ -28,6 +28,7 @@ An open-source modding tool for Paradox games with a primary focus on Europa Uni
 ####**IMPORTANT ** : Windows Defender False Positive
 
 I appealed to Microsoft and they whitelisted the app everything should be fine now. If you still get a false positive flag please update windows defender to the latest version !
+
 ---
 
 #### Installation Steps
