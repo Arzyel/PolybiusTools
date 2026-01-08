@@ -39,7 +39,7 @@ namespace Eu4 {
 		GeoPolData& operator=(const Eu4::GeoPolData&) = default;
 		~GeoPolData();
 
-		void fillColorToID();
+		void fillColorToID(FilePathHandler*& filePathHandler);
 		uint16_t getIDFromColor(uint32_t packedRGB) const;
 		void initData(FilePathHandler*& filePathHandler);
 		const Eu4::Province& getProvinceData(const int& UID) const;

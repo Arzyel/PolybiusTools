@@ -9,9 +9,11 @@ Eu4::GeoPolData::~GeoPolData()
 	delete mContinentsData;
 }
 
-void Eu4::GeoPolData::fillColorToID() {
+void Eu4::GeoPolData::fillColorToID(FilePathHandler*& filePathHandler) {
 	FILE* file = NULL;
-	errno_t err = fopen_s(&file, DEFINITIONS, "r");
+	auto definitionPath = filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::DEFINITION).at(0).string();
+	const char* definitionPathData = definitionPath.data();
+	errno_t err = fopen_s(&file, definitionPathData, "r");
 	if (err != 0 || file == NULL) {
 		perror("Failed to open file");
 		return;
@@ -90,7 +92,11 @@ void Eu4::GeoPolData::initDataProvinces(FilePathHandler*& filePathHandler) {
 	mProvinces.clear();
 	mProvinces.resize(mMapInfo.maxProvinces + 1);
 
+	//hack
+	auto provHistoryPath = filePathHandler->getPathsFromFolderKey(relative_path::eu4::history::PROVINCES_).at(0).parent_path().string();
+	const char* provHistoryPathPtr = provHistoryPath.data();
 
+	// hack end
 	std::vector<std::tuple<uint16_t, std::string, std::filesystem::path>> fileData;
 	SimpleParser::getNumberedTxtFiles(fileData, PROV_HISTORY_FOLDER);
 
