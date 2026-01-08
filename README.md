@@ -18,6 +18,8 @@ An open-source modding tool for Paradox games with a primary focus on Europa Uni
 
 ### For Users
 
+**IMPORTANT NOTE** : currently windows defender is giving a false positive as it is doing file manipulation and I don't have the money to sign the executable. Here is VirusTotal image : ![Virus Detection](Documentation/img/VirusTotal.png)
+
 1. Download the latest release ZIP from the [Releases](https://github.com/Arzyel/PolybiusTools/releases) page
 2. Extract the Zip to your desired location.
 3. Run ``PolybiusTools.exe`
