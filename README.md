@@ -51,6 +51,9 @@ The app scans and modifies files in user-selected directories (standard behavior
    - Exclusions → Add or remove exclusions
    - Add an exclusion → Select `PolybiusTools.exe`
 
+**Alternative (compile from source):**
+If you're uncomfortable with the above, you can compile the application yourself from source. See the [Building](#building) section - this way you can verify the code before running it. However it involves a complex setup for users without any programming knowledge. For most users, adding a Defender exclusion for the pre-built executable is the simpler option after verifying the VirusTotal results.
+
 ---
 
 #### Installation Steps
