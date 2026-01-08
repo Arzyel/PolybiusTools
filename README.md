@@ -14,6 +14,13 @@ An open-source modding tool for Paradox games with a primary focus on Europa Uni
 
 ---
 
+## Screenshots
+
+![main_view](Documentation/img/main_view.png)
+![Active change](Documentation/img/buffered_changes.png)
+
+---
+
 ## Installation
 
 ### For Users
@@ -31,11 +38,6 @@ An open-source modding tool for Paradox games with a primary focus on Europa Uni
 See the [Building](#building) section below to compile from source.
 
 ---
-
-## Screenshots
-
-![main_view](Documentation/img/main_view.png)
-![Active change](Documentation/img/buffered_changes.png)
 
 ## Documentation
 
