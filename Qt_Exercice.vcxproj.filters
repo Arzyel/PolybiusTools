@@ -194,9 +194,6 @@
     <ClInclude Include="include\Qt\InstantMenuStyle.h">
       <Filter>Fichiers d%27en-tête\Qt</Filter>
     </ClInclude>
-    <ClInclude Include="include\CONSTANTS\filenfolder_CONST.h">
-      <Filter>Fichiers d%27en-tête\CONSTANTS</Filter>
-    </ClInclude>
     <ClInclude Include="include\Utils\SimpleParser.h">
       <Filter>Fichiers d%27en-tête\Utils</Filter>
     </ClInclude>

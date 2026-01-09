@@ -203,7 +203,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FlowLayout.h" />
-    <ClInclude Include="include\CONSTANTS\filenfolder_CONST.h" />
     <ClInclude Include="include\CONSTANTS\KEYS.h" />
     <ClInclude Include="include\FileDataManager\FileManager.h" />
     <ClInclude Include="include\FileParsers\Eu4\Eu4Parser.h" />

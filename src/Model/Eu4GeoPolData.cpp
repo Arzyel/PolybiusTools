@@ -98,7 +98,7 @@ void Eu4::GeoPolData::initDataProvinces(FilePathHandler*& filePathHandler) {
 
 	// hack end
 	std::vector<std::tuple<uint16_t, std::string, std::filesystem::path>> fileData;
-	SimpleParser::getNumberedTxtFiles(fileData, PROV_HISTORY_FOLDER);
+	SimpleParser::getNumberedTxtFiles(fileData, provHistoryPathPtr);
 
 	std::for_each(std::execution::par, fileData.begin(), fileData.end(),
 		[&](const auto& tuple) {

@@ -9,7 +9,6 @@
 #include <filesystem>
 #include <string_view>
 #include "FileManager.h"
-#include "filenfolder_CONST.h"
 #include "FilePathHandler.h"
 
 namespace Eu4 {
