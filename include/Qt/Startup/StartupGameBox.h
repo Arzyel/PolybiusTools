@@ -12,16 +12,20 @@
 #include <QtWidgets/qformlayout.h>
 #include <QtWidgets/qcheckbox.h>
 #include <string>
+#include <string_view>
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #include "KEYS.h"
 #include "FilePathHandler.h"
+#include "StartupModBox.h"
 
 struct GameFolders {
     int nameIndex;
     std::string gameFolder;
     std::string exportFolder;
+    std::string modsFolder;
 };
 
 class StartupGameBox : public QWidget{
@@ -30,7 +34,8 @@ public:
     StartupGameBox() = delete;
     ~StartupGameBox() = default;
     StartupGameBox(FilePathHandler*& filePathHandler, QPushButton*& continueBtn, QWidget* parent = nullptr);
-    
+    void setStartupModBox(QWidget* modbox);
+
 protected:
 
 private:
@@ -41,7 +46,9 @@ private:
     QLabel* mStatusIndicator;
     QLabel* mStatusErrors;
     QPushButton*& refContinueBtn;
+    QWidget* modFolderRowWidget;
     std::unordered_map<int, GameFolders> mSavedPaths;
+    QWidget* startupModBox = nullptr;
 
     void loadWidgets(FilePathHandler*& filePathHandler);
     void saveStartupPaths(GameFolders& gameFolders);

@@ -16,16 +16,18 @@ void StartupDialog::setupUI(FilePathHandler*& filePathHandler) {
 	QTabWidget* tabWidget = new QTabWidget(this);
 
 	StartupGameBox* GameTab = new StartupGameBox(filePathHandler,mContinueButton, nullptr);
-	QWidget* ModTab = new QWidget();
+	QWidget* ModTab = new StartupModBox();
 	QWidget* LoadTab = new QWidget();
 	QWidget* OptionsTab = new QWidget();
+
+	GameTab->setStartupModBox(ModTab);
+
 	
 	tabWidget->addTab(GameTab, "Game");
 	tabWidget->addTab(ModTab, "Mod");
 	tabWidget->addTab(LoadTab, "Load Options");
 	tabWidget->addTab(OptionsTab, "App Options");
 
-	tabWidget->setTabEnabled(1, false);
 	tabWidget->setTabEnabled(2, false);
 	tabWidget->setTabEnabled(3, false);
 

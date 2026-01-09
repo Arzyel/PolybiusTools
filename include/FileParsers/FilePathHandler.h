@@ -9,6 +9,7 @@
 #include <iostream>
 #include <ranges>
 #include <array>
+#include <fstream>
 
 #include "KEYS.h"
 // TEMP KEYS
@@ -134,6 +135,12 @@ namespace relative_path {
 
 namespace fs = std::filesystem;
 
+struct ModFile {
+    std::string name;
+    std::string modPath;
+};
+
+
 
 class FilePathHandlerFactory;
 
@@ -160,6 +167,8 @@ public:
     void addFilesFromFolder(const fs::path& folderPath, const char* folderKey);
     void addPath(const fs::path& path, const char* folderKey);
     void removePath(const fs::path& path);
+    void initModsPath(const fs::path& path, std::vector<ModFile>& modFilesData);
+    
 private:
     FilePathHandler() = delete;
     FilePathHandler(const FilePathHandler&) = delete;

@@ -117,6 +117,67 @@ void FilePathHandler::removePath(const fs::path& path)
 {
 }
 
+
+void FilePathHandler::initModsPath(const fs::path& dirPath, std::vector<ModFile>& modFilesData)
+{
+    std::vector<fs::path> modFilePaths;
+    if (!fs::exists(dirPath) || !fs::is_directory(dirPath)) {
+        throw std::runtime_error("Directory does not exists : " + dirPath.string());
+    }
+    for (const auto& entry : fs::directory_iterator(dirPath)) {
+        if (entry.is_regular_file() && entry.path().extension() == ".mod") {
+            modFilePaths.push_back(entry.path());
+        }
+    }
+
+
+    for (const auto& modFilepath : modFilePaths) {
+        modFilesData.push_back(ModFile());
+        ModFile& modFileData = modFilesData.back();
+
+        std::ifstream file(modFilepath.string(), std::ios::binary | std::ios::ate);
+        if (!file) {
+            throw std::runtime_error("Failed to open File : " + modFilepath.string());
+        }
+
+        const auto size = file.tellg();
+        if (size == std::ifstream::pos_type(-1)) {
+            throw std::runtime_error("Failed to determine file size : " + modFilepath.string());
+        }
+        file.seekg(0);
+
+        std::vector<char> buffer(size);
+        file.read(buffer.data(), size);
+
+        const char* ptr = buffer.data();
+        const char* end = ptr + size;
+
+        while (ptr < end) {
+            //name
+            if (*ptr == 'n' && std::memcmp(ptr, "name=\"", 5) == 0) {
+                ptr += 6;
+                const char* start = ptr;
+                while (ptr < end && *ptr != '"') ++ptr;
+                modFileData.name = std::string(start, ptr);
+            }
+            //path
+            else if (*ptr == 'p' && std::memcmp(ptr, "path=\"", 5) == 0) {
+                ptr += 6;
+                const char* start = ptr;
+                while (ptr < end && *ptr != '"') ++ptr;
+                modFileData.modPath = std::string(start, ptr);
+            }
+
+            if (!modFileData.name.empty() && !modFileData.modPath.empty()) break;
+            ++ptr;
+        }
+    }
+
+
+
+
+}
+
 FilePathHandler* FilePathHandlerFactory::createFPH(const std::string& game, const std::string& root, const std::string& rootExport)
 {
     if (game == GAMES[0]) return create_eu4(game, root, rootExport);

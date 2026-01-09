@@ -6,6 +6,11 @@ StartupGameBox::StartupGameBox(FilePathHandler*& filePathHandler, QPushButton*& 
     loadWidgets(filePathHandler);
 }
 
+void StartupGameBox::setStartupModBox(QWidget* modbox)
+{
+    startupModBox = modbox;
+}
+
 
 void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
@@ -71,7 +76,7 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
     modFolderRowLayout->addWidget(mModFolderEdit);
     modFolderRowLayout->addWidget(modBrowseBtn);
 
-    QWidget* modFolderRowWidget = makeRowWidget(modFolderRowLayout);
+    modFolderRowWidget = makeRowWidget(modFolderRowLayout);
     form->addRow(".mod Folder :", modFolderRowWidget);
 
     // Enable / disable only this row
@@ -148,6 +153,7 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
         gameFolders.nameIndex = mGameType->currentIndex();
         gameFolders.gameFolder = mGameFolderEdit->text().toStdString();
         gameFolders.exportFolder = mExportFolderEdit->text().toStdString();
+        gameFolders.modsFolder = mModFolderEdit->text().toStdString();
         delete filePathHandler;
         filePathHandler = nullptr;
 
@@ -156,17 +162,24 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
             filePathHandler = FilePathHandlerFactory::createFPH(GAMES[gameFolders.nameIndex], gameFolders.gameFolder,
                 gameFolders.exportFolder);
             filePathHandler->initAllPaths();
+            // Mod folder loading
+            if (enableModFolderCheck->isChecked()) {
+                startupModBox->setEnabled(true);
+                std::vector<ModFile> modFiles;
+                filePathHandler->initModsPath(gameFolders.modsFolder, modFiles);
+                
+                qobject_cast<StartupModBox*>(startupModBox)->loadWidgets(modFiles);
+            }
+            else {
+                startupModBox->setEnabled(false);
+            }
+
+
             mStatusIndicator->setText("✓");
             mStatusIndicator->setStyleSheet("color: green; font-size: 30px;");
             mStatusErrors->setText("All folders and minimum file requirement met. Click Continue to open the program or go setup mods.");
             refContinueBtn->setEnabled(true);
             saveStartupPaths(gameFolders);
-
-
-            // Mod folder loading
-            if (enableModFolderCheck->isChecked()) {
-                std::cout << "box cehcked" << std::endl;
-            }
         }
         catch (const std::exception& e) {
             delete filePathHandler;
@@ -240,6 +253,14 @@ int StartupGameBox::getStartupPaths()
     }
 
 
+    auto extractUntilSemiColon = [&](const char*& start, const char* end) -> std::string {
+        const char* valueStart = start;
+        while (start < end && *start != ';') ++start;
+        std::string result(valueStart, start);
+        if (start < end && *start == ';') ++start;
+        return result;
+        };
+
     std::string line;
     while (std::getline(startFile, line))
     {
@@ -250,24 +271,13 @@ int StartupGameBox::getStartupPaths()
 
         const char* ptr = start;
 
-
-        std::string tempChars = "";
-        while (*ptr != ';') {
-            tempChars.push_back(*ptr);
-            ++ptr;
-        }
+        while (*ptr != ';' && ptr < end) ++ptr;
+        std::from_chars(start, ptr, gameF.nameIndex);
         ++ptr;
-        gameF.nameIndex = std::stoi(tempChars);
 
-        while (*ptr != ';') {
-            gameF.gameFolder.push_back(*ptr);
-            ++ptr;
-        }
-        ++ptr;
-        while (ptr < end) {
-            gameF.exportFolder.push_back(*ptr);
-            ++ptr;
-        }
+        gameF.gameFolder = extractUntilSemiColon(ptr, end);
+        gameF.exportFolder = extractUntilSemiColon(ptr, end);
+        gameF.modsFolder = extractUntilSemiColon(ptr, end);
 
         mSavedPaths[gameF.nameIndex] = gameF;
     }
@@ -280,6 +290,8 @@ void StartupGameBox::onGameTypeActivated(int index)
         GameFolders temp = mSavedPaths.at(index);
         mGameFolderEdit->setText(QString::fromStdString(temp.gameFolder));
         mExportFolderEdit->setText(QString::fromStdString(temp.exportFolder));
+        mModFolderEdit->setText(QString::fromStdString(temp.modsFolder));
+        modFolderRowWidget->setEnabled(false);
     }
 
 }

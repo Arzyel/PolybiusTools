@@ -237,7 +237,7 @@
     <ClInclude Include="include\Qt\MainApp\Global\SGPUnitMainWidget.h" />
     <ClInclude Include="include\Qt\MainApp\Global\TechInfo.h" />
     <ClInclude Include="include\Qt\Startup\StartupLoadBox.h" />
-    <ClInclude Include="include\Qt\Startup\StartupModBox.h" />
+    <QtMoc Include="include\Qt\Startup\StartupModBox.h" />
     <ClInclude Include="include\Qt\Startup\StartupOptionBox.h" />
     <QtMoc Include="include\Qt\TopMenuBar.h" />
     <ClInclude Include="include\Qt\Util\QtUtils.h" />
