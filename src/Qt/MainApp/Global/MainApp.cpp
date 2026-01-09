@@ -19,7 +19,8 @@ MainApp::MainApp(const QApplication& app, FilePathHandler*& filePathHandler,QWid
 
     QWidget* centralWidget = new QWidget;
     QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
-    ImageView* imageView = new ImageView(PROVINCE_MAP_FILE, data->mGeoPolData, *rightMainArea);
+    auto provinceBMP_Path = filePathHandler->getPathsFromFolderKey(relative_path::eu4::map::PROVINCES).at(0).string();
+    ImageView* imageView = new ImageView(provinceBMP_Path.data(), data->mGeoPolData, *rightMainArea);
     mainLayout->addWidget(imageView, 2);
     mainLayout->addWidget(rightMainArea, 1);
     connect(menuBar, &TopMenuBar::changeView, imageView, &ImageView::changeView);
