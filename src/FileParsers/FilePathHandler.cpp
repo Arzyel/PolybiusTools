@@ -102,7 +102,6 @@ void FilePathHandler::addFilesFromFolder(const fs::path& folderPath, const char*
 
 void FilePathHandler::addPath(const fs::path& path, const char* folderKey)
 {
-
     if (!mPathToIndex.empty() && mPathToIndex.contains(path.filename())) {
         mAbsolutePaths.at(mPathToIndex.at(path.filename())) = path;
     }
@@ -221,55 +220,23 @@ void FilePathHandler::updateAPWithModsAP()
     }
 }
 
-//void FilePathHandler::populateProvincesFilePathStructure(std::vector<std::tuple<uint16_t, std::string, std::filesystem::path>>& files, uint32_t nbProvinces)
-//{
-//    files.clear();
-//    files.reserve(nbProvinces);
-//
-//    //not the most optimised version as i am passing a a lot of path that arent necessary and calling two methods and two string comparison
-//    for (const auto& path : mAbsolutePaths) {
-//        if (path.parent_path().filename() == "provinces" &&
-//            path.parent_path().parent_path().filename() == "history") {
-//            //std::string stem = path.stem().string();
-//            const std::string buffer = path.filename().string();
-//            const char* ptr = buffer.data();
-//            const char* end = ptr + buffer.size();
-//
-//            /*ptr = end;
-//            while (*ptr != '\\' && *ptr != '/') --ptr;
-//            ++ptr;*/
-//
-//            uint16_t number = 0;
-//            //std::string name = "";
-//
-//            while (ptr < end && *ptr >= '0' && *ptr <= '9') {
-//                 number = number * 10 + (*ptr - '0');
-//                ++ptr;
-//            }
-//           /* while (*ptr != '\0' && (*ptr == ' ' || *ptr == '-')) ++ptr;
-//
-//            const char* nameStart = ptr;
-//
-//            while (*ptr != '\0') ++ptr;*/
-//
-//            //name.assign(nameStart);
-//
-//            files.emplace_back(number, std::string("test"), path);
-//        }
-//    }
-//}
+
 void FilePathHandler::populateProvincesFilePathStructure(
     std::vector<std::tuple<uint16_t, std::string, std::filesystem::path>>& files,
     uint32_t nbProvinces)
 {
     files.clear();
-    files.reserve(nbProvinces);
-    std::vector<std::filesystem::path> test_paths;
+
+    std::unordered_map<uint16_t, std::pair<std::string, std::filesystem::path>> provinceByID;
+    provinceByID.reserve(nbProvinces);
+
     for (const auto& path : mAbsolutePaths) {
         const auto parent = path.parent_path();
         const auto grandparent = parent.parent_path();
 
         if (parent.filename() == "provinces" && grandparent.filename() == "history") {
+            if (path.extension() != ".txt") continue;
+
             const std::string buffer = path.filename().string();
             const char* ptr = buffer.data();
             const char* end = ptr + buffer.size();
@@ -280,17 +247,24 @@ void FilePathHandler::populateProvincesFilePathStructure(
                 ++ptr;
             }
 
-            // Skip spaces and dashes like the old method did
             while (ptr < end && (*ptr == ' ' || *ptr == '-')) ++ptr;
 
-            // Extract the name portion (everything after number until .txt)
             const char* name_start = ptr;
             const char* name_end = end - 4;
 
             std::string name(name_start, name_end);
-            files.push_back({ number, std::move(name), path });
-            test_paths.push_back(path);
+            if (provinceByID.count(number)) {
+                std::cout << "Overwriting province " << number << ":\n"
+                    << "  Old: " << provinceByID[number].second.string() << "\n"
+                    << "  New: " << path.string() << "\n";
+            }
+            provinceByID[number] = { std::move(name), path };
         }
+
+    }
+    files.reserve(provinceByID.size());
+    for (auto& [id, data] : provinceByID) {
+        files.emplace_back(id, std::move(data.first), std::move(data.second));
     }
 }
 
