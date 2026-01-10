@@ -66,7 +66,7 @@ void ImageView::precomputeColorMap() {
         }
     }
 
-
+    //auto& test = colorMap[qRgb(175, 103, 152)];
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     qDebug() << "Color map ready. Unique colors:" << colorMap.size()

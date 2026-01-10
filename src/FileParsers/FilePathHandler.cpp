@@ -118,7 +118,7 @@ void FilePathHandler::removePath(const fs::path& path)
 }
 
 
-void FilePathHandler::initModsPath(const fs::path& dirPath, std::vector<ModFile>& modFilesData)
+void FilePathHandler::initModsPath(const fs::path& dirPath)
 {
     std::vector<fs::path> modFilePaths;
     if (!fs::exists(dirPath) || !fs::is_directory(dirPath)) {
@@ -161,7 +161,7 @@ void FilePathHandler::initModsPath(const fs::path& dirPath, std::vector<ModFile>
                 modFileData.name = std::string(start, ptr);
             }
             //path
-            else if (*ptr == 'p' && std::memcmp(ptr, "path=\"", 5) == 0) {
+            else if (*ptr == 'p' && *(ptr - 1) == '\n' && std::memcmp(ptr, "path=\"", 5) == 0) {
                 ptr += 6;
                 const char* start = ptr;
                 while (ptr < end && *ptr != '"') ++ptr;
@@ -176,6 +176,122 @@ void FilePathHandler::initModsPath(const fs::path& dirPath, std::vector<ModFile>
 
 
 
+}
+
+const std::string_view FilePathHandler::getModPath(int index)
+{
+    return std::string_view(modFilesData.at(index).modPath);
+}
+
+void FilePathHandler::setActiveMod(int index)
+{
+    if (index >= 0) mActiveModIndex = index;
+    else throw std::runtime_error("Invalid mod index given");
+}
+
+void FilePathHandler::updateAPWithModsAP()
+{
+    fs::path modPathRoot = modFilesData.at(mActiveModIndex).modPath;
+
+    if (!fs::exists(modPathRoot)) {
+        throw std::runtime_error(std::string("Absolute Path For Mod : "+ modFilesData.at(mActiveModIndex).name + " does not exist.\nCurrent path given :" + modPathRoot.string()));
+    }
+
+    for (const auto relativePath : mRelativePaths) {
+        fs::path modPath = modPathRoot;
+        modPath += fs::path(relativePath);
+        if (!fs::exists(modPath)) {
+            std::cout << "Reconstructed mod path : " + modPath.string() + " does not exist skip to next one." << std::endl;
+            continue;
+        }
+
+        if (fs::is_directory(modPath)) {
+            if (fs::is_empty(modPath)) {
+                std::cout << "Reconstructed mod path : " + modPath.string() + " no file found in directory skipping to next one." << std::endl;
+                continue;
+            }
+            addFilesFromFolder(modPath, relativePath);
+        }
+        else if (fs::is_regular_file(modPath)) {
+            addPath(modPath, relativePath);
+        }
+        else {
+            throw std::runtime_error("Unknown error at :  " + modPath.string() + "while trying to update path for mods");
+        }
+    }
+}
+
+//void FilePathHandler::populateProvincesFilePathStructure(std::vector<std::tuple<uint16_t, std::string, std::filesystem::path>>& files, uint32_t nbProvinces)
+//{
+//    files.clear();
+//    files.reserve(nbProvinces);
+//
+//    //not the most optimised version as i am passing a a lot of path that arent necessary and calling two methods and two string comparison
+//    for (const auto& path : mAbsolutePaths) {
+//        if (path.parent_path().filename() == "provinces" &&
+//            path.parent_path().parent_path().filename() == "history") {
+//            //std::string stem = path.stem().string();
+//            const std::string buffer = path.filename().string();
+//            const char* ptr = buffer.data();
+//            const char* end = ptr + buffer.size();
+//
+//            /*ptr = end;
+//            while (*ptr != '\\' && *ptr != '/') --ptr;
+//            ++ptr;*/
+//
+//            uint16_t number = 0;
+//            //std::string name = "";
+//
+//            while (ptr < end && *ptr >= '0' && *ptr <= '9') {
+//                 number = number * 10 + (*ptr - '0');
+//                ++ptr;
+//            }
+//           /* while (*ptr != '\0' && (*ptr == ' ' || *ptr == '-')) ++ptr;
+//
+//            const char* nameStart = ptr;
+//
+//            while (*ptr != '\0') ++ptr;*/
+//
+//            //name.assign(nameStart);
+//
+//            files.emplace_back(number, std::string("test"), path);
+//        }
+//    }
+//}
+void FilePathHandler::populateProvincesFilePathStructure(
+    std::vector<std::tuple<uint16_t, std::string, std::filesystem::path>>& files,
+    uint32_t nbProvinces)
+{
+    files.clear();
+    files.reserve(nbProvinces);
+    std::vector<std::filesystem::path> test_paths;
+    for (const auto& path : mAbsolutePaths) {
+        const auto parent = path.parent_path();
+        const auto grandparent = parent.parent_path();
+
+        if (parent.filename() == "provinces" && grandparent.filename() == "history") {
+            const std::string buffer = path.filename().string();
+            const char* ptr = buffer.data();
+            const char* end = ptr + buffer.size();
+
+            uint16_t number = 0;
+            while (ptr < end && *ptr >= '0' && *ptr <= '9') {
+                number = number * 10 + (*ptr - '0');
+                ++ptr;
+            }
+
+            // Skip spaces and dashes like the old method did
+            while (ptr < end && (*ptr == ' ' || *ptr == '-')) ++ptr;
+
+            // Extract the name portion (everything after number until .txt)
+            const char* name_start = ptr;
+            const char* name_end = end - 4;
+
+            std::string name(name_start, name_end);
+            files.push_back({ number, std::move(name), path });
+            test_paths.push_back(path);
+        }
+    }
 }
 
 FilePathHandler* FilePathHandlerFactory::createFPH(const std::string& game, const std::string& root, const std::string& rootExport)

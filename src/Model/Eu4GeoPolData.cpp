@@ -88,17 +88,43 @@ const int Eu4::GeoPolData::getNbAreas() const
 
 void Eu4::GeoPolData::initDataProvinces(FilePathHandler*& filePathHandler) {
 	auto start = std::chrono::high_resolution_clock::now();
-	std::cout << "Initiate Province Data from file\t----\t";
+	std::cout << "Initiate Province Data from file\t----\t" << std::endl;
 	mProvinces.clear();
 	mProvinces.resize(mMapInfo.maxProvinces + 1);
 
 	//hack
-	auto provHistoryPath = filePathHandler->getPathsFromFolderKey(relative_path::eu4::history::PROVINCES_).at(0).parent_path().string();
-	const char* provHistoryPathPtr = provHistoryPath.data();
+	//auto provHistoryPath = filePathHandler->getPathsFromFolderKey(relative_path::eu4::history::PROVINCES_).at(0).parent_path().string();
+	//const char* provHistoryPathPtr = provHistoryPath.data();
 
-	// hack end
 	std::vector<std::tuple<uint16_t, std::string, std::filesystem::path>> fileData;
-	SimpleParser::getNumberedTxtFiles(fileData, provHistoryPathPtr);
+	filePathHandler->populateProvincesFilePathStructure(fileData, mMapInfo.maxProvinces + 1);
+	//SimpleParser::getNumberedTxtFiles(fileData, provHistoryPathPtr);
+
+
+
+
+	//for (const auto& tuple : fileData)
+	//{
+	//	const auto& [provUID, name, path] = tuple;
+
+	//	mProvinces[provUID].mFileData =
+	//		new DM::FileData<Eu4::Province>(
+	//			path.string(),
+	//			filePathHandler->getExportFromFullPath(path.string()),
+	//			Eu4::GeoPolData::initHelperProvince,
+	//			&mProvinces[provUID],
+	//			Eu4::GeoPolData::resetProvince
+	//		);
+	//}
+	// After populateProvincesFilePathStructure
+	std::unordered_map<uint16_t, int> idCount;
+	for (const auto& [id, name, path] : fileData) {
+		idCount[id]++;
+		if (idCount[id] > 1) {
+			std::cout << "DUPLICATE ID: " << id << " at path: " << path << std::endl;
+		}
+	}
+
 
 	std::for_each(std::execution::par, fileData.begin(), fileData.end(),
 		[&](const auto& tuple) {
@@ -123,6 +149,8 @@ void Eu4::GeoPolData::initDataProvinces(FilePathHandler*& filePathHandler) {
 		}
 	);
 
+	fileData.clear();
+	fileData.shrink_to_fit();
 
 	for (auto id : mMapInfo.seaStarts) {
 		mProvinces[id].isWater = true;
@@ -159,6 +187,7 @@ void Eu4::GeoPolData::initMapInfo(FilePathHandler*& filePathHandler)
 		case '}':
 		case '\n':
 		case '\t':
+		case '\r':
 		case ' ':
 		case '=': {
 			break;
@@ -297,6 +326,7 @@ void Eu4::GeoPolData::initHelperProvince(DM::FileData<Eu4::Province>& fileData, 
 		switch (*ptr) {
 		case '\n':
 		case '\t':
+		case '\r':
 		case ' ':
 		case '=': {
 			break;
@@ -511,9 +541,10 @@ void Eu4::GeoPolData::initHelperArea(DM::FileData<Eu4::GeoPolData>& fileData, Eu
 				case '\n':
 				case '\t':
 				case ' ':
+				case '\r':
 					break;
 				case '#': {
-					while (ptr < end && *ptr != '\n') {
+					while (ptr < end && *ptr != '\n' && *ptr != '\r') {
 						++ptr;
 					}
 					break;
@@ -527,7 +558,7 @@ void Eu4::GeoPolData::initHelperArea(DM::FileData<Eu4::GeoPolData>& fileData, Eu
 				}
 				default: {
 					keyStart = ptr;
-					while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#') {
+					while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '\r') {
 						++ptr;
 					}
 
@@ -546,12 +577,13 @@ void Eu4::GeoPolData::initHelperArea(DM::FileData<Eu4::GeoPolData>& fileData, Eu
 		case '\n':
 		case '\t':
 		case ' ':
+		case '\r':
 		case '=': {
 			break;
 		}
 		default: {
 			keyStart = ptr;
-			while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '=') {
+			while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '=' && *ptr != '\r') {
 				++ptr;
 			}
 
@@ -600,6 +632,7 @@ void Eu4::GeoPolData::initHelperRegion(DM::FileData<Eu4::GeoPolData>& fileData, 
 				}
 				case '\n':
 				case '\t':
+				case '\r':
 				case ' ':
 					break;
 				default: {
@@ -620,7 +653,7 @@ void Eu4::GeoPolData::initHelperRegion(DM::FileData<Eu4::GeoPolData>& fileData, 
 								continue;
 							}
 							keyStart = ptr;
-							while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#') {
+							while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '\r') {
 								++ptr;
 							}
 							Eu4::Region& region = GeoPolData.mRegions.back();
@@ -649,12 +682,13 @@ void Eu4::GeoPolData::initHelperRegion(DM::FileData<Eu4::GeoPolData>& fileData, 
 		case '\n':
 		case '\t':
 		case ' ':
+		case '\r':
 		case '=': {
 			break;
 		}
 		default: {
 			keyStart = ptr;
-			while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '=') {
+			while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '=' && *ptr != '\r') {
 				++ptr;
 			}
 
@@ -705,11 +739,12 @@ void Eu4::GeoPolData::initHelperSuperRegion(DM::FileData<Eu4::GeoPolData>& fileD
 					}
 					case '\n':
 					case '\t':
+					case '\r':
 					case ' ':
 						break;
 					default:
 						keyStart = ptr;
-						while (*ptr != ' ' && *ptr != '\n' && *ptr != '\t' && *ptr != '#') {
+						while (*ptr != ' ' && *ptr != '\n' && *ptr != '\t' && *ptr != '#' && *ptr != '\r') {
 							++ptr;
 						}
 						if (std::string(keyStart, ptr) != "restrict_charter") {
@@ -728,12 +763,13 @@ void Eu4::GeoPolData::initHelperSuperRegion(DM::FileData<Eu4::GeoPolData>& fileD
 		case '\n':
 		case '\t':
 		case ' ':
+		case '\r':
 		case '=': {
 			break;
 		}
 		default: {
 			keyStart = ptr;
-			while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '=') {
+			while (*ptr != '\n' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '=' && *ptr != '\r') {
 				++ptr;
 			}
 			GeoPolData.mSuperRegions.emplace_back(Eu4::SuperRegion());
@@ -801,11 +837,12 @@ void Eu4::GeoPolData::initHelperContinent(DM::FileData<Eu4::GeoPolData>& fileDat
 				}
 				case '\n':
 				case '\t':
+				case '\r':
 				case ' ':
 					break;
 				default:
 					keyStart = ptr;
-					ptr += strcspn(ptr, "\n \t#=");
+					ptr += strcspn(ptr, "\n \t#=\r");
 					Eu4::Continent& continent = GeoPolData.mContinents.back();
 					uint16_t value;
 					std::from_chars(keyStart,ptr,value);
@@ -818,13 +855,14 @@ void Eu4::GeoPolData::initHelperContinent(DM::FileData<Eu4::GeoPolData>& fileDat
 		}
 		case '\n':
 		case '\t':
+		case '\r':
 		case ' ':
 		case '=': {
 			break;
 		}
 		default: {
 			keyStart = ptr;
-			ptr += strcspn(ptr, "\n \t#=");
+			ptr += strcspn(ptr, "\n \t#=\r");
 			if (std::string(keyStart, ptr) != "island_check_provinces") {
 				GeoPolData.mContinents.emplace_back(Eu4::Continent());
 				Eu4::Continent& continent = GeoPolData.mContinents.back();
@@ -880,7 +918,7 @@ inline void Eu4::GeoPolData::parserSkipUntilValueStd(const char*& ptr, std::vect
 	++ptr;
 	while (*ptr == ' ' || *ptr == '\t'  || *ptr == '\"') ++ptr;
 	const char* keyStart = ptr;
-	while (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' && *ptr != '#' && *ptr != '\"') ++ptr;
+	while (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' && *ptr != '\r' && *ptr != '#' && *ptr != '\"') ++ptr;
 	dataTokens.emplace_back(DM::DataToken());
 	dataTokens.back().mPtrStart = keyStart;
 	dataTokens.back().mLength = ptr - keyStart;
@@ -894,11 +932,11 @@ inline void Eu4::GeoPolData::parserCaptureAllValuesBracket(const char*& ptr, std
 	while (*ptr != '{') ++ptr;
 	++ptr;
 	while (*ptr != '}') {
-		while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n') ++ptr;
+		while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n' || *ptr == '\r') ++ptr;
 		const char* keyStart = ptr;
-		while (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' && *ptr != '#' && *ptr != '\"') ++ptr;
+		while (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' && *ptr != '\r' && *ptr != '#' && *ptr != '\"') ++ptr;
 		if (*ptr == '#') {
-			while (*ptr != '\n') ++ptr;
+			while (*ptr != '\n' && *ptr != '\r') ++ptr;
 		}
 		else {
 			dataTokens.emplace_back(DM::DataToken());

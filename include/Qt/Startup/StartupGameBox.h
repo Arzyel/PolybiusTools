@@ -33,7 +33,7 @@ class StartupGameBox : public QWidget{
 public:
     StartupGameBox() = delete;
     ~StartupGameBox() = default;
-    StartupGameBox(FilePathHandler*& filePathHandler, QPushButton*& continueBtn, QWidget* parent = nullptr);
+    StartupGameBox(FilePathHandler*& filePathHandler, QPushButton*& continueBtn, QCheckBox* enableModFolderCheck, QWidget* parent = nullptr);
     void setStartupModBox(QWidget* modbox);
 
 protected:
@@ -50,7 +50,7 @@ private:
     std::unordered_map<int, GameFolders> mSavedPaths;
     QWidget* startupModBox = nullptr;
 
-    void loadWidgets(FilePathHandler*& filePathHandler);
+    void loadWidgets(FilePathHandler*& filePathHandler, QCheckBox* enableModFolderCheck);
     void saveStartupPaths(GameFolders& gameFolders);
     int getStartupPaths();
     void onGameTypeActivated(int index);

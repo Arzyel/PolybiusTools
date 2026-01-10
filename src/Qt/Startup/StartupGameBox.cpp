@@ -1,9 +1,9 @@
 ﻿#include "StartupGameBox.h"
 
-StartupGameBox::StartupGameBox(FilePathHandler*& filePathHandler, QPushButton*& continueBtn, QWidget* parent)
+StartupGameBox::StartupGameBox(FilePathHandler*& filePathHandler, QPushButton*& continueBtn, QCheckBox* enableModFolderCheck, QWidget* parent)
 	:QWidget(parent), refContinueBtn(continueBtn)
 {
-    loadWidgets(filePathHandler);
+    loadWidgets(filePathHandler, enableModFolderCheck);
 }
 
 void StartupGameBox::setStartupModBox(QWidget* modbox)
@@ -12,7 +12,7 @@ void StartupGameBox::setStartupModBox(QWidget* modbox)
 }
 
 
-void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
+void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler, QCheckBox* enableModFolderCheck) {
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     this->setLayout(mainLayout);
 
@@ -65,7 +65,8 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
     form->addRow("Export Folder :", makeRowWidget(exportFolderRowLayout));
 
     // ---- Enable mod loading ----
-    QCheckBox* enableModFolderCheck = new QCheckBox(this);
+    //QCheckBox* enableModFolderCheck = new QCheckBox(this);
+    enableModFolderCheck->setParent(this);
     form->addRow("Enable Loading Mods :", enableModFolderCheck);
 
     // ---- Mod folder ----
@@ -165,10 +166,9 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler) {
             // Mod folder loading
             if (enableModFolderCheck->isChecked()) {
                 startupModBox->setEnabled(true);
-                std::vector<ModFile> modFiles;
-                filePathHandler->initModsPath(gameFolders.modsFolder, modFiles);
+                filePathHandler->initModsPath(gameFolders.modsFolder);
                 
-                qobject_cast<StartupModBox*>(startupModBox)->loadWidgets(modFiles);
+                qobject_cast<StartupModBox*>(startupModBox)->loadWidgets(filePathHandler->getAllModFilesData());
             }
             else {
                 startupModBox->setEnabled(false);
@@ -218,7 +218,8 @@ void StartupGameBox::saveStartupPaths(GameFolders& gameFolders)
             std::stoi(line.substr(0, delimiter)) == gameFolders.nameIndex) {
             outFile << std::to_string(gameFolders.nameIndex) << ";"
                 << gameFolders.gameFolder << ";"
-                << gameFolders.exportFolder << "\n";
+                << gameFolders.exportFolder << ';'
+                << gameFolders.modsFolder << "\n";
             linePresent = true;
         }
         else {
@@ -228,7 +229,8 @@ void StartupGameBox::saveStartupPaths(GameFolders& gameFolders)
     if (!linePresent) {
         outFile << std::to_string(gameFolders.nameIndex) << ";"
             << gameFolders.gameFolder << ";"
-            << gameFolders.exportFolder << "\n";
+            << gameFolders.exportFolder << ';'
+            << gameFolders.modsFolder << "\n";
     }
     inFile.close();
     outFile.close();
@@ -291,7 +293,7 @@ void StartupGameBox::onGameTypeActivated(int index)
         mGameFolderEdit->setText(QString::fromStdString(temp.gameFolder));
         mExportFolderEdit->setText(QString::fromStdString(temp.exportFolder));
         mModFolderEdit->setText(QString::fromStdString(temp.modsFolder));
-        modFolderRowWidget->setEnabled(false);
+        //modFolderRowWidget->setEnabled(false);
     }
 
 }

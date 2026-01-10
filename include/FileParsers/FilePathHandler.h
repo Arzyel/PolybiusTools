@@ -5,6 +5,7 @@
 #include <functional>
 #include <vector>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <iostream>
 #include <ranges>
@@ -167,8 +168,13 @@ public:
     void addFilesFromFolder(const fs::path& folderPath, const char* folderKey);
     void addPath(const fs::path& path, const char* folderKey);
     void removePath(const fs::path& path);
-    void initModsPath(const fs::path& path, std::vector<ModFile>& modFilesData);
-    
+    void initModsPath(const fs::path& dirPath);
+    const std::vector<ModFile>& getAllModFilesData() { return modFilesData; };
+    const std::string_view getModPath(int index);
+    void setActiveMod(int index);
+    void updateAPWithModsAP();
+    void populateProvincesFilePathStructure(std::vector<std::tuple<uint16_t, std::string, std::filesystem::path>>& files, uint32_t nbProvinces);
+
 private:
     FilePathHandler() = delete;
     FilePathHandler(const FilePathHandler&) = delete;
@@ -191,7 +197,8 @@ private:
     std::unordered_map<fs::path, uint32_t> mPathToIndex;
     std::unordered_map<const char*, std::vector<uint32_t>> mOrderedByFolder;
     std::function<bool(const fs::path&)> mFileValidator;
-
+    std::vector<ModFile> modFilesData;
+    uint16_t mActiveModIndex;
     
 
     friend class FilePathHandlerFactory;

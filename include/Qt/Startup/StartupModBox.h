@@ -6,14 +6,16 @@
 #include <QtWidgets\qlabel.h>
 #include <QtWidgets\qcombobox.h>
 #include <QtWidgets\qpushbutton.h>
+#include <QtWidgets/qcheckbox.h>
 #include "FilePathHandler.h"
 
 class StartupModBox : public QWidget{
     Q_OBJECT
 public:
-    StartupModBox();
+    StartupModBox() = delete;
+    StartupModBox(FilePathHandler*& filePathHandler, QPushButton*& continueBtn, QCheckBox* enableModFolderCheck, QWidget* parent = nullptr);
     ~StartupModBox() = default;
-    void loadWidgets(std::vector<ModFile>& modFiles);
+    void loadWidgets(const std::vector<ModFile>& modFiles);
 
 protected:
 

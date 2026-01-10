@@ -15,8 +15,16 @@ void StartupDialog::setupUI(FilePathHandler*& filePathHandler) {
 	QVBoxLayout* mainLayout = new QVBoxLayout(this);
 	QTabWidget* tabWidget = new QTabWidget(this);
 
-	StartupGameBox* GameTab = new StartupGameBox(filePathHandler,mContinueButton, nullptr);
-	QWidget* ModTab = new StartupModBox();
+	QHBoxLayout* buttonLayout = new QHBoxLayout();
+	QPushButton* continueButton = new QPushButton("Continue");
+	QPushButton* cancelButton = new QPushButton("Cancel");
+	mContinueButton = continueButton;
+	mCancelButton = cancelButton;
+	mContinueButton->setEnabled(false);
+
+	QCheckBox* enableModFolderCheck = new QCheckBox;
+	StartupGameBox* GameTab = new StartupGameBox(filePathHandler,mContinueButton,enableModFolderCheck ,tabWidget);
+	QWidget* ModTab = new StartupModBox(filePathHandler, mContinueButton, enableModFolderCheck, tabWidget);
 	QWidget* LoadTab = new QWidget();
 	QWidget* OptionsTab = new QWidget();
 
@@ -35,9 +43,7 @@ void StartupDialog::setupUI(FilePathHandler*& filePathHandler) {
 
 	setLayout(mainLayout);
 
-	QHBoxLayout* buttonLayout = new QHBoxLayout();
-	QPushButton* continueButton = new QPushButton("Continue");
-	QPushButton* cancelButton = new QPushButton("Cancel");
+
 
 	buttonLayout->addStretch();
 	buttonLayout->addWidget(continueButton);
@@ -45,9 +51,13 @@ void StartupDialog::setupUI(FilePathHandler*& filePathHandler) {
 
 	mainLayout->addLayout(buttonLayout);
 
-	mContinueButton = continueButton;
-	mCancelButton = cancelButton;
-	mContinueButton->setEnabled(false);
+
+	connect(continueButton, &QPushButton::clicked, this,
+		[this, &filePathHandler, enableModFolderCheck]() {
+			if (enableModFolderCheck->isChecked()) {
+				filePathHandler->updateAPWithModsAP();
+			}
+		});
 
 }
 
