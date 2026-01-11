@@ -25,7 +25,7 @@ An open-source modding tool for Paradox games with a primary focus on Europa Uni
 
 ### For Users
 
-####**IMPORTANT ** : Windows Defender False Positive
+#### **IMPORTANT** : Windows Defender False Positive
 
 Each time there is going to be a new release windows defender will again flag the new executable and while I will appeal to microsoft there will be a moment where it will trigger windows defender. While I understand the stress of having windows defender flag something that hard it only does so because the application read, write files and start notepad which trigger windows defender heuristic probablity check. You can safely ignore the warning and whitelist the executable but I also understand if you would prefer to not do that and wait.
 

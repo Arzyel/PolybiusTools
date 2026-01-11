@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 
     QApplication app(argc, argv);
     QApplication::setApplicationName("PolybiusTools");
-    QApplication::setApplicationVersion("0.1.0");
+    QApplication::setApplicationVersion("v1.1.0.0");
     QApplication::setOrganizationName("Arzyel");
     QApplication::setOrganizationDomain("https://github.com/Arzyel/PolybiusTools");
     app.setWindowIcon(QIcon("GFX/icon/PolybiusToolsLogo.png"));

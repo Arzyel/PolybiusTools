@@ -11,9 +11,14 @@
 - [x] General Bug fixing pass and cleanup
 - [x] Basic Documentation
 
-## 0.2
+## v1.1.0.0
 
-- [] Implement Widgets and data retrieval for one selected mod at a time
+- [x] Implement Widgets and data retrieval for one selected mod at a time
+- [x] Enable selection by tag or by name in ownership controller and cores box
+
+## v1.2.0.0
+
+- [x] Link selection between boxes in ownership
 - [] Country Widget in widget tab : retrieve Data(Update parsing logic and storage) and display it.
 - [] Country Overlay
 - [] Occupied Overlay
@@ -23,7 +28,7 @@
 - [] Update Country Widget to display ideas : retrieve, contain, display
 - [] Update Country Widget with modifying ideas : save data
 
-## 0.3
+## v1.3.0.0
 
 - [] Add configuration file for Developpment Box random buttons ranges
 - [] Integrate basic support for localization : retrieve, contain, display logic update, save
@@ -32,7 +37,7 @@
 - [] Create Religion Overlay
 - [] Create search and select feature
 
-## 0.4
+## v1.4.0.0
 
 - [] Implement widgets and data retrieval for multiple selected mods
 - [] Add options for option tab startup
@@ -43,7 +48,7 @@
 - [] Add support to edit culture/culture groups : display, save
 - [] Create new culture/culture group : display, contain, save
 
-## 0.5 or 1.0 ?
+## v1.5.0.0
 
 - [] WASD map control ?
 - [] Create and Edit Mission Trees

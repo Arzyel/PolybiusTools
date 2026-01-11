@@ -5,6 +5,7 @@
 #include <QtWidgets\qboxlayout.h>
 #include <QtWidgets\qcombobox.h>
 #include <QtWidgets\qlabel.h>
+#include <QtWidgets/qcheckbox.h>
 #include <unordered_map>
 #include <string>
 #include <functional>
@@ -30,6 +31,10 @@ private:
 
     QComboBox* controllerBoxName;
     QComboBox* controllerBoxTag;
+    QCheckBox* linkSelectionBox;
+
+    void changeOwner(std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable, int index);
+    void changeController(std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable, int index);
 };
 
 #endif // OWNERSHIP_BOX_H
