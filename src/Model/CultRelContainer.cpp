@@ -10,7 +10,6 @@ CultRelContainer::CultRelContainer() {
 
 CultRelContainer::~CultRelContainer()
 {
-    delete mCultureData;
     delete mReligionData;
     for (auto& cultureData : mCulturesAggregate) {
         delete cultureData.mCultureData;
@@ -27,25 +26,24 @@ void CultRelContainer::initData(FilePathHandler*& filePathHandler)
 const std::vector<std::string_view> CultRelContainer::getAllCultures() const
 {
     std::vector<std::string_view> cultures;
-    cultures.reserve(mCultures.size());
+    uint32_t size = 0;
+    for (const auto& cultureDataPerFile : mCulturesAggregate) {
+        size += cultureDataPerFile.mCultures.size();
+    }
+    cultures.reserve(size);
     for (const auto& cultureData : mCulturesAggregate) {
-
         for (const auto& culture : cultureData.mCultures) {
             auto& token = cultureData.mCultureData->mDataTokens[culture.mNameID];
             cultures.emplace_back(token.mPtrStart, token.mLength);
         }
     }
-    /*for (const auto& culture : mCultures) {
-        auto& token = mCultureData->mDataTokens[culture.mNameID];
-        cultures.emplace_back(token.mPtrStart, token.mLength);
-    }*/
     return cultures;
 }
 
 const std::vector<std::string_view> CultRelContainer::getAllReligions() const
 {
     std::vector<std::string_view> religions;
-    religions.reserve(mCultures.size());
+    religions.reserve(mReligions.size());
     for (const auto& religion : mReligions) {
         auto& token = mReligionData->mDataTokens[religion.mNameID];
         religions.emplace_back(token.mPtrStart, token.mLength);
@@ -78,101 +76,6 @@ void CultRelContainer::initDataCulture(FilePathHandler*& filePathHandler)
     std::cout << "Elapsed Time : " << elapsed.count() << "ms" << std::endl;
 }
 
-void CultRelContainer::initHelperCulture(DM::FileData<CultRelContainer>& fileData, CultRelContainer& cultRelContainer)
-{
-    const char* ptr = fileData.mBuffer.data();
-    const char* end = ptr + fileData.mBuffer.size();
-
-    const char* keyStart = nullptr;
-    while (ptr < end) {
-        switch (*ptr) {
-        case '#': {
-            const char* commentEnd = (const char*)memchr(ptr, '\n', end - ptr);
-            ptr = commentEnd ? commentEnd : end;
-
-            break;
-        }
-        case '{': {
-            ++ptr;
-            while (*ptr != '}') {
-                while (ptr < end && (*ptr < 'a' || *ptr > 'z')) ++ptr;
-                char c = *ptr;
-                //graphical_culture
-                if (c == 'g' && *(ptr + 16) == 'e') {
-                    ptr += 17;
-                    while (ptr < end && *ptr != '\n' && *ptr != '\r') ++ptr;
-                }
-                //second_graphical_culture
-                else if (c == 's' && *(ptr + 23) == 'e') {
-                    ptr += 24;
-                    while (ptr < end && *ptr != '\n' && *ptr != '\r') ++ptr;
-                }
-                //male_names
-                else if (c == 'm' && *(ptr + 9) == 's') {
-                    ptr += 10;
-                    while (ptr < end && *ptr != '{') ++ptr;
-                    Eu4::parserSkipBracket(ptr, end);
-                }
-                //female_names
-                else if (c == 'f' && *(ptr + 11) == 's') {
-                    ptr += 12;
-                    while (ptr < end && *ptr != '{') ++ptr;
-                    Eu4::parserSkipBracket(ptr, end);
-                }
-                //dynasty_names
-                else if (c == 'd' && *(ptr + 12) == 's') {
-                    ptr += 13;
-                    while (ptr < end && *ptr != '{') ++ptr;
-                    Eu4::parserSkipBracket(ptr, end);
-                }
-                else {
-                    keyStart = ptr;
-                    ptr += strcspn(ptr, "\n\r \t#=");
-                    cultRelContainer.mCultures.emplace_back(Eu4::Culture());
-                    Eu4::Culture& cult = cultRelContainer.mCultures.back();
-                    fileData.mDataTokens.emplace_back(DM::DataToken());
-                    fileData.mDataTokens.back().mPtrStart = keyStart;
-                    fileData.mDataTokens.back().mLength = ptr - keyStart;
-                    cult.mNameID = fileData.mDataTokens.size() - 1;
-                    cult.mGroupID = cultRelContainer.mCultureGroups.back().mNameID;
-                    keyStart = nullptr;
-                    ptr += strcspn(ptr, "{");
-                    Eu4::parserSkipBracket(ptr, end);
-                }
-                ++ptr;
-            }
-            break;
-        }
-        case '\n':
-        case '\r':
-        case '\t':
-        case ' ':
-        case '=': {
-            break;
-        }
-        default: {
-            keyStart = ptr;
-            while (*ptr != '\n' && *ptr != '\r' && *ptr != ' ' && *ptr != '\t' && *ptr != '#' && *ptr != '=') {
-                ++ptr;
-            }
-            cultRelContainer.mCultureGroups.emplace_back(Eu4::CultureGroup());
-            Eu4::CultureGroup& cultGroup = cultRelContainer.mCultureGroups.back();
-            fileData.mDataTokens.emplace_back(DM::DataToken());
-            fileData.mDataTokens.back().mPtrStart = keyStart;
-            fileData.mDataTokens.back().mLength = ptr - keyStart;
-            cultGroup.mNameID = fileData.mDataTokens.size() - 1;
-            keyStart = nullptr;
-        }
-        }
-        ++ptr;
-    }
-    
-}
-
-void CultRelContainer::resetCulture(CultRelContainer& cultRelContainer)
-{
-
-}
 
 void CultRelContainer::initDataReligion(FilePathHandler*& filePathHandler)
 {

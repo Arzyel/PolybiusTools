@@ -86,10 +86,7 @@ public:
 
 private:
     //might need a map to string to value but unsure at the moment
-    DM::FileData<CultRelContainer>* mCultureData = nullptr;
     DM::FileData<CultRelContainer>* mReligionData = nullptr;
-    std::vector<Eu4::Culture> mCultures;
-    std::vector<Eu4::CultureGroup> mCultureGroups;
     std::vector<Eu4::Religion> mReligions;
     std::vector<Eu4::ReligionGroup> mReligionGroups;
     std::vector<Eu4::CultureDataPerFile> mCulturesAggregate;
@@ -98,8 +95,7 @@ private:
     //static void parserSkipBracket(const char*& ptr, const char* end);
     
     void initDataCulture(FilePathHandler*& filePathHandler);
-    static void initHelperCulture(DM::FileData<CultRelContainer>& fileData, CultRelContainer& cultRelContainer);
-    static void resetCulture(CultRelContainer& cultRelContainer);
+
 
     void initDataReligion(FilePathHandler*& filePathHandler);
     static void initHelperReligion(DM::FileData<CultRelContainer>& fileData, CultRelContainer& cultRelContainer);
