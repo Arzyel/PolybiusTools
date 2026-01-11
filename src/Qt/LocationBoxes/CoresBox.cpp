@@ -13,7 +13,7 @@ void CoresBox::loadWidget()
 
 	table = new QTableWidget(this);
 	table->setColumnCount(3);
-	table->setHorizontalHeaderLabels({ "Icon", "Tag", "Delete" });
+	table->setHorizontalHeaderLabels({ "Name", "Tag", "Delete" });
 	table->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 	table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 	table->verticalHeader()->setVisible(false);
@@ -32,20 +32,38 @@ void CoresBox::loadWidget()
 	footerLayout->setContentsMargins(2, 2, 2, 2);
 	mainLayout->addWidget(footer);
 
-	box = new QComboBox(footer);
-	box->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	box->setMinimumWidth(0);
-	footerLayout->addWidget(box);
+	boxName = new QComboBox(footer);
+	boxName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	boxName->setMinimumWidth(0);
+	footerLayout->addWidget(boxName);
+
+	boxTag = new QComboBox(footer);
+	boxTag->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	boxTag->setMinimumWidth(0);
+	footerLayout->addWidget(boxTag);
+
+
+
+	connect(boxTag, &QComboBox::currentIndexChanged, boxName, [this](int index) {
+		this->boxName->setCurrentIndex(index);
+		});
+
+	connect(boxName, &QComboBox::currentIndexChanged, boxTag, [this](int index) {
+		this->boxTag->setCurrentIndex(index);
+		});
+
+
 
 	addBtn = new QPushButton("Add Core");
 	footerLayout->addWidget(addBtn);
 }
 
 void CoresBox::initializeData(const std::unordered_map<std::string, std::string>& data) {
-	box->clear();
+	boxTag->clear();
+	boxName->clear();
 	for (const auto& [key, data] : data) {
-		std::string tag_name = key + " ; " + data;
-		box->addItem(QString::fromStdString(tag_name));
+		boxTag->addItem(QString::fromStdString(key));
+		boxName->addItem(QString::fromStdString(data));
 	}
 }
 
@@ -55,18 +73,24 @@ void CoresBox::loadProvInfo(Eu4::Province& province) {
 	for (const auto& coreID : province.mCoresID) {
 		//hack to not create the row when empty probably should raise an exception when it receives a wrong tag
 		const QString tag = QString::fromStdString(province.mFileData->mDataTokens[coreID].getCurrentName());
-
+		
 		if (!province.mFileData->mDataTokens.at(coreID).erase && tag.size() == 3) {
-			addRow(tag);
+			int index = boxTag->findText(tag, Qt::MatchExactly);
+			QString name = boxName->itemText(index);
+			addRow(name, tag);
 		}
 	}
 	table->setUpdatesEnabled(true);
 }
 
-void CoresBox::addRow(const QString& tag)
+void CoresBox::addRow(const QString& name, const QString& tag)
 {
 	int row = table->rowCount();
 	table->insertRow(row);
+	
+	QTableWidgetItem* itemName = new QTableWidgetItem(name);
+	table->setItem(row, 0, itemName);
+
 	QTableWidgetItem* itemTag = new QTableWidgetItem(tag);
 	table->setItem(row, 1, itemTag);
 
@@ -89,10 +113,11 @@ void CoresBox::makeConnections(std::function<void(uint16_t Eu4::Province::*, con
 {
 	this->callable = callable;
 	connect(addBtn, &QPushButton::clicked, this, [this, callable]() {
-		if (table->findItems(box->itemText(box->currentIndex()).left(3), Qt::MatchExactly).size() == 0) {
-			QString text = box->itemText(box->currentIndex()).left(3);
+		if (table->findItems(boxTag->itemText(boxTag->currentIndex()).left(3), Qt::MatchExactly).size() == 0) {
+			QString text = boxTag->itemText(boxTag->currentIndex()).left(3);
 			QByteArray data = text.toUtf8();
-			addRow(text);
+			QString name = boxName->currentText();
+			addRow(name, text);
 			callable(reinterpret_cast<uint16_t Eu4::Province::*>(&Eu4::Province::mCoresID) , std::string(data.constData(), 3));
 		}
 

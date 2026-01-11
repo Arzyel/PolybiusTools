@@ -29,11 +29,12 @@ public slots:
 protected:
 
 private:
-    QComboBox* box = nullptr;
+    QComboBox* boxTag = nullptr;
+    QComboBox* boxName = nullptr;
     QTableWidget* table = nullptr;
     QPushButton* addBtn = nullptr;
     std::function<void(uint16_t Eu4::Province::*, const std::string&)> callable;
-    void addRow(const QString& tag);
+    void addRow(const QString& name, const QString& tag);
 };
 
 #endif // CORES_BOX_H
