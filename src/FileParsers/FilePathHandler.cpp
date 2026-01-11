@@ -30,7 +30,7 @@ void FilePathHandler::initAllPaths()
 fs::path FilePathHandler::getExportPath(const fs::path& filePath)
 {
     static const auto separator = fs::path::preferred_separator;
-    const auto& native_str = mAbsolutePaths.at(mPathToIndex.at(filePath)).native();
+    const auto& native_str = mAbsolutePaths.at(mPathToIndex.at(filePath.string())).native();
     const auto* start = native_str.c_str();
     auto size = native_str.size();
     const auto* end = start + size;
@@ -102,12 +102,12 @@ void FilePathHandler::addFilesFromFolder(const fs::path& folderPath, const char*
 
 void FilePathHandler::addPath(const fs::path& path, const char* folderKey)
 {
-    if (!mPathToIndex.empty() && mPathToIndex.contains(path.filename())) {
-        mAbsolutePaths.at(mPathToIndex.at(path.filename())) = path;
+    if (!mPathToIndex.empty() && mPathToIndex.contains(path.filename().string())) {
+        mAbsolutePaths.at(mPathToIndex.at(path.filename().string())) = path;
     }
     else {
         mAbsolutePaths.emplace_back(path);
-        mPathToIndex[path.filename()] = mAbsolutePaths.size() - 1;
+        mPathToIndex[path.filename().string()] = mAbsolutePaths.size() - 1;
         mOrderedByFolder[folderKey].push_back(mAbsolutePaths.size() - 1);
     }
 }
@@ -289,6 +289,7 @@ FilePathHandler* FilePathHandlerFactory::create_eu4(const std::string& game, con
             relative_path::eu4::common::TRADE_GOODS_,
             relative_path::eu4::common::TRADE_NODES_,
             relative_path::eu4::common::COUNTRY_TAGS_,
+            relative_path::eu4::common::COUNTRIES_,
             relative_path::eu4::history::PROVINCES_,
             relative_path::eu4::history::COUNTRIES_,
             relative_path::eu4::map::ADJACENCIES,

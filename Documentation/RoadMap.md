@@ -19,12 +19,11 @@
 ## v1.2.0.0
 
 - [x] Link selection between boxes in ownership
+- [] Create search and select feature
 - [] Country Widget in widget tab : retrieve Data(Update parsing logic and storage) and display it.
 - [] Country Overlay
 - [] Occupied Overlay
 - [] Add widget and logic to change a province area,region,super-region, continent
-- [] Add Trade Nodes : retrieve data, contain data, display, save
-- [] Add Trade Node Overlay
 - [] Update Country Widget to display ideas : retrieve, contain, display
 - [] Update Country Widget with modifying ideas : save data
 
@@ -35,7 +34,8 @@
 - [] Add support to create a new country : display, contain, save
 - [] Create Culture Overlay
 - [] Create Religion Overlay
-- [] Create search and select feature
+- [] Add Trade Nodes : retrieve data, contain data, display, save
+- [] Add Trade Node Overlay
 
 ## v1.4.0.0
 

@@ -194,7 +194,7 @@ private:
     fs::path mRootExport;
     std::vector<fs::path> mAbsolutePaths;
     std::vector<const char*> mRelativePaths;
-    std::unordered_map<fs::path, uint32_t> mPathToIndex;
+    std::unordered_map<std::string, uint32_t> mPathToIndex;
     std::unordered_map<fs::path, uint32_t> mStemToIndex;
     std::unordered_map<const char*, std::vector<uint32_t>> mOrderedByFolder;
     std::function<bool(const fs::path&)> mFileValidator;

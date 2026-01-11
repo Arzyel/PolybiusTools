@@ -17,6 +17,8 @@ public:
     ~CountryContainer() = default;
     void initializeData(FilePathHandler*& filePathHandler);
     std::unordered_map<std::string, std::string> tagToName;
+    std::unordered_map<std::string, std::string> tagToCommonKey;
+    std::unordered_map<std::string, std::string> tagToHistoryKey;
 protected:
 
 private:
