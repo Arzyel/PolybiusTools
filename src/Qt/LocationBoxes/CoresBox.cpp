@@ -45,10 +45,12 @@ void CoresBox::loadWidget()
 
 
 	connect(boxTag, &QComboBox::currentIndexChanged, boxName, [this](int index) {
+		QSignalBlocker block(boxName);
 		this->boxName->setCurrentIndex(index);
 		});
 
 	connect(boxName, &QComboBox::currentIndexChanged, boxTag, [this](int index) {
+		QSignalBlocker block(boxTag);
 		this->boxTag->setCurrentIndex(index);
 		});
 

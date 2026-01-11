@@ -25,8 +25,11 @@ public slots:
 protected:
 
 private:
-    QComboBox* ownerBox;
-    QComboBox* controllerBox;
+    QComboBox* ownerBoxName;
+    QComboBox* ownerBoxTag;
+
+    QComboBox* controllerBoxName;
+    QComboBox* controllerBoxTag;
 };
 
 #endif // OWNERSHIP_BOX_H

@@ -168,7 +168,7 @@ public:
     void addFilesFromFolder(const fs::path& folderPath, const char* folderKey);
     void addPath(const fs::path& path, const char* folderKey);
     void removePath(const fs::path& path);
-    void initModsPath(const fs::path& dirPath);
+    uint32_t initModsPath(const fs::path& dirPath);
     const std::vector<ModFile>& getAllModFilesData() { return modFilesData; };
     const std::string_view getModPath(int index);
     void setActiveMod(int index);

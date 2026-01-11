@@ -166,8 +166,7 @@ void StartupGameBox::loadWidgets(FilePathHandler*& filePathHandler, QCheckBox* e
             // Mod folder loading
             if (enableModFolderCheck->isChecked()) {
                 startupModBox->setEnabled(true);
-                filePathHandler->initModsPath(gameFolders.modsFolder);
-                
+                if (filePathHandler->initModsPath(gameFolders.modsFolder) == 0) throw std::runtime_error("No .mod file are found in the given mod directory");
                 qobject_cast<StartupModBox*>(startupModBox)->loadWidgets(filePathHandler->getAllModFilesData());
             }
             else {

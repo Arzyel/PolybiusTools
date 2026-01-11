@@ -117,7 +117,7 @@ void FilePathHandler::removePath(const fs::path& path)
 }
 
 
-void FilePathHandler::initModsPath(const fs::path& dirPath)
+uint32_t FilePathHandler::initModsPath(const fs::path& dirPath)
 {
     std::vector<fs::path> modFilePaths;
     if (!fs::exists(dirPath) || !fs::is_directory(dirPath)) {
@@ -171,10 +171,7 @@ void FilePathHandler::initModsPath(const fs::path& dirPath)
             ++ptr;
         }
     }
-
-
-
-
+    return modFilesData.size();
 }
 
 const std::string_view FilePathHandler::getModPath(int index)
