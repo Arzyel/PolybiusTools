@@ -18,6 +18,23 @@
 #include "FilePathHandler.h"
 
 namespace Eu4 {
+    static void parserSkipBracket(const char*& ptr, const char* end) {
+        if (ptr >= end || *ptr != '{') return;
+        ++ptr;
+
+        int depth = 1;
+        while (ptr < end && depth >0) {
+            if (*ptr == '{') {
+                ++depth;
+            }
+            else if (*ptr == '}') {
+                --depth;
+            }
+            ++ptr;
+        }
+    };
+
+
     class Culture {
     public:
         uint16_t mNameID;
@@ -47,6 +64,14 @@ namespace Eu4 {
     public:
         uint16_t mNameID;
     };
+
+    struct CultureDataPerFile {
+        DM::FileData<CultureDataPerFile>* mCultureData = nullptr;
+        std::vector<Eu4::Culture> mCultures;
+        std::vector<Eu4::CultureGroup> mCultureGroups;
+        static void initHelperCulture(DM::FileData<CultureDataPerFile>& fileData, CultureDataPerFile& cultRelContainer);
+        static void resetCulture(CultureDataPerFile& cultRelContainer);
+    };
 }
 
 
@@ -67,9 +92,10 @@ private:
     std::vector<Eu4::CultureGroup> mCultureGroups;
     std::vector<Eu4::Religion> mReligions;
     std::vector<Eu4::ReligionGroup> mReligionGroups;
+    std::vector<Eu4::CultureDataPerFile> mCulturesAggregate;
 
 
-    static void parserSkipBracket(const char*& ptr, const char* end);
+    //static void parserSkipBracket(const char*& ptr, const char* end);
     
     void initDataCulture(FilePathHandler*& filePathHandler);
     static void initHelperCulture(DM::FileData<CultRelContainer>& fileData, CultRelContainer& cultRelContainer);
