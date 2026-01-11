@@ -374,29 +374,7 @@ void Eu4::GeoPolData::initHelperProvince(DM::FileData<Eu4::Province>& fileData, 
 					ptr += 31;
 					value = &(prov.mTrigMod.emplace_back(0));
 				}
-				//add_permanent_province_modifier
-				else if (*(ptr + 13) == '_' && *(ptr + 30) == 'r') {
-					ptr += 31;
-					// Skip to opening brace
-					while (ptr < end && *ptr != '{') ++ptr;
-					if (ptr >= end) break;
 
-					// Skip entire block with depth tracking
-					int depth = 1;
-					++ptr; // Move past opening '{'
-					while (ptr < end && depth > 0) {
-						if (*ptr == '{') {
-							++depth;
-						}
-						else if (*ptr == '}') {
-							--depth;
-						}
-						++ptr;
-					}
-					// ptr is now past the closing '}', continue parsing
-					--ptr; // Back up one so skip_to increment works correctly
-					goto skip_to;
-				}
 				break;
 			}
 			case 'b': {
