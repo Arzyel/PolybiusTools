@@ -321,25 +321,8 @@ void Eu4::GeoPolData::initHelperProvince(DM::FileData<Eu4::Province>& fileData, 
 	const char* ptr = prov.mFileData->mBuffer.data();
 	const char* end = ptr + prov.mFileData->mBuffer.size();
 	std::vector<DM::DataToken>& dataTokens = prov.mFileData->mDataTokens;
-	int iteration = 0;
-	const int MAX_ITERATIONS = 100000; // Safety limit
-	while (ptr < end) {
-		if (++iteration > MAX_ITERATIONS) {
-			std::cerr << "RUNAWAY DETECTED in province parsing!\n";
-			std::cerr << "Buffer size: " << prov.mFileData->mBuffer.size() << "\n";
-			std::cerr << "Current position: " << (ptr - prov.mFileData->mBuffer.data()) << "\n";
-			std::cerr << "Remaining: " << (end - ptr) << "\n";
-			if (end - ptr > 0) {
-				size_t count = (end - ptr) > 100 ? 100 : (end - ptr);
-				std::cerr << "Last 100 chars:\n" << std::string(ptr, count) << "\n";
-			}
-			break;
-		}
 
-		if (ptr >= end) {
-			std::cerr << "WARNING: ptr exceeded end!\n";
-			break;
-		}
+	while (ptr < end) {
 		switch (*ptr) {
 		case '\n':
 		case '\t':
@@ -948,33 +931,27 @@ inline void Eu4::GeoPolData::parserCaptureAllValuesBracket(const char*& ptr, std
 	++ptr;
 	int safety = 0;
 	while (*ptr != '}') {
-		if (++safety > 100) {
-			std::cerr << "INFINITE LOOP in parserCaptureAllValuesBracket!\n";
-			std::cerr << "Current char: '" << *ptr << "' (ASCII " << (int)*ptr << ")\n";
-			std::cerr << "Last 50 chars: " << std::string(ptr - 50, 50) << "\n";
-			break;
-		}
 		while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n' || *ptr == '\r') ++ptr;
-		const char* keyStart = ptr;
-		while (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' && *ptr != '\r' && *ptr != '#' && *ptr != '\"') ++ptr;
+		if (*ptr != '}') break;
+
 		if (*ptr == '#') {
-			while (*ptr != '\n' && *ptr != '\r') ++ptr;
+			while (*ptr != '\n') ++ptr;
+			continue;
 		}
-		else {
+		const char* keyStart = ptr;
+		while (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' && *ptr != '\r' && *ptr != '#' && *ptr != '}') ++ptr;
+		
+		if (ptr > keyStart) {
 			dataTokens.emplace_back(DM::DataToken());
 			dataTokens.back().mPtrStart = keyStart;
 			dataTokens.back().mLength = ptr - keyStart;
 			container.emplace_back(dataTokens.size() - 1);
-			keyStart = nullptr;
 		}
-		++ptr;
 	}
 }
 
 inline void Eu4::GeoPolData::parserCaptureCapital(const char*& ptr, const char* end, std::vector<DM::DataToken>& dataTokens, uint16_t& capital)
 {
-	std::cout << "  parserCaptureCapital start, remaining: " << (end - ptr) << "\n";
-
 	while (ptr < end && *ptr != '=') ++ptr;
 	if (ptr >= end) { std::cerr << "  No = found\n"; return; }
 	++ptr;
@@ -993,6 +970,5 @@ inline void Eu4::GeoPolData::parserCaptureCapital(const char*& ptr, const char* 
 	dataTokens.back().mLength = ptr - keyStart;
 	capital = dataTokens.size() - 1;
 
-	std::cout << "  parserCaptureCapital end, captured length: " << (ptr - keyStart) << "\n";
 }
 
