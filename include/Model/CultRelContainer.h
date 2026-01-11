@@ -72,6 +72,14 @@ namespace Eu4 {
         static void initHelperCulture(DM::FileData<CultureDataPerFile>& fileData, CultureDataPerFile& cultRelContainer);
         static void resetCulture(CultureDataPerFile& cultRelContainer);
     };
+
+    struct ReligionDataPerFile {
+        DM::FileData<ReligionDataPerFile>* mReligionData = nullptr;
+        std::vector<Eu4::Religion> mReligions;
+        std::vector<Eu4::ReligionGroup> mReligionGroups;
+        static void initHelperReligion(DM::FileData<ReligionDataPerFile>& fileData, ReligionDataPerFile& religionDataPerFile);
+        static void resetReligion(ReligionDataPerFile& cultRelContainer);
+    };
 }
 
 
@@ -86,21 +94,11 @@ public:
 
 private:
     //might need a map to string to value but unsure at the moment
-    DM::FileData<CultRelContainer>* mReligionData = nullptr;
-    std::vector<Eu4::Religion> mReligions;
-    std::vector<Eu4::ReligionGroup> mReligionGroups;
-    std::vector<Eu4::CultureDataPerFile> mCulturesAggregate;
-
-
-    //static void parserSkipBracket(const char*& ptr, const char* end);
+    std::vector<Eu4::CultureDataPerFile> mCulturesPerFile;
+    std::vector<Eu4::ReligionDataPerFile> mReligionsPerFile;
     
     void initDataCulture(FilePathHandler*& filePathHandler);
-
-
     void initDataReligion(FilePathHandler*& filePathHandler);
-    static void initHelperReligion(DM::FileData<CultRelContainer>& fileData, CultRelContainer& cultRelContainer);
-    static void resetReligion(CultRelContainer& cultRelContainer);
-
 };
 
 

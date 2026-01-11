@@ -321,8 +321,25 @@ void Eu4::GeoPolData::initHelperProvince(DM::FileData<Eu4::Province>& fileData, 
 	const char* ptr = prov.mFileData->mBuffer.data();
 	const char* end = ptr + prov.mFileData->mBuffer.size();
 	std::vector<DM::DataToken>& dataTokens = prov.mFileData->mDataTokens;
-
+	int iteration = 0;
+	const int MAX_ITERATIONS = 100000; // Safety limit
 	while (ptr < end) {
+		if (++iteration > MAX_ITERATIONS) {
+			std::cerr << "RUNAWAY DETECTED in province parsing!\n";
+			std::cerr << "Buffer size: " << prov.mFileData->mBuffer.size() << "\n";
+			std::cerr << "Current position: " << (ptr - prov.mFileData->mBuffer.data()) << "\n";
+			std::cerr << "Remaining: " << (end - ptr) << "\n";
+			if (end - ptr > 0) {
+				size_t count = (end - ptr) > 100 ? 100 : (end - ptr);
+				std::cerr << "Last 100 chars:\n" << std::string(ptr, count) << "\n";
+			}
+			break;
+		}
+
+		if (ptr >= end) {
+			std::cerr << "WARNING: ptr exceeded end!\n";
+			break;
+		}
 		switch (*ptr) {
 		case '\n':
 		case '\t':
@@ -332,9 +349,6 @@ void Eu4::GeoPolData::initHelperProvince(DM::FileData<Eu4::Province>& fileData, 
 			break;
 		}
 		case '#': {
-			if (*(ptr + 2) == '1' && *(ptr + 3) == '9' && *(ptr + 4) == '0') {
-				auto test = 0;
-			}
 			const char* commentEnd = (const char*)memchr(ptr, '\n', end - ptr);
 			ptr = commentEnd ? commentEnd : end;
 			break;
@@ -356,9 +370,32 @@ void Eu4::GeoPolData::initHelperProvince(DM::FileData<Eu4::Province>& fileData, 
 				}
 				// add_province_triggered_modifier
 				// TODO probable bugs and capture the actual data
-				else if (*(ptr + 30) == 'r') {
+				else if (*(ptr + 12) == '_' && *(ptr + 30) == 'r') {
 					ptr += 31;
 					value = &(prov.mTrigMod.emplace_back(0));
+				}
+				//add_permanent_province_modifier
+				else if (*(ptr + 13) == '_' && *(ptr + 30) == 'r') {
+					ptr += 31;
+					// Skip to opening brace
+					while (ptr < end && *ptr != '{') ++ptr;
+					if (ptr >= end) break;
+
+					// Skip entire block with depth tracking
+					int depth = 1;
+					++ptr; // Move past opening '{'
+					while (ptr < end && depth > 0) {
+						if (*ptr == '{') {
+							++depth;
+						}
+						else if (*ptr == '}') {
+							--depth;
+						}
+						++ptr;
+					}
+					// ptr is now past the closing '}', continue parsing
+					--ptr; // Back up one so skip_to increment works correctly
+					goto skip_to;
 				}
 				break;
 			}
@@ -389,7 +426,7 @@ void Eu4::GeoPolData::initHelperProvince(DM::FileData<Eu4::Province>& fileData, 
 				/* capital */
 				else if (*(ptr + 6) == 'l') {
 					ptr += 7;
-					Eu4::GeoPolData::parserCaptureCapital(ptr, dataTokens, prov.mCapital);
+					Eu4::GeoPolData::parserCaptureCapital(ptr, end, dataTokens, prov.mCapital);
 					goto skip_to;
 				}
 				/* culture */
@@ -931,7 +968,14 @@ inline void Eu4::GeoPolData::parserCaptureAllValuesBracket(const char*& ptr, std
 	++ptr;
 	while (*ptr != '{') ++ptr;
 	++ptr;
+	int safety = 0;
 	while (*ptr != '}') {
+		if (++safety > 100) {
+			std::cerr << "INFINITE LOOP in parserCaptureAllValuesBracket!\n";
+			std::cerr << "Current char: '" << *ptr << "' (ASCII " << (int)*ptr << ")\n";
+			std::cerr << "Last 50 chars: " << std::string(ptr - 50, 50) << "\n";
+			break;
+		}
 		while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n' || *ptr == '\r') ++ptr;
 		const char* keyStart = ptr;
 		while (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' && *ptr != '\r' && *ptr != '#' && *ptr != '\"') ++ptr;
@@ -949,18 +993,28 @@ inline void Eu4::GeoPolData::parserCaptureAllValuesBracket(const char*& ptr, std
 	}
 }
 
-inline void Eu4::GeoPolData::parserCaptureCapital(const char*& ptr, std::vector<DM::DataToken>& dataTokens, uint16_t& capital)
+inline void Eu4::GeoPolData::parserCaptureCapital(const char*& ptr, const char* end, std::vector<DM::DataToken>& dataTokens, uint16_t& capital)
 {
-	while (*ptr != '=') ++ptr;
+	std::cout << "  parserCaptureCapital start, remaining: " << (end - ptr) << "\n";
+
+	while (ptr < end && *ptr != '=') ++ptr;
+	if (ptr >= end) { std::cerr << "  No = found\n"; return; }
 	++ptr;
-	while (*ptr == ' ' || *ptr == '\t' || *ptr == '\"') ++ptr;
+
+	while (ptr < end && *ptr != '\"') ++ptr;
+	if (ptr >= end) { std::cerr << "  No opening quote\n"; return; }
+	++ptr;
+
 	const char* keyStart = ptr;
-	while (*ptr != '\"') ++ptr;
+
+	while (ptr < end && *ptr != '\"') ++ptr;
+	if (ptr >= end) { std::cerr << "  No closing quote\n"; return; }
+
 	dataTokens.emplace_back(DM::DataToken());
 	dataTokens.back().mPtrStart = keyStart;
 	dataTokens.back().mLength = ptr - keyStart;
 	capital = dataTokens.size() - 1;
-	++ptr;
-	keyStart = nullptr;
+
+	std::cout << "  parserCaptureCapital end, captured length: " << (ptr - keyStart) << "\n";
 }
 

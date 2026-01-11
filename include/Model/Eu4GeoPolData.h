@@ -49,7 +49,7 @@ namespace Eu4 {
 		static void initHelperProvince(DM::FileData<Eu4::Province>& fileData, Eu4::Province& prov);
 		static void parserSkipUntilValueStd(const char*& ptr, std::vector<DM::DataToken>& dataTokens);
 		static void parserCaptureAllValuesBracket(const char*& ptr, std::vector<DM::DataToken>& dataTokens, std::vector<uint16_t>& container);
-		static void parserCaptureCapital(const char*& ptr, std::vector<DM::DataToken>& dataTokens, uint16_t& capital);
+		static void parserCaptureCapital(const char*& ptr, const char* end, std::vector<DM::DataToken>& dataTokens, uint16_t& capital);
 
 	private:
 		std::unordered_map<uint32_t, uint16_t> mProvColorToUID;
