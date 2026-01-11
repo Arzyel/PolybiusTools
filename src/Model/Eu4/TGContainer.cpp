@@ -150,6 +150,7 @@ void Eu4::TGContainer::initHelperTradeGood(DM::FileData<TGContainer>& fileData, 
         case '\n':
         case '\t':
         case ' ':
+        case '\r':
         case '=': {
             break;
         }

@@ -92,16 +92,17 @@ void Eu4::GeoPolData::initDataProvinces(FilePathHandler*& filePathHandler) {
 	mProvinces.clear();
 	mProvinces.resize(mMapInfo.maxProvinces + 1);
 
-	//hack
-	//auto provHistoryPath = filePathHandler->getPathsFromFolderKey(relative_path::eu4::history::PROVINCES_).at(0).parent_path().string();
-	//const char* provHistoryPathPtr = provHistoryPath.data();
-
 	std::vector<std::tuple<uint16_t, std::string, std::filesystem::path>> fileData;
 	filePathHandler->populateProvincesFilePathStructure(fileData, mMapInfo.maxProvinces + 1);
-	//SimpleParser::getNumberedTxtFiles(fileData, provHistoryPathPtr);
 
 
-
+	std::unordered_map<uint16_t, int> idCount;
+	for (const auto& [id, name, path] : fileData) {
+		idCount[id]++;
+		if (idCount[id] > 1) {
+			std::cout << "DUPLICATE ID: " << id << " at path: " << path << std::endl;
+		}
+	}
 
 	//for (const auto& tuple : fileData)
 	//{
@@ -116,15 +117,6 @@ void Eu4::GeoPolData::initDataProvinces(FilePathHandler*& filePathHandler) {
 	//			Eu4::GeoPolData::resetProvince
 	//		);
 	//}
-	// After populateProvincesFilePathStructure
-	std::unordered_map<uint16_t, int> idCount;
-	for (const auto& [id, name, path] : fileData) {
-		idCount[id]++;
-		if (idCount[id] > 1) {
-			std::cout << "DUPLICATE ID: " << id << " at path: " << path << std::endl;
-		}
-	}
-
 
 	std::for_each(std::execution::par, fileData.begin(), fileData.end(),
 		[&](const auto& tuple) {
