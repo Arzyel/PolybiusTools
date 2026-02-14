@@ -65,7 +65,7 @@ void CultRelContainer::initDataCulture(FilePathHandler*& filePathHandler)
 {
     auto start = std::chrono::high_resolution_clock::now();
     std::cout << "Initiate Culture Data from file\t----\t";
-
+    auto& test = filePathHandler->getPathsFromFolderKey(relative_path::eu4::common::CULTURES_);
     for (auto& path : filePathHandler->getPathsFromFolderKey(relative_path::eu4::common::CULTURES_)) {
         auto& culture = mCulturesPerFile.emplace_back();
         std::string pathStr = path.string();
@@ -185,6 +185,10 @@ void Eu4::CultureDataPerFile::initHelperCulture(DM::FileData<CultureDataPerFile>
                     cult.mGroupID = cultDataPerFile.mCultureGroups.back().mNameID;
                     keyStart = nullptr;
                     ptr += strcspn(ptr, "{");
+                    if (fileData.mDataTokens.back().getCurrentName() == "dardarian") {
+                        int test = 1;
+                    }
+
                     Eu4::parserSkipBracket(ptr, end);
                 }
                 ++ptr;

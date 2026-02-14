@@ -2,6 +2,9 @@
 
 void CountryContainer::initializeData(FilePathHandler*& filePathHandler)
 {
+    auto start = std::chrono::high_resolution_clock::now();
+    std::cout << "Initiate Country Data\t----\t";
+
     const std::string& path = filePathHandler->getPathsFromFolderKey(relative_path::eu4::common::COUNTRY_TAGS_).at(0).string();
     for (const auto& path : filePathHandler->getPathsFromFolderKey(relative_path::eu4::common::COUNTRY_TAGS_)) {
 
@@ -53,12 +56,54 @@ void CountryContainer::initializeData(FilePathHandler*& filePathHandler)
                 commonKeyName.assign(keyStart, ptr);
                 historyKeyName.append(keyStart, ptr);
 
+                mNames.emplace_back(name);
+                tagToIndex[tag] = mNames.size() - 1;
                 tagToName[tag] = std::move(name);
-                tagToCommonKey[tag] = std::move(commonKeyName);
-                tagToHistoryKey[tag] = std::move(historyKeyName);
+
+                mFolderCommonKeys.emplace_back(std::move(commonKeyName));
+                mFolderHistoryKeys.emplace_back(std::move(historyKeyName));
             }
             }
             ++ptr;
         }
     }
+
+    // hack why eu4 change its naming rule for that is beyond me
+    // the hack doesnt even work somehow the key isnt the filePathHandler
+    mFolderHistoryKeys[tagToIndex["REB"]] = "REB - Rebel Scum.txt";
+
+    mCountriesData.resize(mNames.size());
+    initHistoryData(filePathHandler);
+    auto time_end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(time_end - start);
+    std::cout << "Elapsed Time : " << elapsed.count() << "ms" << std::endl;
+}
+
+void CountryContainer::initHistoryData(FilePathHandler*& filePathHandler)
+{
+    std::vector<std::string> absoluteImportPaths;
+    absoluteImportPaths.resize(mFolderHistoryKeys.size());
+    for (int i = 3; i < mFolderHistoryKeys.size(); ++i) {
+        absoluteImportPaths[i] = (filePathHandler->getAbsolutePathFromFileKey(mFolderHistoryKeys[i]));
+    }
+    for (int i = 3; i < absoluteImportPaths.size(); ++i) {
+        //mCountriesData[i].initHistory(absoluteImportPaths[i]);
+    }
+
+
+}
+
+void CountryContainer::initCommonData(FilePathHandler*& filePathHandler)
+{
+}
+
+Eu4::Country::~Country()
+{
+    delete mHistoryFileData;
+    delete mCommonFileData;
+}
+
+void Eu4::Country::initHistory(const std::string& path, const std::string& exportPath)
+{
+    //mHistoryFileData = new DM::FileData<Eu4::Country>(path, exportPath, )
 }

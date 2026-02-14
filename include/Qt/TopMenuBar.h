@@ -6,6 +6,8 @@
 #include <QtWidgets\qmenubar.h>
 #include <QtWidgets\qapplication.h>
 #include <cstdint>
+#include "SearchProv.h"
+
 
 class TopMenuBar : public QMenuBar {
 	Q_OBJECT

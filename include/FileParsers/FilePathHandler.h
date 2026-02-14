@@ -164,6 +164,10 @@ public:
         
         return paths;
     };
+    
+    const std::string getAbsolutePathFromFileKey(const std::string& key) {
+        return mAbsolutePaths[mPathToIndex[key.data()]].string();
+    };
 
     void addFilesFromFolder(const fs::path& folderPath, const char* folderKey);
     void addPath(const fs::path& path, const char* folderKey);

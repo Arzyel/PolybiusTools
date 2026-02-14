@@ -15,7 +15,8 @@ void TopMenuBar::setupMenus()
     QAction* allCountries = viewMenu->addAction("Countries");
     allCountries->setEnabled(false);
     QAction* provView = viewMenu->addAction("Search Country");
-    provView->setEnabled(false);
+    //provView->setEnabled(false);
+    
     viewMenu->addSeparator();
 
     QMenu* geoSMenu = viewMenu->addMenu("Geography");

@@ -189,6 +189,9 @@
     <ClCompile Include="src\Model\Eu4\TGContainer.cpp">
       <Filter>Fichiers sources\Model\Eu4</Filter>
     </ClCompile>
+    <ClCompile Include="src\Qt\MainApp\Eu4\SearchProv.cpp">
+      <Filter>Fichiers sources\Qt\MainApp\Eu4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Qt\InstantMenuStyle.h">
@@ -225,9 +228,6 @@
       <Filter>Fichiers d%27en-tête\Utils</Filter>
     </ClInclude>
     <ClInclude Include="include\Qt\Startup\StartupLoadBox.h">
-      <Filter>Fichiers d%27en-tête\Qt\Startup</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Qt\Startup\StartupModBox.h">
       <Filter>Fichiers d%27en-tête\Qt\Startup</Filter>
     </ClInclude>
     <ClInclude Include="include\Qt\Startup\StartupOptionBox.h">
@@ -275,6 +275,9 @@
     <ClInclude Include="resource.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="include\Qt\MainApp\Eu4\SearchProv.h">
+      <Filter>Fichiers d%27en-tête\Qt\MainApp\Eu4</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -321,6 +324,9 @@
     </QtMoc>
     <QtMoc Include="include\Qt\LocationBoxes\TradeBox.h">
       <Filter>Fichiers d%27en-tête\Qt\LocationBoxes</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Qt\Startup\StartupModBox.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

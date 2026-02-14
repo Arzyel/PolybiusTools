@@ -189,6 +189,7 @@
     <ClCompile Include="src\Qt\LocationBoxes\ProvOthersBox.cpp" />
     <ClCompile Include="src\Qt\LocationBoxes\TechInfoBox.cpp" />
     <ClCompile Include="src\Qt\LocationBoxes\TradeBox.cpp" />
+    <ClCompile Include="src\Qt\MainApp\Eu4\SearchProv.cpp" />
     <ClCompile Include="src\Qt\MainApp\Global\BufferTab.cpp" />
     <ClCompile Include="src\Qt\MainApp\Global\MainApp.cpp" />
     <ClCompile Include="src\Qt\MainApp\Global\SGPUnitInfoBoxes.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="include\Model\Eu4\TGContainer.h" />
     <ClInclude Include="include\Model\GameData.h" />
     <ClInclude Include="include\Model\GeoPolUnit.h" />
+    <ClInclude Include="include\Qt\MainApp\Eu4\SearchProv.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="include\Qt\ImageViewa.h" />
     <QtMoc Include="include\Qt\InformationGUI.h" />

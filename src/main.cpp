@@ -1,10 +1,9 @@
 #include <QtWidgets\qapplication.h>
 #include <QtWidgets\qstylefactory.h>
 #include <QtWidgets\qdialog.h>
-#include <InstantMenuStyle.h>
+#include "InstantMenuStyle.h"
 #include "StartupDialog.h"
 #include "FilePathHandler.h"
-#include "FileManager.h"
 #include "MainApp.h"
 
 #define _CRTDBG_MAP_ALLOC
